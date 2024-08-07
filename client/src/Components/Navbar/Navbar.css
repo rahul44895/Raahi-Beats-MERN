@@ -1,0 +1,133 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: 1px 1px 20px black;
+}
+
+.navbar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+.navbar-logo-image {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
+
+.navbar-title {
+  color: white;
+}
+
+.navbar-options-section {
+  display: flex;
+}
+
+.navbar-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.search-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  margin: 0 5px;
+  min-width: 203px;
+}
+.search-input-area {
+  width: 0;
+  overflow: hidden;
+  transition: all 0.2s linear;
+}
+.search-area:hover .search-input-area {
+  width: 205px;
+}
+.search-input {
+  height: 40px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 1em;
+  font-weight: 600;
+  border-bottom: 1px solid grey;
+  color: white;
+}
+.search-input::placeholder {
+  color: white;
+}
+.search-input:focus {
+  outline: none;
+  border-bottom: 1px solid white;
+}
+.search-icon {
+  cursor: pointer;
+}
+
+.nav-hamburger-menu {
+  font-size: 25px;
+  color: white;
+  margin: 0px 5px;
+  height: 50px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-hamburger-menu:hover .navbar-options-section {
+  display: flex;
+}
+.hide {
+  display: none;
+}
+@media screen and (max-width: 450px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    backdrop-filter: blur(20px);
+  }
+  .nav-hamburger-menu {
+    display: flex;
+    margin: 10px;
+  }
+  .nav-menu-container {
+    transform: translateX(-36%);
+  }
+  .navbar-icon-container {
+    width: 100%;
+    padding: 1em;
+  }
+  .search-input:focus {
+    width: 100%;
+  }
+
+  .search-area {
+    justify-content: center;
+    width: 100%;
+  }
+  .search-input-area {
+    width: 90%;
+  }
+  .search-area:hover .search-input-area {
+    width: 90%;
+  }
+  .navbar-options-section {
+    width: 100%;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,10 @@
+.authContainer {
+  animation: home-bg-anime 100s ease-in-out infinite;
+  background: url(../../assets/images/miscellaneous/websiteBg1.png),
+    linear-gradient(45deg, rgb(88 23 49 / 99%), #26035d);
+  /* background-size: cover; */
+  background-repeat: no-repeat;
+  color: white;
+  overflow: auto;
+  flex: 1 1;
+}
