@@ -6,6 +6,7 @@
 body {
   overflow-x: hidden;
   background-color: black;
+  color: white;
 }
 
 a {
@@ -45,8 +46,12 @@ a {
   cursor: pointer;
   background-color: #ec167f;
   color: white;
+  transition: all 0.2s linear;
 }
-
+.btn:hover {
+  transform: scale(0.99);
+  background-color: #d71372;
+}
 .h-100vh-min {
   height: 100%;
   overflow-x: hidden;
@@ -89,6 +94,34 @@ a {
   border: 1px solid white;
   border-radius: 10px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 @media screen and (max-width: 450px) {

@@ -1,24 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import NewReleasesCard from "./SongCardXL";
 import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
-import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
 
-export default function WestTunes({ range, navbarHeight }) {
-  const { handleWestTunesFunc } = useContext(SongContext);
+export default function AllSongs({ range, navbarHeight }) {
+  const { songList } = useContext(SongContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
-  const [songList, setSongList] = useState(null);
-  const handleSongList = async (range) => {
-    const result = await handleWestTunesFunc(range);
-    setSongList(result);
-  };
-  useEffect(() => {
-    handleSongList(range);
-    // eslint-disable-next-line
-  }, []);
   const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
-
   return (
     <>
       <div className="h-100vh-min scroll-item" ref={main}>
@@ -32,7 +22,7 @@ export default function WestTunes({ range, navbarHeight }) {
         >
           <div className="new-releases-header">
             <div className="new-releases-title">
-              West Tunes
+              ALL SONGS
               <span
                 className="song-card-medium-play-icon"
                 onClick={() => addPlaylistToQueue(songList)}
@@ -40,12 +30,11 @@ export default function WestTunes({ range, navbarHeight }) {
                 <IoIosPlayCircle />
               </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            {/* <div>
               {visibility && (
                 <div
                   className="new-releases-see-more"
                   onClick={() => {
-                    handleSongList(20);
                     setVisibility(!visibility);
                   }}
                 >
@@ -63,16 +52,13 @@ export default function WestTunes({ range, navbarHeight }) {
                   See Less
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="new-releases-grid">
-            {songList ? (
+            {songList &&
               songList.map((currSong) => {
-                return <SongCardMedium song={currSong} key={currSong.id}/>;
-              })
-            ) : (
-              <p>Loading...</p>
-            )}
+                return <NewReleasesCard song={currSong} key={currSong.id}/>;
+              })}
           </div>
         </div>
       </div>

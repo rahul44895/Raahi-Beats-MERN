@@ -3,6 +3,11 @@ import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaShareFromSquare } from "react-icons/fa6";
+import { MdPlaylistAdd } from "react-icons/md";
+import { PlaylistDialogueContext } from "../../Context/Playlist/PlaylistDialogueState";
+
 
 export default function FullScreen() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -13,13 +18,15 @@ export default function FullScreen() {
   }, [navbarHeight]);
 
   const { currSong } = useContext(AudioContext);
+  const { setShowPlaylistDialogue , setaddSongToPlaylist} = useContext(PlaylistDialogueContext);
   const main = useRef(null);
+  const [liked, setLiked] = useState(false);
   return (
     <div className="fullscreen-song-container" ref={main}>
       <div
         className="fullscreen-song-subcontainer"
         style={{
-          background: `url(${process.env.PUBLIC_URL}/${currSong.coverImage})`,
+          backgroundImage: `url(${process.env.PUBLIC_URL}/${currSong.coverImage})`,
           backgroundSize: "cover",
         }}
       >
@@ -28,83 +35,74 @@ export default function FullScreen() {
           className="fullscreen-main-container"
           style={{
             height: `${main.current?.offsetHeight}px`,
-            // height: `calc(${main.current?.offsetHeight}px - ${0}px)`,
           }}
         >
           <div className="fullscreen-songArea">
-            <div className="song-image-container">
-              <img
-                src={`${process.env.PUBLIC_URL}/${currSong.coverImage}`}
-                className="song-image"
-              />
-            </div>
-            <div>
-              <h1 style={{ textAlign: "center", marginBottom: "5px" }}>
-                {currSong.title ? currSong.title : "Unknown title"}
-              </h1>
-              <p style={{ fontSize: "1rem", marginBottom: "5px" }}>
-                Artists: {currSong.artist ? currSong.artist : "Unknown artist"}
-              </p>
-              <p style={{ fontSize: "1rem", marginBottom: "5px" }}>
-                Album: {currSong.album? currSong.album : "Unknown album"}
-              </p>
-              <p style={{ fontSize: "1rem", marginBottom: "5px" }}>
-                Released Year: {currSong.releaseDate ? currSong.releaseDate : "Unknown year"}
-              </p>
-              <p style={{ fontSize: "3rem", marginBottom: "5px" }}>
-                Like Icon
-                <br />
-                Share Icon
-                <br />
-                Add To Personal Playlist
-                <br />
-                Add To Current Playing QUEUE
-                <br />
-              </p>
-              <div
-                style={{
-                  width: "300px",
-                  height: "20px",
-                  background: "#ff8a8a",
-                  border: "2px solid white",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+            <div className="flex-display">
+              <div className="add-playlist-icon-container">
                 <div
-                  style={{
-                    width: "60%",
-                    background: "red",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    justifyContent: "center",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+                  onClick={() => {setShowPlaylistDialogue(true); setaddSongToPlaylist(currSong)}}
+                  className="tooltip"
                 >
-                  <AiFillLike /> 60%
+                  <MdPlaylistAdd />
+                  <span className="tooltiptext">Add to Playlist</span>
+                </div>
+              </div>
+              <div className="song-image-container">
+                <img
+                  src={`${process.env.PUBLIC_URL}/${currSong.coverImage}`}
+                  className="song-image"
+                  alt={currSong.title ? currSong.title : "Unknown Artist"}
+                />
+              </div>
+              <div className="like-share-container">
+                <div onClick={() => setLiked(!liked)} className="tooltip">
+                  {liked ? <FaHeart /> : <FaRegHeart />}
+                  <span className="tooltiptext">Like</span>
                 </div>
                 <div
-                  style={{
-                    width: "40%",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    justifyContent: "center",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+                  onClick={() => alert("Under Development")}
+                  className="tooltip"
                 >
+                  <FaShareFromSquare />
+                  <span className="tooltiptext">Share</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h1 className="song-title">
+                {currSong.title ? currSong.title : "Unknown title"}
+              </h1>
+              <p className="song-info">
+                Artists: {currSong.artist ? currSong.artist : "Unknown artist"}
+              </p>
+              <p className="song-info">
+                Album: {currSong.album ? currSong.album : "Unknown album"}
+              </p>
+              <p className="song-info">
+                Released Year:{" "}
+                {currSong.releaseDate ? currSong.releaseDate : "Unknown year"}
+              </p>
+
+              <div className="like-dislike-bar">
+                <div className="like-bar">
+                  <AiFillLike /> 60%
+                </div>
+                <div className="dislike-bar">
                   <AiFillDislike /> 40%
                 </div>
               </div>
             </div>
           </div>
           <div className="fullscreen-queueArea">
-            <h1 style={{ padding: "1em" }}>Queue (SAVE AS PLAYLIST)</h1>
+            <h1 className="queue-header">
+              Queue
+              <span className="add-queue-icon">
+                <MdPlaylistAdd />
+              </span>
+            </h1>
             <hr />
-            <div style={{ overflow: "auto" }}>
+            <div className="queue-content">
               <Queue />
             </div>
           </div>

@@ -10,7 +10,10 @@ import LoginPage from "./Components/Authentication/LoginPage";
 import { Route, Routes } from "react-router-dom";
 import BottomControls from "./Components/ControlArea/BottomControls";
 import SongDetailsPage from "./Components/SongDetailsPage/SongDetailsPage";
-import Alert from "./Components/Alert/Alert";
+import PlaylistDialogueState from "./Context/Playlist/PlaylistDialogueState";
+import PlaylistDialogue from "./Components/PlaylistDialogue/PlaylistDialogue";
+import AlertState from "./Context/Alert/AlertState";
+import SideNav from "./Components/SideNav/SideNav";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -35,45 +38,48 @@ function App() {
   }, []);
 
   return (
-    <>
+    <AlertState>
       <AuthenticationState>
         <AudioState>
           <SongState>
-            {isMobile && !portrait && (
-              <div className="landscape-warning">
-                You can use this website only on portrait modes
-              </div>
-            )}
-            {(!isMobile || (isMobile && portrait)) && (
-              <>
-                <Navbar />
-                <Alert />
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: `${windowHeight}px`,
-                    width: `${windowWidth}px`,
-                  }}
-                >
-                  <Routes>
-                    <Route exact path="/" element={<Home />} />
-                      exact
-                    <Route
-                      path="/details/:song"
-                      element={<SongDetailsPage />}
-                    />
-                    <Route exact path="/login" element={<LoginPage />} />
-                  </Routes>
-
-                  <BottomControls />
+            <PlaylistDialogueState>
+              {isMobile && !portrait && (
+                <div className="landscape-warning">
+                  You can use this website only on portrait modes
                 </div>
-              </>
-            )}
+              )}
+              {(!isMobile || (isMobile && portrait)) && (
+                <>
+                  <Navbar />
+                  <SideNav />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: `${windowHeight}px`,
+                      width: `${windowWidth}px`,
+                    }}
+                  >
+                    <Routes>
+                      <Route exact path="/" element={<Home />} />
+                      {/* <Route exact path="/" element={<div>Home section is commented</div>} /> */}
+                      <Route
+                        path="/details/:song"
+                        element={<SongDetailsPage />}
+                      />
+                      <Route exact path="/login" element={<LoginPage />} />
+                    </Routes>
+
+                    <BottomControls />
+                    <PlaylistDialogue />
+                  </div>
+                </>
+              )}
+            </PlaylistDialogueState>
           </SongState>
         </AudioState>
       </AuthenticationState>
-    </>
+    </AlertState>
   );
 }
 

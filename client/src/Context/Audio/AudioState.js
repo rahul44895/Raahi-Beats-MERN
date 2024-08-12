@@ -1,4 +1,5 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { AlertContext } from "../Alert/AlertState";
 
 const AudioContext = createContext();
 export { AudioContext };
@@ -15,6 +16,7 @@ const AudioState = (props) => {
   const queueRef = useRef(queue); // Ref to keep latest queue value
   const currSongRef = useRef(currSong);
   const loopRef = useRef(loop);
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     queueRef.current = queue;
@@ -58,10 +60,10 @@ const AudioState = (props) => {
       .then(() => {
         setIsPlaying(true);
         setDuration(newAudio.duration);
-        document.title =  "Raahi Beats | " + song.title;
+        document.title = "Raahi Beats | " + song.title;
       })
       .catch((error) => {
-        alert("Some Error Occured");
+        showAlert("Some Error Occured");
         console.error(error);
         // setAudio(null);
       });
@@ -80,7 +82,7 @@ const AudioState = (props) => {
       else audio.pause();
       setIsPlaying(!isPlaying);
     } else {
-      alert("No Audio is being played");
+      showAlert("No Audio is being played");
     }
   };
 
@@ -104,10 +106,11 @@ const AudioState = (props) => {
         const nextSong = queue[currentIndex + 1];
         play(nextSong);
       } else {
-        // alert("No next song available or reached the end of the queue.");
+        showAlert("No next song available or reached the end of the queue.");
       }
     } else {
-      alert("No current song playing.");
+      showAlert("No current song playing.");
+      
     }
   };
 
@@ -118,10 +121,10 @@ const AudioState = (props) => {
         const previousSong = queue[currentIndex - 1];
         play(previousSong);
       } else {
-        alert("No previous song available or at the start of the queue.");
+      showAlert("No previous song available or at the start of the queue.");
       }
     } else {
-      alert("No current song playing.");
+      showAlert("No current song playing.");
     }
   };
 
@@ -144,7 +147,7 @@ const AudioState = (props) => {
     }
     tempQueue.push(song);
     setQueue(tempQueue);
-    alert("Song Added To Queue");
+    showAlert("Song Added To Queue");
     if (!audio || audio.paused) play(tempQueue[0]);
   };
 

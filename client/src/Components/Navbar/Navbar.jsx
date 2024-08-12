@@ -12,13 +12,15 @@ export default function Navbar() {
   const navbar = useRef();
   useEffect(() => {
     const ele = document.querySelector("#root").children[1].children[0];
-    ele.addEventListener("scroll", (e) => {
-      if (ele.scrollTop > navbar.current.offsetHeight) {
-        navbar.current.style.backdropFilter = "blur(20px)";
-      } else {
-        navbar.current.style.backdropFilter = "";
-      }
-    });
+    if (ele) {
+      ele.addEventListener("scroll", (e) => {
+        if (ele.scrollTop > navbar.current.offsetHeight) {
+          navbar.current.style.backdropFilter = "blur(20px)";
+        } else {
+          navbar.current.style.backdropFilter = "";
+        }
+      });
+    }
   }, []);
 
   const [username, setUsername] = useState(

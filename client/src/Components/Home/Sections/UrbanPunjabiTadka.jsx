@@ -68,7 +68,7 @@ export default function UrbanPunjabiTadka({ range, navbarHeight }) {
           <div className="new-releases-grid">
             {songList &&
               songList.map((currSong) => {
-                return <SongCardMedium song={currSong}/>;
+                return <SongCardMedium song={currSong} key={currSong.id}/>;
               })}
           </div>
         </div>

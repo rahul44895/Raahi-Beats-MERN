@@ -66,7 +66,7 @@ export default function OldReleases({ range, navbarHeight }) {
           <div className="new-releases-grid">
             {newRelease &&
               newRelease.map((currSong) => {
-                return <NewReleasesCard song={currSong} />;
+                return <NewReleasesCard song={currSong} key={currSong.id}/>;
               })}
           </div>
         </div>

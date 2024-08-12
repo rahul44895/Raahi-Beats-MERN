@@ -16,6 +16,15 @@ const SongState = (props) => {
       id: "70c62951-4bec-463f-bf3b-08a60fea82a5",
     },
     {
+      title: "Chal Wahan Jaate Hain",
+      filePath: "./songs/Chal-Wahan-Jaate-Hain.m4a",
+      coverImage: "./songs/Chal-Wahan-Jaate-Hain.jpg",
+      album: "",
+      artist: "Arijit Singh",
+      releaseDate: "2015",
+      id: "70c62951-4bec-463f-bf3b-08a00fea82a9",
+    },
+    {
       title: "Chal Tere Ishq Mein",
       filePath: "./songs/Chal Tere Ishq Mein.m4a",
       coverImage: "./songs/Chal-Tere-Ishq-Mein.jpg",
@@ -701,15 +710,7 @@ const SongState = (props) => {
     },
   ]);
 
-  const [songDetails, setSongDetails] = useState({
-    song: "8 Parche",
-    url: "./songs/8 parche.m4a",
-    image: "./songs/8-parche.jpg",
-    movie: "",
-    artist: "Baani Sandhu , Gur Sidhu",
-    year: "2019",
-    category: "punjabi",
-  });
+  const [songDetails, setSongDetails] = useState();
 
   let newReleaseFunc = (range) => {
     let newList = songList.sort((a, b) => b.year - a.year);
@@ -754,6 +755,7 @@ const SongState = (props) => {
   let getDetails = (song) => {
     console.log(song);
   };
+
   return (
     <SongContext.Provider
       value={{
@@ -763,7 +765,7 @@ const SongState = (props) => {
         handleWestTunesFunc,
         getDetails,
         songDetails,
-        setSongDetails,
+        setSongDetails,songList
       }}
     >
       {props.children}

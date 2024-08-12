@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./BottomControlsStyle.css";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
@@ -67,17 +67,19 @@ export default function BottomControls() {
   };
   const bottomSongInfoContainer = useRef(null);
   const [showFullScreen, setShowFullScreen] = useState(false);
+
   return (
-    <div
-      style={{
-        height: `${showFullScreen ? "100%" : ""}`,
-        display: "flex",
-        flexDirection: "column",
-        overflow: `${showFullScreen ? "hidden" : "auto"}`,
-      }}
-    >
-      {showFullScreen && <FullScreen />}
-      {audio && (
+    audio && (
+      <div
+        style={{
+          height: `${showFullScreen ? "100%" : ""}`,
+          display: "flex",
+          flexDirection: "column",
+          overflow: `${showFullScreen ? "hidden" : "auto"}`,
+        }}
+      >
+        {showFullScreen && <FullScreen />}
+
         <div className="bottom-controls">
           <div className="seekbar-container">
             <input
@@ -85,7 +87,7 @@ export default function BottomControls() {
               min={0}
               name="seekbar"
               type="range"
-              style={{ flex: "2 1" }}
+              style={{ flex: "2 1", cursor: "pointer" }}
               value={currTime}
               onChange={(e) => {
                 handleSeek(e.target.value);
@@ -206,7 +208,7 @@ export default function BottomControls() {
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    )
   );
 }

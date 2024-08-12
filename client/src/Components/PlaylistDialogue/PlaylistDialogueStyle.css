@@ -1,0 +1,90 @@
+.playlist-dialogue-container {
+  position: fixed;
+  height: 100vh;
+  width: 40vw;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1002;
+  color: black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  animation: playlist-container-entry-anime 0.2s linear;
+  padding: 1em;
+}
+
+@keyframes playlist-container-entry-anime {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.playlist-container-exit {
+  animation: playlist-container-exit-anime 0.2s linear;
+}
+@keyframes playlist-container-exit-anime {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.playlist-dialogue-content {
+  flex: 2;
+  overflow: auto;
+}
+
+.playlist-dialogue-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ec167f;
+  margin: 10px 0;
+  transition: all 0.2s linear;
+  color: white;
+  cursor: pointer;
+}
+
+.playlist-dialogue-item:hover {
+  transform: scale(0.99);
+}
+
+.playlist-dialogue-item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 2 0;
+  transition: all 0.2s linear;
+}
+
+.playlist-dialogue-item-info:hover {
+  background-color: #d71372;
+}
+
+.playlist-dialogue-item-play {
+  height: 70px;
+  width: 70px;
+  flex-shrink: 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.625rem;
+}
+
+.playlist-dialogue-item-add {
+  font-size: 1.625rem;
+  padding: 0 1em;
+}
+
+@media screen and (max-width: 450px) {
+  .playlist-dialogue-container {
+    width: 100vw;
+  }
+}

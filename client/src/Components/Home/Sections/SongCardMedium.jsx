@@ -56,7 +56,6 @@ export default function SongCardMedium({ song }) {
               <FaShareFromSquare />
             </span>
           </span>
-         
         </div>
       </div>
     </div>

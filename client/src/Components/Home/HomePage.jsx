@@ -5,7 +5,7 @@ import NewReleases from "./Sections/NewReleases";
 import OldReleases from "./Sections/OldReleases";
 import UrbanPunjabiTadka from "./Sections/UrbanPunjabiTadka";
 import WestTunes from "./Sections/WestTunes";
-
+import AllSongs from "./Sections/AllSongs";
 
 export default function HomePage() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -17,7 +17,6 @@ export default function HomePage() {
 
   return (
     <div className="homeContainer scroll-container">
-      
       <div className="fullscreen-container scroll-item">
         {
           <video
@@ -45,6 +44,7 @@ export default function HomePage() {
       <OldReleases range={10} navbarHeight={navbarHeight} />
       <UrbanPunjabiTadka range={10} navbarHeight={navbarHeight} />
       <WestTunes range={10} navbarHeight={navbarHeight} />
+      <AllSongs navbarHeight={navbarHeight} />
       Most Liked Song of this week Most Played Song of this week Most shared
       song
     </div>

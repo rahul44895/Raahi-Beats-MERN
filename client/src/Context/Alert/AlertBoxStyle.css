@@ -1,0 +1,74 @@
+/* Alert.css */
+.queue-alert-overlay {
+  position: fixed;
+  top: 15%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1004;
+  animation: alert-entry-anime 2s linear;
+}
+
+@keyframes alert-entry-anime {
+  0% {
+    right: -100%;
+    opacity: 0;
+  }
+  70% {
+    right: 5%;
+    opacity: 1;
+  }
+  100% {
+    right: 0%;
+  }
+}
+
+.alert-exit-anime {
+  animation: alert-exit-anime 2s linear;
+}
+
+@keyframes alert-exit-anime {
+  0% {
+    right: 0%;
+    opacity: 1;
+  }
+  100% {
+    right: -100%;
+    opacity: 0;
+  }
+}
+
+.queue-alert-box {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.queue-alert-message {
+  margin-bottom: 10px;
+}
+
+.queue-alert-close {
+  background: #ec167f;
+  height: 2px;
+  width: 0%;
+  animation: alert-close-timer 5s linear;
+}
+@keyframes alert-close-timer {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .queue-alert-overlay {
+    left: 0;
+  }
+}
