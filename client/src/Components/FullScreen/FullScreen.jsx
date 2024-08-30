@@ -6,6 +6,7 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { MdPlaylistAdd } from "react-icons/md";
+import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 
 export default function FullScreen() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -16,7 +17,8 @@ export default function FullScreen() {
   }, [navbarHeight]);
 
   const { currSong } = useContext(AudioContext);
-  
+  const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
+
   const main = useRef(null);
   const [liked, setLiked] = useState(false);
   return (
@@ -39,9 +41,7 @@ export default function FullScreen() {
             <div className="flex-display">
               <div className="add-playlist-icon-container">
                 <div
-                  onClick={() => {
-                    alert('under development')
-                  }}
+                  onClick={() => handleshowPlaylistDialogue(currSong)}
                   className="tooltip"
                 >
                   <MdPlaylistAdd />
@@ -81,7 +81,9 @@ export default function FullScreen() {
               </p>
               <p className="song-info">
                 Released Year:
-                {currSong.releaseDate ? new Date(currSong.releaseDate).getFullYear() : "Unknown year"}
+                {currSong.releaseDate
+                  ? new Date(currSong.releaseDate).getFullYear()
+                  : "Unknown year"}
               </p>
 
               <div className="like-dislike-bar">

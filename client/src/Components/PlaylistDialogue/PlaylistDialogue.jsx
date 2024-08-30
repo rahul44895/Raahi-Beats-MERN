@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./PlaylistDialogueStyle.css";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
-import PlaylistDialogueSection2 from "./PlaylistDialogueSection2";
+import CurrPlaylist from "./CurrPlaylist";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 
 export default function PlaylistDialogue() {
@@ -25,7 +25,7 @@ export default function PlaylistDialogue() {
 
   useEffect(() => {
     if (showPlaylistDialogue) getallPlaylist({ user: true });
-  }, [showPlaylistDialogue,getallPlaylist]);
+  }, [showPlaylistDialogue, getallPlaylist]);
 
   const handlePlaylist = async (currPlaylist) => {
     const playlistDetails = await getPlaylistDetails(currPlaylist);
@@ -59,92 +59,135 @@ export default function PlaylistDialogue() {
         <div className="playlist-dialogue" ref={PlaylistDialogueRef}>
           {PlaylistSec1 && (
             <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "1em",
-                }}
-              >
-                <h1>Playlist</h1>
-                <span
-                  onClick={() => {
-                    PlaylistDialogueRef.current.classList.add(
-                      "playlist-dialogue-exit"
-                    );
-                    setTimeout(() => {
-                      setshowPlaylistDialogue(false);
-                    }, 180);
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "1em",
                   }}
                 >
-                  <IoMdClose />
-                </span>
-              </div>
-              <hr />
-              <div>
-                {!showCreatePlaylistForm ? (
-                  <button
-                    className="btn"
-                    style={{ width: "100%" }}
-                    onClick={() => setshowCreatePlaylistForm(true)}
-                  >
-                    Create Playlist
-                  </button>
-                ) : (
-                  <button
-                    className="btn"
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                  <h1>Playlist</h1>
+                  <span
+                    onClick={() => {
+                      PlaylistDialogueRef.current.classList.add(
+                        "playlist-dialogue-exit"
+                      );
+                      setTimeout(() => {
+                        setshowPlaylistDialogue(false);
+                      }, 180);
                     }}
-                    onClick={() => setshowCreatePlaylistForm(false)}
                   >
-                    <IoMdClose /> Cancel
-                  </button>
-                )}
+                    <IoMdClose />
+                  </span>
+                </div>
+                <hr />
+                <div>
+                  {!showCreatePlaylistForm ? (
+                    <button
+                      className="btn"
+                      style={{ width: "100%" }}
+                      onClick={() => setshowCreatePlaylistForm(true)}
+                    >
+                      Create Playlist
+                    </button>
+                  ) : (
+                    <button
+                      className="btn"
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      onClick={() => setshowCreatePlaylistForm(false)}
+                    >
+                      <IoMdClose /> Cancel
+                    </button>
+                  )}
+                </div>
                 {showCreatePlaylistForm && (
                   <>
                     <div>
                       <div>
+                        <label
+                          htmlFor="playlistName"
+                          style={{ margin: "10px 0", display: "block" }}
+                        >
+                          Playlist Name
+                        </label>
                         <input
+                          className="playlistFormInput"
                           value={playlistDetails.name}
                           placeholder="Playlist Name"
                           name="name"
+                          id="playlistName"
                           onChange={onChange}
                         />
-                        <br />
-                        <span style={{ color: "green" }}>
-                          Playlist should be public
-                          <br />
-                          <input
-                            value={playlistDetails.public}
-                            list="public"
-                            name="public"
-                            onChange={onChange}
-                          />
-                          <datalist id="public">
-                            <option value={true} />
-                            <option value={false} />
-                          </datalist>
-                        </span>
                       </div>
-                      <textarea
-                        placeholder="playlist description"
-                        value={playlistDetails.description}
-                        onChange={onChange}
-                        name="description"
-                      ></textarea>
+                      <div>
+                        <label
+                          htmlFor="playlistPublic"
+                          style={{
+                            margin: "10px 0",
+                            display: "block",
+                          }}
+                        >
+                          Playlist should be public ?
+                        </label>
+                        <input
+                          className="playlistFormInput"
+                          value={playlistDetails.public}
+                          list="public"
+                          name="public"
+                          onChange={onChange}
+                          id="playlistPublic"
+                        />
+                        <datalist id="public">
+                          <option value={true} />
+                          <option value={false} />
+                        </datalist>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="playlistDescription"
+                          style={{
+                            margin: "10px 0",
+                            display: "block",
+                          }}
+                        >
+                          Description
+                        </label>
+                        <textarea
+                          className="playlistFormInput"
+                          placeholder="playlist description"
+                          value={playlistDetails.description}
+                          onChange={onChange}
+                          name="description"
+                          id="playlistDescription"
+                        ></textarea>
+                      </div>
+
+                      <div>
+                        <button
+                          className="btn"
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          onClick={() => handleSubmit()}
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
-                    <button className="btn" onClick={() => handleSubmit()}>
-                      Save
-                    </button>
                   </>
                 )}
               </div>
-              <div>
+              <div style={{ overflow: "auto" }}>
                 {playlist &&
                   playlist.map((currPlaylist) => {
                     return (
@@ -170,7 +213,7 @@ export default function PlaylistDialogue() {
             </>
           )}
           {PlaylistSec2 && (
-            <PlaylistDialogueSection2
+            <CurrPlaylist
               currPlaylist={currPlaylist}
               setCurrPlaylist={setCurrPlaylist}
               setPlaylistSec1={setPlaylistSec1}

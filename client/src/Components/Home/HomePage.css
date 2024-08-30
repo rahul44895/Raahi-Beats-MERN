@@ -121,12 +121,7 @@
 .song-card-xl-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    0deg,
-    black,
-    /* rgba(0, 0, 0, 0.676),
-    rgba(0, 0, 0, 0.42) */ rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(0deg, black, rgba(0, 0, 0, 0));
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -184,6 +179,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  background: linear-gradient(0deg, black, rgba(0, 0, 0, 0));
 }
 
 /* SONG CARD MEDIUM */
