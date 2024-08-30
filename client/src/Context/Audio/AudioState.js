@@ -17,6 +17,7 @@ const AudioState = (props) => {
   const currSongRef = useRef(currSong);
   const loopRef = useRef(loop);
   const { showAlert } = useContext(AlertContext);
+  const host = process.env.REACT_APP_HOST;
 
   useEffect(() => {
     queueRef.current = queue;
@@ -32,17 +33,22 @@ const AudioState = (props) => {
     setCurrTime(newAudio.currentTime);
     if (newAudio.currentTime === newAudio.duration) {
       console.log("Ended");
-      if (loopRef.current == 1) {
+      if (loopRef.current === 1) {
         setLoop(0);
         play(song);
-      } else if (loopRef.current == 2) {
+      } else if (loopRef.current === 2) {
         play(song);
       } else {
         next(song);
       }
     }
   };
-  const play = (song) => {
+
+  const play = (tempSong) => {
+    let song = JSON.parse(JSON.stringify(tempSong));
+    song.filePath = host + "/" + tempSong.filePath.replace(/\\/g, "/");
+    song.coverImage = host + "/" + tempSong.coverImage.replace(/\\/g, "/");
+    
     if (audio) {
       audio.pause();
       audio.removeEventListener("timeupdate", handleAudioSync);
@@ -101,7 +107,7 @@ const AudioState = (props) => {
     let queue = queueRef.current;
     const currSong = currSongRef.current;
     if (currSong) {
-      const currentIndex = queue.findIndex((curr) => curr === currSong);
+      const currentIndex = queue.findIndex((curr) => curr._id === currSong._id);
       if (currentIndex < queue.length - 1) {
         const nextSong = queue[currentIndex + 1];
         play(nextSong);
@@ -110,18 +116,17 @@ const AudioState = (props) => {
       }
     } else {
       showAlert("No current song playing.");
-      
     }
   };
 
   const previous = () => {
     if (currSong) {
-      const currentIndex = queue.findIndex((curr) => curr === currSong);
+      const currentIndex = queue.findIndex((curr) => curr._id === currSong._id);
       if (currentIndex > 0) {
         const previousSong = queue[currentIndex - 1];
         play(previousSong);
       } else {
-      showAlert("No previous song available or at the start of the queue.");
+        showAlert("No previous song available or at the start of the queue.");
       }
     } else {
       showAlert("No current song playing.");
@@ -132,7 +137,7 @@ const AudioState = (props) => {
     let tempQueue = queueRef.current;
     let index = tempQueue.findIndex((curr) => curr === song);
     if (index !== -1) {
-      if (index == 0) audio.pause();
+      if (index === 0) audio.pause();
       tempQueue = tempQueue.filter((curr) => curr !== song);
     }
     tempQueue.push(song);
@@ -142,7 +147,7 @@ const AudioState = (props) => {
     let tempQueue = queueRef.current;
     let index = tempQueue.findIndex((curr) => curr === song);
     if (index !== -1) {
-      if (index == 0) audio.pause();
+      if (index === 0) audio.pause();
       tempQueue = tempQueue.filter((curr) => curr !== song);
     }
     tempQueue.push(song);

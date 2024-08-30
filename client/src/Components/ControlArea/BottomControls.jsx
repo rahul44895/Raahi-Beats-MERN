@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./BottomControlsStyle.css";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
@@ -21,7 +21,6 @@ export default function BottomControls() {
   const { setSongDetails } = useContext(SongContext);
   const {
     playnpause,
-    stop,
     volumeChange,
     isPlaying,
     currTime,
@@ -113,14 +112,26 @@ export default function BottomControls() {
                 <div className="bottom-song-title">
                   {currSong.title ? currSong.title : "Unknown"}
                   <br />
-                  {currSong && currSong.artist ? (
+                  {currSong && currSong.artists ? (
                     bottomSongInfoContainer.current ? (
                       bottomSongInfoContainer.current.scrollWidth >
                       bottomSongInfoContainer.current.clientWidth ? (
-                        <Marquee>{currSong.artist}</Marquee>
+                        <Marquee>
+                          {currSong.artists.map((artist, index) => (
+                            <span style={{ marginRight: "3px" }} key={artist._id}>
+                              {artist.name}
+                              {index !== currSong.artists.length - 1
+                                ? ", "
+                                : ""}
+                            </span>
+                          ))}
+                        </Marquee>
                       ) : (
-                        // currSong.artist
-                        currSong.artist
+                        currSong.artists.map((artist) => (
+                          <span style={{ marginRight: "3px" }} key={artist._id}>
+                            {artist.name},
+                          </span>
+                        ))
                       )
                     ) : (
                       ""
@@ -132,12 +143,12 @@ export default function BottomControls() {
               </div>
             </Link>
             <div className="play-pause-icon">
-              {loop == 0 && (
+              {loop === 0 && (
                 <span style={{ fontSize: "2.5rem" }} onClick={() => setLoop(2)}>
                   <SlLoop />
                 </span>
               )}
-              {loop == 2 && (
+              {loop === 2 && (
                 <span
                   style={{ fontSize: "2.5rem", color: "#0075ff" }}
                   onClick={() => setLoop(1)}
@@ -145,7 +156,7 @@ export default function BottomControls() {
                   <SlLoop />
                 </span>
               )}
-              {loop == 1 && (
+              {loop === 1 && (
                 <span
                   style={{ fontSize: "2.5rem", color: "#0075ff" }}
                   onClick={() => setLoop(0)}

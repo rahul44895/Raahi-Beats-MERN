@@ -4,7 +4,7 @@
   align-items: center;
   margin: 1em;
   justify-content: space-between;
-  cursor: pointer;
+  cursor: default;
 }
 
 .queue-item:hover {
@@ -14,11 +14,12 @@
 .queue-item-active {
   background: #00000024;
 }
-.queue-item-content{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 2 0;
+.queue-item-content {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 2 0;
 }
 .queue-image-container {
   font-size: 50px;
@@ -27,6 +28,7 @@
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .queue-playing-image {
@@ -62,3 +64,4 @@
 .queue-text {
   white-space: nowrap;
 }
+

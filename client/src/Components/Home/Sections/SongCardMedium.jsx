@@ -4,19 +4,22 @@ import { IoIosPlayCircle } from "react-icons/io";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FaShareFromSquare } from "react-icons/fa6";
-import { MdQueueMusic } from "react-icons/md";
+import { MdQueueMusic, MdOutlinePlaylistAdd } from "react-icons/md";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import Marquee from "react-fast-marquee";
+import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 
 export default function SongCardMedium({ song }) {
   const { play, addToQueue, playbtnAddToQueue } = useContext(AudioContext);
+  const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const [liked, setLiked] = useState(false);
+  const host = process.env.REACT_APP_HOST;
   return (
     <div className="song-card-medium">
       <div>
         <LazyLoadImage
-          src={song.coverImage}
+          src={`${host}/${song.coverImage}`}
           alt={song.title || "Unknown Title"}
           className="song-card-medium-image"
           effect="blur"
@@ -54,6 +57,9 @@ export default function SongCardMedium({ song }) {
           <span className="song-card-xl-lower-icons">
             <span onClick={() => alert("Under Development")}>
               <FaShareFromSquare />
+            </span>
+            <span onClick={() => handleshowPlaylistDialogue(song)}>
+              <MdOutlinePlaylistAdd />
             </span>
           </span>
         </div>

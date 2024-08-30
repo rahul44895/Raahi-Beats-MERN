@@ -9,6 +9,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 export default function Queue() {
   const { queue, setQueue, play, currSong } = useContext(AudioContext);
   const activeSongRef = useRef(null);
+  const host = process.env.REACT_APP_HOST;
   useEffect(() => {
     if (activeSongRef.current) {
       activeSongRef.current.scrollIntoView({
@@ -42,8 +43,8 @@ export default function Queue() {
                 queue.map((item, index) => {
                   return (
                     <Draggable
-                      key={item.id}
-                      draggableId={item.id}
+                      key={item._id}
+                      draggableId={item._id}
                       index={index}
                     >
                       {(provided) => (
@@ -65,26 +66,38 @@ export default function Queue() {
                                 <img
                                   src={PlayingBarGif}
                                   className="queue-playing-image"
+                                  alt="play button"
                                 />
                               ) : (
                                 <span className="queue-play-icon">
                                   <IoIosPlayCircle />
                                 </span>
                               )}
-                              <img src={item.coverImage} className="queue-image" />
+                              <img
+                                src={`${host}/${item.coverImage}`}
+                                className="queue-image"
+                                alt={item.title}
+                              />
                             </div>
                             <div className="queue-text">
                               <p>{item.title}</p>
-                              <p>
-                                {item.artist
-                                  ? item.artist.length > 30
-                                    ? item.artist.slice(0, 30) + "..."
-                                    : item.artist
+                              <p style={{ textWrap: "wrap" }}>
+                                {item.artists
+                                  ? item.artists.map((e, index) => {
+                                      return (
+                                        <span>
+                                          {e.name}
+                                          {index !== item.artists.length - 1
+                                            ? ", "
+                                            : ""}
+                                        </span>
+                                      );
+                                    })
                                   : "Unknown Artist"}
                               </p>
                             </div>
                           </div>
-                          <MdOutlineDragHandle/>
+                          <MdOutlineDragHandle />
                         </div>
                       )}
                     </Draggable>

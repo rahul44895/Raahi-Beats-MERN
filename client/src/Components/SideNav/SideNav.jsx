@@ -21,6 +21,32 @@ export default function SideNav() {
           <div className="sidenav-text">Playlists</div>
         </div>
       </Link> */}
+      <Link to={"/allsongs"}>
+        <div className="sidenav-item">
+          <div className="sidenav-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.0"
+              width="30px"
+              height="30px"
+              viewBox="0 0 308.000000 326.000000"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <g
+                transform="translate(0.000000,326.000000) scale(0.100000,-0.100000)"
+                fill="#c20000"
+                stroke="none"
+              >
+                <path d="M1651 2833 c-26 -9 -65 -36 -92 -63 -50 -51 -106 -147 -92 -160 12 -12 587 -280 600 -280 2 0 16 26 31 58 21 46 26 72 27 137 0 70 -4 86 -30 134 -78 141 -296 226 -444 174z"></path>
+                <path d="M1421 2476 c-6 -34 -11 -84 -11 -110 l0 -47 73 -34 c39 -18 146 -68 237 -110 l165 -76 68 73 c37 40 66 79 65 87 -2 7 -55 37 -118 66 -63 29 -171 78 -240 110 -69 31 -148 68 -177 81 l-51 23 -11 -63z"></path>
+                <path d="M1310 2008 c-51 -128 -171 -431 -267 -673 -97 -242 -175 -451 -175 -464 0 -16 13 -37 36 -58 l36 -34 -22 -52 c-17 -38 -23 -71 -23 -123 0 -61 4 -77 30 -120 59 -95 175 -136 284 -99 73 24 113 69 169 188 40 85 54 106 80 116 40 17 87 6 112 -26 25 -33 25 -62 -1 -123 -26 -60 -22 -85 11 -85 20 0 30 11 53 55 74 143 -24 285 -177 256 -57 -11 -94 -51 -143 -155 -24 -53 -56 -108 -71 -124 -54 -57 -156 -59 -219 -4 -66 58 -79 127 -39 213 l24 51 53 -4 c30 -2 59 0 65 4 12 9 67 110 379 698 117 220 236 444 265 498 29 54 50 101 47 104 -6 6 -405 193 -412 193 -2 0 -45 -105 -95 -232z"></path>
+              </g>
+            </svg>
+          </div>
+          <div className="sidenav-text">All Songs</div>
+        </div>
+      </Link>
+      
       <Link to={"/artists"}>
         <div className="sidenav-item">
           <div className="sidenav-icon">

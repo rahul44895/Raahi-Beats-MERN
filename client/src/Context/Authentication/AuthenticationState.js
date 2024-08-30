@@ -8,7 +8,8 @@ export { AuthenticationContext };
 
 const AuthenticationState = (props) => {
   const navigate = useNavigate();
-  const host = process.env.REACT_APP_HOST;
+  // const host = process.env.REACT_APP_HOST;
+  const host = 'http://localhost:8001/api';
 
   // SIGNUP
   const signup = async (credentials) => {

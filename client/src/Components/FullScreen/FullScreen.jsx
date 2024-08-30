@@ -6,8 +6,6 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { MdPlaylistAdd } from "react-icons/md";
-import { PlaylistDialogueContext } from "../../Context/Playlist/PlaylistDialogueState";
-
 
 export default function FullScreen() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -18,7 +16,7 @@ export default function FullScreen() {
   }, [navbarHeight]);
 
   const { currSong } = useContext(AudioContext);
-  const { setShowPlaylistDialogue , setaddSongToPlaylist} = useContext(PlaylistDialogueContext);
+  
   const main = useRef(null);
   const [liked, setLiked] = useState(false);
   return (
@@ -26,7 +24,7 @@ export default function FullScreen() {
       <div
         className="fullscreen-song-subcontainer"
         style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/${currSong.coverImage})`,
+          backgroundImage: `url(${currSong.coverImage})`,
           backgroundSize: "cover",
         }}
       >
@@ -41,7 +39,9 @@ export default function FullScreen() {
             <div className="flex-display">
               <div className="add-playlist-icon-container">
                 <div
-                  onClick={() => {setShowPlaylistDialogue(true); setaddSongToPlaylist(currSong)}}
+                  onClick={() => {
+                    alert('under development')
+                  }}
                   className="tooltip"
                 >
                   <MdPlaylistAdd />
@@ -50,7 +50,7 @@ export default function FullScreen() {
               </div>
               <div className="song-image-container">
                 <img
-                  src={`${process.env.PUBLIC_URL}/${currSong.coverImage}`}
+                  src={`${currSong.coverImage}`}
                   className="song-image"
                   alt={currSong.title ? currSong.title : "Unknown Artist"}
                 />
@@ -80,8 +80,8 @@ export default function FullScreen() {
                 Album: {currSong.album ? currSong.album : "Unknown album"}
               </p>
               <p className="song-info">
-                Released Year:{" "}
-                {currSong.releaseDate ? currSong.releaseDate : "Unknown year"}
+                Released Year:
+                {currSong.releaseDate ? new Date(currSong.releaseDate).getFullYear() : "Unknown year"}
               </p>
 
               <div className="like-dislike-bar">
