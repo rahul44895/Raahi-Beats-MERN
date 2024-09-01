@@ -15,6 +15,8 @@ import AlertState from "./Context/Alert/AlertState";
 import SideNav from "./Components/SideNav/SideNav";
 import AllSongs from "./Components/Home/Sections/AllSongs";
 import PlaylistState from "./Context/Playlist/PlaylistState";
+import ArtistState from "./Context/Artists/ArtistState";
+import Artists from "./Components/Artists/Artists";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -44,40 +46,43 @@ function App() {
       <AuthenticationState>
         <AudioState>
           <SongState>
-            <PlaylistState>
-              {isMobile && !portrait && (
-                <div className="landscape-warning">
-                  You can use this website only on portrait modes
-                </div>
-              )}
-              {(!isMobile || (isMobile && portrait)) && (
-                <>
-                  <Navbar />
-                  <SideNav />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: `${windowHeight}px`,
-                      width: `${windowWidth}px`,
-                    }}
-                  >
-                    <Routes>
-                      <Route exact path="/" element={<Home />} />
-                      <Route
-                        path="/details/:song"
-                        element={<SongDetailsPage />}
-                      />
-                      <Route exact path="/login" element={<LoginPage />} />
-                      <Route exact path="/allsongs" element={<AllSongs />} />
-                    </Routes>
-
-                    <BottomControls />
+            <ArtistState>
+              <PlaylistState>
+                {isMobile && !portrait && (
+                  <div className="landscape-warning">
+                    You can use this website only on portrait modes
                   </div>
-                  <PlaylistDialogue />
-                </>
-              )}
-            </PlaylistState>
+                )}
+                {(!isMobile || (isMobile && portrait)) && (
+                  <>
+                    <Navbar />
+                    <SideNav />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: `${windowHeight}px`,
+                        width: `${windowWidth}px`,
+                      }}
+                    >
+                      <Routes>
+                        <Route exact path="/" element={<Home />} />
+                        <Route
+                          path="/details/:song"
+                          element={<SongDetailsPage />}
+                        />
+                        <Route exact path="/login" element={<LoginPage />} />
+                        <Route exact path="/allsongs" element={<AllSongs />} />
+                        <Route exact path="/artists" element={<Artists />} />
+                      </Routes>
+
+                      <BottomControls />
+                    </div>
+                    <PlaylistDialogue />
+                  </>
+                )}
+              </PlaylistState>
+            </ArtistState>
           </SongState>
         </AudioState>
       </AuthenticationState>

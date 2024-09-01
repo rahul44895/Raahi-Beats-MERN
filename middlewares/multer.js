@@ -1,11 +1,12 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { title } = require("process");
 
 // Configure storage options for Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    let uploadPath = ""; 
+    let uploadPath = "";
     const title = (req.body.title || "untitled").replace(/[^a-zA-Z0-9]/g, "_");
 
     // Determine the upload path based on the field name
@@ -13,6 +14,8 @@ const storage = multer.diskStorage({
       uploadPath = `uploads/songs/${title}`;
     } else if (file.fieldname === "filePath") {
       uploadPath = `uploads/songs/${title}/`;
+    } else if (file.fieldname === "artistImage") {
+      uploadPath = `uploads/artists/${title}/`;
     } else {
       // Handle unexpected field names
       return cb(new Error("Invalid field name"), null);

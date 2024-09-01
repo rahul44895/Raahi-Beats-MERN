@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // Function to delete files
 const deleteFile = (filePath) => {
@@ -20,9 +20,11 @@ const deleteFiles = (files) => {
     if (files["coverImage"]) {
       files["coverImage"].forEach((file) => deleteFile(file.path));
     }
-    if (files["filePath"]) {
+    else if (files["filePath"]) {
       files["filePath"].forEach((file) => deleteFile(file.path));
-    }
+    } else if (files["artistImage"]) {
+      files["artistImage"].forEach((file) => deleteFile(file.path));
+    } 
   }
 };
 
