@@ -22,21 +22,20 @@ export default function HomePage() {
   };
   useEffect(() => {
     handleFetching();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="homeContainer scroll-container">
       <div className="fullscreen-container scroll-item">
-        {
-          <video
-            src={bgVideo}
-            muted
-            autoPlay
-            loop
-            className="fullscreen-video"
-            onError={() => alert("Some error occured")}
-          ></video>
-        }
+        <video
+          src={bgVideo}
+          muted
+          autoPlay
+          loop
+          className="fullscreen-video"
+          onError={() => alert("Some error occured")}
+        ></video>
 
         <div className="overlay-text">
           <span>NEW SINGLE</span>
@@ -55,7 +54,6 @@ export default function HomePage() {
           <OldReleases range={10} navbarHeight={navbarHeight} />
           <UrbanPunjabiTadka range={10} navbarHeight={navbarHeight} />
           <WestTunes range={10} navbarHeight={navbarHeight} />
-          
         </>
       )}
       Most Liked Song of this week Most Played Song of this week Most shared

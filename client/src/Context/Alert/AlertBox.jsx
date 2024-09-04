@@ -6,6 +6,7 @@ export default function AlertBox({ message, onClose }) {
   useEffect(() => {
     setTimeout(() => alertRef.current.classList.add("alert-exit-anime"), 4998);
     setTimeout(() => onClose(), 5998);
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="queue-alert-overlay" ref={alertRef}>

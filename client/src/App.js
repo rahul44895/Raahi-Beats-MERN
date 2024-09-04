@@ -17,6 +17,7 @@ import AllSongs from "./Components/Home/Sections/AllSongs";
 import PlaylistState from "./Context/Playlist/PlaylistState";
 import ArtistState from "./Context/Artists/ArtistState";
 import Artists from "./Components/Artists/Artists";
+import FullScreen from "./Components/FullScreen/FullScreen";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -40,6 +41,8 @@ function App() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const [showFullScreen, setShowFullScreen] = useState(false);
 
   return (
     <AlertState>
@@ -75,8 +78,21 @@ function App() {
                         <Route exact path="/allsongs" element={<AllSongs />} />
                         <Route exact path="/artists" element={<Artists />} />
                       </Routes>
-
-                      <BottomControls />
+                      
+                      <div
+                        style={{
+                          height: `${showFullScreen ? "100%" : ""}`,
+                          display: "flex",
+                          flexDirection: "column",
+                          overflow: `${showFullScreen ? "hidden" : "auto"}`,
+                        }}
+                      >
+                        {showFullScreen && <FullScreen />}
+                        <BottomControls
+                          showFullScreen={showFullScreen}
+                          setShowFullScreen={setShowFullScreen}
+                        />
+                      </div>
                     </div>
                     <PlaylistDialogue />
                   </>

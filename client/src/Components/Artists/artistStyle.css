@@ -74,7 +74,8 @@
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 50vh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: absolute;
   left: 0;
   right: 0;

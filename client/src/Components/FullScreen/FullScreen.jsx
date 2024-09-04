@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
-import { AudioContext } from "../../Context/Audio/AudioState";
+import { MdPlaylistAdd } from "react-icons/md";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
-import { MdPlaylistAdd } from "react-icons/md";
+import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 
 export default function FullScreen() {
@@ -16,11 +16,15 @@ export default function FullScreen() {
     }
   }, [navbarHeight]);
 
+  const main = useRef(null);
+
+  //useContext
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
 
-  const main = useRef(null);
+  //useState
   const [liked, setLiked] = useState(false);
+
   return (
     <div className="fullscreen-song-container" ref={main}>
       <div
@@ -74,7 +78,17 @@ export default function FullScreen() {
                 {currSong.title ? currSong.title : "Unknown title"}
               </h1>
               <p className="song-info">
-                Artists: {currSong.artist ? currSong.artist : "Unknown artist"}
+                Artists:
+                {currSong.artists
+                  ? currSong.artists.map((e, index) => {
+                      return (
+                        <span>
+                          {e.name}
+                          {index !== currSong.artists.length - 1 ? ", " : ""}
+                        </span>
+                      );
+                    })
+                  : "Unknown artist"}
               </p>
               <p className="song-info">
                 Album: {currSong.album ? currSong.album : "Unknown album"}

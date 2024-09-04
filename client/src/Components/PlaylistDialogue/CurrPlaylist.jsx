@@ -186,14 +186,13 @@ export default function CurrPlaylist({
                 display: "flex",
                 justifyContent: "center",
               }}
+              onClick={() =>
+                playlist.songs.length > 0
+                  ? addPlaylistToQueue(playlist.songs)
+                  : alert("Add songs to the playlist")
+              }
             >
-              <span
-                onClick={() =>
-                  playlist.songs.length > 0
-                    ? addPlaylistToQueue(playlist.songs)
-                    : alert("Add songs to the playlist")
-                }
-              >
+              <span>
                 <IoIosPlayCircle />
               </span>
               Play the playlist
@@ -207,8 +206,9 @@ export default function CurrPlaylist({
                 display: "flex",
                 justifyContent: "center",
               }}
+              onClick={() => deletePlaylist(playlist._id)}
             >
-              <span onClick={() => deletePlaylist(playlist._id)}>
+              <span>
                 <MdDelete />
               </span>
               Delete this playlist

@@ -9,13 +9,16 @@ const AudioState = (props) => {
   const [audio, setAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
-  const [currTime, setCurrTime] = useState(0);
-  const [duration, setDuration] = useState();
+  const currTime = useRef(0);
+  // const [currTime, setCurrTime] = useState(0);
+  const duration = useRef(0);
   const [queue, setQueue] = useState([]);
   const [loop, setLoop] = useState(0);
+
   const queueRef = useRef(queue); // Ref to keep latest queue value
   const currSongRef = useRef(currSong);
   const loopRef = useRef(loop);
+
   const { showAlert } = useContext(AlertContext);
   const host = process.env.REACT_APP_HOST;
 
@@ -30,9 +33,10 @@ const AudioState = (props) => {
   }, [loop]);
 
   const handleAudioSync = (newAudio, song) => {
-    setCurrTime(newAudio.currentTime);
-    if (newAudio.currentTime === newAudio.duration) {
-      console.log("Ended");
+    currTime.current = newAudio.currentTime;
+    // setCurrTime(newAudio.currentTime);
+    if (newAudio.currentTime === newAudio.duration.current) {
+      // console.log("Ended");
       if (loopRef.current === 1) {
         setLoop(0);
         play(song);
@@ -48,7 +52,7 @@ const AudioState = (props) => {
     let song = JSON.parse(JSON.stringify(tempSong));
     song.filePath = host + "/" + tempSong.filePath.replace(/\\/g, "/");
     song.coverImage = host + "/" + tempSong.coverImage.replace(/\\/g, "/");
-    
+
     if (audio) {
       audio.pause();
       audio.removeEventListener("timeupdate", handleAudioSync);
@@ -65,7 +69,7 @@ const AudioState = (props) => {
       .play()
       .then(() => {
         setIsPlaying(true);
-        setDuration(newAudio.duration);
+        duration.current = newAudio.duration;
         document.title = "Raahi Beats | " + song.title;
       })
       .catch((error) => {
@@ -99,7 +103,8 @@ const AudioState = (props) => {
   };
 
   const handleSeek = (e) => {
-    setCurrTime(e);
+    currTime.current = e;
+    // setCurrTime(e);
     audio.currentTime = e;
   };
 
@@ -181,7 +186,6 @@ const AudioState = (props) => {
         stop,
         volumeChange,
         currTime,
-        setCurrTime,
         duration,
         audio,
         handleSeek,

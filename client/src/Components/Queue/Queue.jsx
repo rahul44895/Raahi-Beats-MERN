@@ -17,7 +17,7 @@ export default function Queue() {
         block: "center",
       });
     }
-  }, [currSong]);
+  }, []);
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -32,7 +32,6 @@ export default function Queue() {
 
     setQueue(updatedQueue);
   };
-
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -50,7 +49,7 @@ export default function Queue() {
                       {(provided) => (
                         <div
                           className={`queue-item ${
-                            item === currSong ? "queue-item-active" : ""
+                            item._id === currSong._id ? "queue-item-active" : ""
                           }`}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
@@ -58,16 +57,22 @@ export default function Queue() {
                         >
                           <div
                             className="queue-item-content"
-                            onClick={() => play(item)}
-                            ref={item === currSong ? activeSongRef : null}
+                            onClick={() => {
+                              if (item._id !== currSong._id) play(item);
+                            }}
+                            ref={
+                              item._id === currSong._id ? activeSongRef : null
+                            }
                           >
                             <div className="queue-image-container">
-                              {item === currSong ? (
-                                <img
-                                  src={PlayingBarGif}
-                                  className="queue-playing-image"
-                                  alt="play button"
-                                />
+                              {item._id === currSong._id ? (
+                                <>
+                                  <img
+                                    src={PlayingBarGif}
+                                    className="queue-playing-image"
+                                    alt="play button"
+                                  />
+                                </>
                               ) : (
                                 <span className="queue-play-icon">
                                   <IoIosPlayCircle />
@@ -82,7 +87,7 @@ export default function Queue() {
                             <div className="queue-text">
                               <p>{item.title}</p>
                               <p style={{ textWrap: "wrap" }}>
-                                {item.artists
+                                {/* {item.artists
                                   ? item.artists.map((e, index) => {
                                       return (
                                         <span>
@@ -93,7 +98,7 @@ export default function Queue() {
                                         </span>
                                       );
                                     })
-                                  : "Unknown Artist"}
+                                  : "Unknown Artist"} */}
                               </p>
                             </div>
                           </div>
