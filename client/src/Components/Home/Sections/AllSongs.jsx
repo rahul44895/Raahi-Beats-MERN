@@ -5,8 +5,6 @@ import { AudioContext } from "../../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 
 export default function AllSongs() {
-
-
   const [navbarHeight, setnavbarHeight] = useState(0);
   useEffect(() => {
     if (document.querySelector(".navbar")) {
@@ -14,11 +12,16 @@ export default function AllSongs() {
     }
   }, [navbarHeight]);
 
-
-  const { songList } = useContext(SongContext);
+  const { fetchSongs, songList } = useContext(SongContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const main = useRef(null);
-
+  const handleFetching = async () => {
+    await fetchSongs();
+  };
+  useEffect(() => {
+    handleFetching();
+    // eslint-disable-next-line
+  }, []);
   return (
     <>
       <div className="homeContainer" ref={main}>
@@ -44,7 +47,7 @@ export default function AllSongs() {
               <div
                 className="new-releases-see-more"
                 onClick={() => {
-                  alert('Pending...')
+                  alert("Pending...");
                 }}
               >
                 See More
@@ -53,7 +56,7 @@ export default function AllSongs() {
               <div
                 className="new-releases-see-more"
                 onClick={() => {
-                  alert('Pending...')
+                  alert("Pending...");
                 }}
               >
                 See Less

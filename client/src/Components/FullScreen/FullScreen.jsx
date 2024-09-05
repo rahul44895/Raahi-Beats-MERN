@@ -10,11 +10,14 @@ import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 
 export default function FullScreen() {
   const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
+  const handleNav = () => {
     if (document.querySelector(".navbar")) {
       setnavbarHeight(document.querySelector(".navbar").offsetHeight);
     }
-  }, [navbarHeight]);
+  };
+  useEffect(() => {
+    handleNav();
+  }, []);
 
   const main = useRef(null);
 
@@ -22,7 +25,7 @@ export default function FullScreen() {
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
 
-  //useState
+  // //useState
   const [liked, setLiked] = useState(false);
 
   return (
@@ -82,7 +85,7 @@ export default function FullScreen() {
                 {currSong.artists
                   ? currSong.artists.map((e, index) => {
                       return (
-                        <span>
+                        <span key={e._id}>
                           {e.name}
                           {index !== currSong.artists.length - 1 ? ", " : ""}
                         </span>

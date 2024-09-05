@@ -16,7 +16,7 @@ export default function New_Releases({ range, navbarHeight }) {
     handleSongList(range);
     // eslint-disable-next-line
   }, [range, newReleaseFunc]);
-  const [visibility, setVisibility] = useState(true);
+  // const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
   return (
     <>
@@ -39,7 +39,7 @@ export default function New_Releases({ range, navbarHeight }) {
                 <IoIosPlayCircle />
               </span>
             </div>
-            <div>
+            {/* <div>
               {visibility && (
                 <div
                   className="new-releases-see-more"
@@ -62,7 +62,7 @@ export default function New_Releases({ range, navbarHeight }) {
                   See Less
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="new-releases-grid">
             {newRelease &&

@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import artistVideoBg from "../../assets/video/artistSec1.mp4";
 import "./artistStyle.css";
+import { Link } from "react-router-dom";
 
 export default function Artists() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -12,13 +13,23 @@ export default function Artists() {
   }, [navbarHeight]);
 
   const { fetchArtists } = useContext(ArtistContext);
-  const [artists, setArtists] = useState(null);
+  const [topArtists, setTopArtists] = useState(null);
+  const [allArtists, setAllArtists] = useState(null);
   const host = process.env.REACT_APP_HOST;
 
+  const handleTopArtistFetch = useCallback(async () => {
+    const response = await fetchArtists({ countOfArtists: 10 });
+    setTopArtists(response);
+  }, [fetchArtists, setTopArtists]);
+
   const handleArtistFetch = useCallback(async () => {
-    const response = await fetchArtists();
-    setArtists(response);
-  }, [fetchArtists, setArtists]);
+    const response = await fetchArtists({});
+    setAllArtists(response);
+  }, [fetchArtists, setAllArtists]);
+
+  useEffect(() => {
+    handleTopArtistFetch();
+  }, [handleTopArtistFetch]);
 
   useEffect(() => {
     handleArtistFetch();
@@ -61,20 +72,47 @@ export default function Artists() {
           <div className="artist-sec-2-subsec-2">
             <div style={{ height: `${navbarHeight}px`, width: "100vw" }}>
               <h1 style={{ fontFamily: "'Dancing Script', cursive" }}>
-                <center>All Artists</center>
+                <center>Top Artists</center>
               </h1>
             </div>
-            {artists && artists.length > 0 && (
+            {topArtists && topArtists.length > 0 && (
               <div className="artist-card-container">
-                {artists.map((currArtist) => {
+                {topArtists.map((currArtist) => {
                   return (
-                    <div
+                    <Link
+                      to={`/artists/${currArtist._id}`}
                       key={currArtist._id}
-                      className="artist-card"
-                      onClick={async() => {
-                        console.log(await fetchArtists(currArtist._id))
-                      }}
                     >
+                      <div className="artist-card">
+                        <div className="artist-card-image-container">
+                          <img
+                            src={`${host}/${currArtist.avatar}`}
+                            className="artist-card-image"
+                            alt="artistavatar"
+                          />
+                        </div>
+                        <div className="artist-card-name">
+                          {currArtist.name}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="h-100vh-min scroll-item artist-sec-2">
+          <div style={{ height: `${navbarHeight}px`, width: "100vw" }}></div>
+          <h1 style={{ fontFamily: "'Dancing Script', cursive" }}>
+            <center>All Artists</center>
+          </h1>
+          {allArtists && allArtists.length > 0 && (
+            <div className="artist-card-container">
+              {allArtists.map((currArtist) => {
+                return (
+                  <Link to={`/artists/${currArtist._id}`} key={currArtist._id}>
+                    <div className="artist-card">
                       <div className="artist-card-image-container">
                         <img
                           src={`${host}/${currArtist.avatar}`}
@@ -84,11 +122,11 @@ export default function Artists() {
                       </div>
                       <div className="artist-card-name">{currArtist.name}</div>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </>

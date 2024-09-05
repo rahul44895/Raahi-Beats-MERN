@@ -41,46 +41,47 @@ router.post("/add", decodeToken, async (req, res) => {
   }
 });
 
-router.post("/get", decodeToken, async (req, res) => {
-  let playlist;
-  if (req.body.user === true) {
-    playlist = await Playlist.find({ user: req.user })
-      .select("_id name public")
-      .sort({ name: 1 });
-  } else {
-    playlist = await Playlist.find({
-      $or: [{ public: true }, { user: req.user }],
-    }).select("_id name public");
+router.post("/get/private", decodeToken, async (req, res) => {
+  try {
+    const query = { user: req.user };
+    if (req.body._id) query._id = req.body._id;
+    let playlist = await Playlist.find(query);
+    let tempPlaylist = JSON.parse(JSON.stringify(playlist));
+    if (req.body._id) {
+      tempPlaylist[0].songs = await Promise.all(
+        tempPlaylist[0].songs.map(async (currSong) => {
+          let song = await Song.findById(currSong._id);
+          return song;
+        })
+      );
+    }
+    const total = tempPlaylist.length;
+    res.status(200).json({ success: true, total, playlist: tempPlaylist });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: error.message });
   }
-
-  res.status(200).json({
-    total: playlist.length,
-    playlist: playlist,
-  });
 });
 
-router.post("/get/:id", decodeToken, async (req, res) => {
-  let playlist = await Playlist.findById(req.params.id);
-
-  if (playlist.public !== true) {
-    if (playlist.user.toString() !== req.user.toString()) {
-      return res.status(401).json({
-        error: "Unauthorized access is not allowed",
-      });
+router.post("/get/public", async (req, res) => {
+  try {
+    const query = { public: true };
+    if (req.body._id) query._id = req.body._id;
+    let playlist = await Playlist.find(query);
+    let tempPlaylist = JSON.parse(JSON.stringify(playlist));
+    if (req.body._id) {
+      tempPlaylist[0].songs = await Promise.all(
+        tempPlaylist[0].songs.map(async (currSong) => {
+          let song = await Song.findById(currSong._id);
+          return song;
+        })
+      );
     }
+    const total = tempPlaylist.length;
+    res.status(200).json({ success: true, total, playlist: tempPlaylist });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
-
-  const tempPlaylist = JSON.parse(JSON.stringify(playlist));
-  tempPlaylist.songs = await Promise.all(
-    tempPlaylist.songs.map(async (currSong) => {
-      let song = await Song.findById(currSong._id);
-      return song;
-    })
-  );
-
-  res.status(200).json({
-    playlist: tempPlaylist,
-  });
 });
 
 router.put("/update", decodeToken, async (req, res) => {

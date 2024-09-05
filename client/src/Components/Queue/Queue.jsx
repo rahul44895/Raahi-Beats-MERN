@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
@@ -17,7 +17,7 @@ export default function Queue() {
         block: "center",
       });
     }
-  }, []);
+  }, [activeSongRef.current]);
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -64,6 +64,7 @@ export default function Queue() {
                               item._id === currSong._id ? activeSongRef : null
                             }
                           >
+                            {console.log("hi")}
                             <div className="queue-image-container">
                               {item._id === currSong._id ? (
                                 <>

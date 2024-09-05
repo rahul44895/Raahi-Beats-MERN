@@ -17,6 +17,7 @@ import AllSongs from "./Components/Home/Sections/AllSongs";
 import PlaylistState from "./Context/Playlist/PlaylistState";
 import ArtistState from "./Context/Artists/ArtistState";
 import Artists from "./Components/Artists/Artists";
+import ParticularArtist from "./Components/Artists/ParticularArtist";
 import FullScreen from "./Components/FullScreen/FullScreen";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   const [isMobile] = useState(isMobileDevice());
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
+  const [showFullScreen, setShowFullScreen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,13 +44,11 @@ function App() {
     };
   }, []);
 
-  const [showFullScreen, setShowFullScreen] = useState(false);
-
   return (
     <AlertState>
       <AuthenticationState>
-        <AudioState>
-          <SongState>
+        <SongState>
+          <AudioState>
             <ArtistState>
               <PlaylistState>
                 {isMobile && !portrait && (
@@ -77,8 +77,12 @@ function App() {
                         <Route exact path="/login" element={<LoginPage />} />
                         <Route exact path="/allsongs" element={<AllSongs />} />
                         <Route exact path="/artists" element={<Artists />} />
+                        <Route
+                          exact
+                          path="/artists/:id"
+                          element={<ParticularArtist />}
+                        />
                       </Routes>
-                      
                       <div
                         style={{
                           height: `${showFullScreen ? "100%" : ""}`,
@@ -99,8 +103,8 @@ function App() {
                 )}
               </PlaylistState>
             </ArtistState>
-          </SongState>
-        </AudioState>
+          </AudioState>
+        </SongState>
       </AuthenticationState>
     </AlertState>
   );

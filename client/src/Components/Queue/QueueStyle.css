@@ -20,6 +20,7 @@
   align-items: center;
   gap: 10px;
   flex: 2 0;
+  overflow: hidden;
 }
 .queue-image-container {
   font-size: 50px;

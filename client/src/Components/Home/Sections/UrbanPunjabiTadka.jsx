@@ -1,22 +1,25 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {SongContext} from "../../../Context/Songs/SongState";
+import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
+import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
 
 export default function UrbanPunjabiTadka({ range, navbarHeight }) {
   const { handlePunjabiFunc } = useContext(SongContext);
-  const {  addPlaylistToQueue } = useContext(AudioContext);
+  const { addPlaylistToQueue } = useContext(AudioContext);
+  const { getPublicPlaylist } = useContext(PlaylistContext);
+
   const [songList, setSongList] = useState(null);
   const handleSongList = async (range) => {
-    const result = await handlePunjabiFunc(range);
-    setSongList(result);
+    const result = await getPublicPlaylist("66d8a419c231a442ebb2325c");
+    setSongList(result[0].songs?.slice(0, range));
   };
   useEffect(() => {
     handleSongList(range);
     // eslint-disable-next-line
-  }, []);
-  const [visibility, setVisibility] = useState(true);
+  }, [range, handlePunjabiFunc]);
+  // const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
 
   return (
@@ -40,7 +43,7 @@ export default function UrbanPunjabiTadka({ range, navbarHeight }) {
                 <IoIosPlayCircle />
               </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            {/* <div style={{ display: "flex", alignItems: "center" }}>
               {visibility && (
                 <div
                   className="new-releases-see-more"
@@ -63,13 +66,16 @@ export default function UrbanPunjabiTadka({ range, navbarHeight }) {
                   See Less
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="new-releases-grid">
-            {songList &&
+            {songList ? (
               songList.map((currSong) => {
-                return <SongCardMedium song={currSong} key={currSong._id}/>;
-              })}
+                return <SongCardMedium song={currSong} key={currSong._id} />;
+              })
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
         </div>
       </div>

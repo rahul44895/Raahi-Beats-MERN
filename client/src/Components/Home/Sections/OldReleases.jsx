@@ -15,8 +15,8 @@ export default function OldReleases({ range, navbarHeight }) {
   useEffect(() => {
     handleSongList(range);
     // eslint-disable-next-line
-  }, []);
-  const [visibility, setVisibility] = useState(true);
+  }, [range, oldReleaseFunc]);
+  // const [visibility, setVisibility] = useState(true);
   const main = useRef();
   return (
     <>
@@ -38,7 +38,7 @@ export default function OldReleases({ range, navbarHeight }) {
                 <IoIosPlayCircle />
               </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            {/* <div style={{ display: "flex", alignItems: "center" }}>
               {visibility && (
                 <div
                   className="new-releases-see-more"
@@ -61,7 +61,7 @@ export default function OldReleases({ range, navbarHeight }) {
                   See Less
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="new-releases-grid">
             {newRelease &&

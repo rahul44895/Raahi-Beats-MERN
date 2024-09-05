@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AlertContext } from "../Alert/AlertState";
+import { SongContext } from "../Songs/SongState";
 
 const AudioContext = createContext();
 export { AudioContext };
@@ -10,7 +11,6 @@ const AudioState = (props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const currTime = useRef(0);
-  // const [currTime, setCurrTime] = useState(0);
   const duration = useRef(0);
   const [queue, setQueue] = useState([]);
   const [loop, setLoop] = useState(0);
@@ -20,6 +20,7 @@ const AudioState = (props) => {
   const loopRef = useRef(loop);
 
   const { showAlert } = useContext(AlertContext);
+  const { updatePlayDetails } = useContext(SongContext);
   const host = process.env.REACT_APP_HOST;
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const AudioState = (props) => {
         setIsPlaying(true);
         duration.current = newAudio.duration;
         document.title = "Raahi Beats | " + song.title;
+        updatePlayDetails(tempSong._id);
       })
       .catch((error) => {
         showAlert("Some Error Occured");

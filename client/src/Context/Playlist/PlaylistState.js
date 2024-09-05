@@ -12,49 +12,50 @@ const PlaylistState = (props) => {
   const [showPlaylistDialogue, setshowPlaylistDialogue] = useState(false);
   const [tempPlaylistSong, setTempPlaylistSong] = useState(null);
 
-  const getallPlaylist = async ({ user }) => {
+  //GET PLAYLIST FUNC
+  const getPublicPlaylist = async (playlistID) => {
     try {
-      const login = Cookies.get("token");
-      if (!login) return showAlert("You need to login first.");
-      const response = await fetch(`${host}/playlist/get`, {
+      const response = await fetch(`${host}/playlist/get/public`, {
         method: "POST",
         credentials: "include",
-        body: JSON.stringify({ user }),
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: playlistID ? playlistID : undefined }),
       });
       const data = await response.json();
-      if (response.ok) {
-        setPlaylist(data.playlist);
+      if (response.ok && data.success) {
+        return data.playlist;
       } else {
-        showAlert("Some error occured");
+        showAlert("Error fetching the songs");
+        return null;
       }
-    } catch (err) {
-      showAlert("Some error occured");
-      console.error(err);
+    } catch (error) {
+      showAlert("Error fetching the songs");
+      console.log(error);
+      return null;
     }
   };
 
-  const getPlaylistDetails = async (playlist) => {
+  const getPrivatePlaylist = async (playlistID) => {
     try {
-      const login = Cookies.get("token");
-      if (!login) return showAlert("You need to login first.");
-      const response = await fetch(`${host}/playlist/get/${playlist._id}`, {
+      const response = await fetch(`${host}/playlist/get/private`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: playlistID ? playlistID : undefined }),
       });
       const data = await response.json();
-
-      if (response.ok) {
+      // console.log(data);
+      if (response.ok && data.success) {
+        setPlaylist(data.playlist);
         return data.playlist;
       } else {
-        showAlert("Some error occured.");
-        return [];
+        showAlert("Error fetching the songs");
+        return null;
       }
-    } catch (err) {
-      showAlert("Some error occured.");
-      console.error(err);
-      return [];
+    } catch (error) {
+      showAlert("Error fetching the songs");
+      console.log(error);
+      return null;
     }
   };
 
@@ -226,9 +227,9 @@ const PlaylistState = (props) => {
         showPlaylistDialogue,
         handleshowPlaylistDialogue,
         playlist,
-        getallPlaylist,
-        getPlaylistDetails,
         setshowPlaylistDialogue,
+        getPublicPlaylist,
+        getPrivatePlaylist,
         addToPlaylistFunc,
         updatePlaylistOrderFunc,
         updatePlaylistDetailsFunc,

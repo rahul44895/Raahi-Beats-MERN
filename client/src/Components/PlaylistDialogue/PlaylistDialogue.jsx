@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./PlaylistDialogueStyle.css";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 import CurrPlaylist from "./CurrPlaylist";
@@ -8,9 +14,8 @@ export default function PlaylistDialogue() {
   const {
     showPlaylistDialogue,
     setshowPlaylistDialogue,
-    playlist,
-    getallPlaylist,
-    getPlaylistDetails,
+    getPrivatePlaylist,
+    // getPlaylistDetails,
     addToPlaylistFunc,
     updatePlaylistOrderFunc,
     updatePlaylistDetailsFunc,
@@ -18,19 +23,26 @@ export default function PlaylistDialogue() {
     createPlaylist,
     deleteSongFromPlaylist,
   } = useContext(PlaylistContext);
+  const [playlist, setPlaylist] = useState(null);
   const [currPlaylist, setCurrPlaylist] = useState(null);
   const [PlaylistSec1, setPlaylistSec1] = useState(true);
   const [PlaylistSec2, setPlaylistSec2] = useState(false);
   const [showCreatePlaylistForm, setshowCreatePlaylistForm] = useState(false);
 
+  const handleAllPlaylist = useCallback(async () => {
+    if (showPlaylistDialogue) {
+      const response = await getPrivatePlaylist();
+      setPlaylist(response);
+    }
+    // eslint-disable-next-line
+  }, [setPlaylist, showPlaylistDialogue]);
   useEffect(() => {
-    if (showPlaylistDialogue) getallPlaylist({ user: true });
-  }, [showPlaylistDialogue, getallPlaylist]);
+    handleAllPlaylist();
+  }, [handleAllPlaylist]);
 
   const handlePlaylist = async (currPlaylist) => {
-    const playlistDetails = await getPlaylistDetails(currPlaylist);
-    // console.log(playlistDetails);
-    setCurrPlaylist(playlistDetails);
+    const playlistDetails = await getPrivatePlaylist(currPlaylist._id);
+    setCurrPlaylist(playlistDetails[0]);
     setPlaylistSec2(true);
     setPlaylistSec1(false);
   };

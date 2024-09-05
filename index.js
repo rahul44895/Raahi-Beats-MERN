@@ -12,16 +12,26 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: ["http://localhost:3000","http://localhost:3001"], credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "client/build")));
 
-app.get("/", (req, res) => {
-  res.sendFile("client/build/index.html");
-});
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "staging"
+) {
+  app.use(express.static(path.join(__dirname, "./client/build")));
 
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
+  });
+}
 app.use("/api/songs", require("./routes/SongsRoute"));
 app.use("/api/playlist", require("./routes/PlaylistRoute"));
 app.use("/api/artists", require("./routes/ArtistsRoute.js"));

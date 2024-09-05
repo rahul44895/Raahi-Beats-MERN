@@ -5,6 +5,7 @@ const deleteFiles = require("../Utils/DeleteFile");
 const ArtistSchema = require("../models/ArtistSchema");
 const SongsSchema = require("../models/SongSchema");
 
+//POST - Add Artists
 router.post(
   "/add",
   upload.fields([{ name: "artistImage", maxCount: 1 }]),
@@ -18,7 +19,9 @@ router.post(
           error: "All fields are required",
         });
       }
-      let artist = await ArtistSchema.findOne({ name: title });
+      let artist = await ArtistSchema.findOne({
+        name: { $regex: title, $options: "i" },
+      });
       if (artist) {
         deleteFiles(req.files);
         return res.status(201).json({
@@ -66,6 +69,7 @@ router.post(
   }
 );
 
+// POST - Get Artists
 router.post("/", async (req, res) => {
   try {
     let artists;
@@ -74,8 +78,28 @@ router.post("/", async (req, res) => {
       artists = await ArtistSchema.findById(req.body.id);
       total = await ArtistSchema.countDocuments({ _id: req.body.id });
     } else {
-      artists = await ArtistSchema.find().sort({ name: 1 });
-      total = await ArtistSchema.countDocuments();
+      let countOfArtists = req.body.countOfArtists || 0;
+      artists = ArtistSchema.aggregate([
+        {
+          $addFields: {
+            score: {
+              $add: [
+                { $multiply: ["$likedCount", 0.5] },
+                { $multiply: ["$playedCount", 0.5] },
+              ],
+            },
+          },
+        },
+        { $sort: { score: -1 } },
+      ]);
+
+      if (countOfArtists > 0) {
+        artists.limit(countOfArtists);
+      }
+
+      artists = artists.sort({ name: 1 });
+      artists = await artists.exec();
+      total = artists.length;
     }
     let tempArtists = JSON.parse(JSON.stringify(artists));
     if (artists && req.body.id) {
@@ -85,6 +109,7 @@ router.post("/", async (req, res) => {
           return song;
         })
       );
+      tempArtists.songs.sort((a, b) => a.title.localeCompare(b.title));
     } else {
       for (const currArtist in tempArtists) {
         tempArtists[currArtist].songs = [];
