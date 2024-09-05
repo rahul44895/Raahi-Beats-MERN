@@ -3,8 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
-import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import "./ParticularPageStyle.css";
+import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
+import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 
 export default function ParticularArtist() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -40,7 +41,11 @@ export default function ParticularArtist() {
           <div className="artistPageHeaderContainer">
             <div className="artistPageImageContainer">
               <img
-                src={`${host}/${artist.avatar}`}
+                src={
+                  artist.avatar !== "undefined"
+                    ? `${host}/${artist.avatar}`
+                    : noArtistImage
+                }
                 className="artistImage"
                 alt="artist avatar"
               />
@@ -95,7 +100,10 @@ export default function ParticularArtist() {
                             alt={ele.title}
                           />
                         </div>
-                        <p>{ele.title}</p>
+                        <Link to={`/song/${ele._id}`}>
+                          {" "}
+                          <p>{ele.title}</p>
+                        </Link>
                       </td>
                       <td className="artistPageTableCell">
                         {ele.artists &&

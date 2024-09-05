@@ -6,7 +6,7 @@
   gap: 10px;
 }
 .artist-card {
-  background-color: red;
+  background-color: rgba(255, 255, 255, 0.267);
   text-align: center;
   height: 10rem;
   width: 10rem;
@@ -29,7 +29,6 @@
 
 .artist-card-name {
   overflow: auto;
-  text-wrap: nowrap;
 }
 
 .artist-sec-2 {

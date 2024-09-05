@@ -1,8 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import artistVideoBg from "../../assets/video/artistSec1.mp4";
+import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 import "./artistStyle.css";
-import { Link } from "react-router-dom";
 
 export default function Artists() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -85,11 +86,19 @@ export default function Artists() {
                     >
                       <div className="artist-card">
                         <div className="artist-card-image-container">
-                          <img
-                            src={`${host}/${currArtist.avatar}`}
-                            className="artist-card-image"
-                            alt="artistavatar"
-                          />
+                          {currArtist.avatar !== "undefined" ? (
+                            <img
+                              src={`${host}/${currArtist.avatar}`}
+                              className="artist-card-image"
+                              alt="artistavatar"
+                            />
+                          ) : (
+                            <img
+                              src={noArtistImage}
+                              className="artist-card-image"
+                              alt="artistavatar"
+                            />
+                          )}
                         </div>
                         <div className="artist-card-name">
                           {currArtist.name}
@@ -100,9 +109,7 @@ export default function Artists() {
                 })}
               </div>
             )}
-          </div>
-        </div>
-        <div className="h-100vh-min scroll-item artist-sec-2">
+             <div className="h-100vh-min scroll-item artist-sec-2">
           <div style={{ height: `${navbarHeight}px`, width: "100vw" }}></div>
           <h1 style={{ fontFamily: "'Dancing Script', cursive" }}>
             <center>All Artists</center>
@@ -114,11 +121,19 @@ export default function Artists() {
                   <Link to={`/artists/${currArtist._id}`} key={currArtist._id}>
                     <div className="artist-card">
                       <div className="artist-card-image-container">
-                        <img
-                          src={`${host}/${currArtist.avatar}`}
-                          className="artist-card-image"
-                          alt="artistavatar"
-                        />
+                        {currArtist.avatar !== "undefined" ? (
+                          <img
+                            src={`${host}/${currArtist.avatar}`}
+                            className="artist-card-image"
+                            alt="artistavatar"
+                          />
+                        ) : (
+                          <img
+                            src={noArtistImage}
+                            className="artist-card-image"
+                            alt="artistavatar"
+                          />
+                        )}
                       </div>
                       <div className="artist-card-name">{currArtist.name}</div>
                     </div>
@@ -127,6 +142,8 @@ export default function Artists() {
               })}
             </div>
           )}
+        </div>
+          </div>
         </div>
       </div>
     </>

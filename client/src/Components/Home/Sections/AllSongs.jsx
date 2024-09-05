@@ -12,11 +12,13 @@ export default function AllSongs() {
     }
   }, [navbarHeight]);
 
-  const { fetchSongs, songList } = useContext(SongContext);
+  const { fetchSongs } = useContext(SongContext);
+  const [songList, setSongList] = useState(null);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const main = useRef(null);
   const handleFetching = async () => {
-    await fetchSongs();
+    const response = await fetchSongs();
+    setSongList(response);
   };
   useEffect(() => {
     handleFetching();

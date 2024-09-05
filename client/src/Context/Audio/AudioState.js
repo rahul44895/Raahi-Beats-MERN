@@ -35,9 +35,9 @@ const AudioState = (props) => {
 
   const handleAudioSync = (newAudio, song) => {
     currTime.current = newAudio.currentTime;
-    // setCurrTime(newAudio.currentTime);
-    if (newAudio.currentTime === newAudio.duration.current) {
-      // console.log("Ended");
+
+    if (newAudio.currentTime === newAudio.duration) {
+      console.log("Ended");
       if (loopRef.current === 1) {
         setLoop(0);
         play(song);

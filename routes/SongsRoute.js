@@ -5,6 +5,8 @@ const upload = require("../middlewares/multer");
 const deleteFiles = require("../Utils/DeleteFile");
 const decodeToken = require("../middlewares/decodeToken");
 const ArtistSchema = require("../models/ArtistSchema");
+const { default: mongoose } = require("mongoose");
+const fs = require("fs");
 
 // POST route to add a new song
 router.post(
@@ -132,6 +134,29 @@ router.post("/get/all", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const { search } = req.query;
+  let songs;
+
+  let searchQuery = {};
+  if (search) {
+    const isObjectId = mongoose.Types.ObjectId.isValid(search);
+    searchQuery = {
+      $or: [
+        ...(isObjectId ? [{ _id: search }] : []),
+        { title: { $regex: search, $options: "i" } },
+        { "artists.name": { $regex: search, $options: "i" } },
+        { album: { $regex: search, $options: "i" } },
+        { genre: { $regex: search, $options: "i" } },
+      ],
+    };
+  }
+
+  songs = await SongsSchema.find({ ...searchQuery }).sort({ title: 1 });
+
+  res.status(200).json({ success: true, total: songs.length, songs });
+});
+
 // GET route to fetch new release songs
 router.get("/get/newrelease", async (req, res) => {
   try {
@@ -188,6 +213,18 @@ router.delete("/delete", async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "Song not found." });
+    }
+    const lastBackslashIndex = song.filePath.lastIndexOf("\\");
+    let songPath = song.filePath.slice(0, lastBackslashIndex);
+
+    if (fs.existsSync(songPath)) {
+      fs.rm(songPath, { recursive: true, force: true }, (err) => {
+        if (err) {
+          console.error(`Error removing directory: ${err.message}`);
+        } else {
+          console.log(`Directory ${songPath} successfully removed.`);
+        }
+      });
     }
 
     res.status(200).json({

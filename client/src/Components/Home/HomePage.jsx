@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import bgVideo from "../../assets/video/bg-video.54d189c7(2323).mp4";
 import "./HomePage.css";
 import NewReleases from "./Sections/NewReleases";
 import OldReleases from "./Sections/OldReleases";
 import UrbanPunjabiTadka from "./Sections/UrbanPunjabiTadka";
 import WestTunes from "./Sections/WestTunes";
-import { SongContext } from "../../Context/Songs/SongState";
 
 export default function HomePage() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -14,16 +13,6 @@ export default function HomePage() {
       setnavbarHeight(document.querySelector(".navbar").offsetHeight);
     }
   }, [navbarHeight]);
-  const { fetchSongs } = useContext(SongContext);
-  const [loaded, setLoaded] = useState(false);
-  const handleFetching = async () => {
-    let res = await fetchSongs();
-    setLoaded(res);
-  };
-  useEffect(() => {
-    handleFetching();
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <div className="homeContainer scroll-container">
@@ -48,14 +37,12 @@ export default function HomePage() {
         </div>
         <div className="video-overlay"></div>
       </div>
-      {loaded && (
-        <>
-          <NewReleases navbarHeight={navbarHeight} />
-          <OldReleases range={10} navbarHeight={navbarHeight} />
-          <UrbanPunjabiTadka range={10} navbarHeight={navbarHeight} />
-          <WestTunes range={10} navbarHeight={navbarHeight} />
-        </>
-      )}
+      <>
+        <NewReleases navbarHeight={navbarHeight} />
+        <OldReleases range={10} navbarHeight={navbarHeight} />
+        <UrbanPunjabiTadka range={10} navbarHeight={navbarHeight} />
+        <WestTunes range={10} navbarHeight={navbarHeight} />
+      </>
       Most Liked Song of this week Most Played Song of this week Most shared
       song
     </div>

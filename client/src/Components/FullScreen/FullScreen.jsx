@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
 import { MdPlaylistAdd } from "react-icons/md";
@@ -9,18 +9,6 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 
 export default function FullScreen() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  const handleNav = () => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  };
-  useEffect(() => {
-    handleNav();
-  }, []);
-
-  const main = useRef(null);
-
   //useContext
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
@@ -29,7 +17,7 @@ export default function FullScreen() {
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="fullscreen-song-container" ref={main}>
+    <div className="fullscreen-song-container">
       <div
         className="fullscreen-song-subcontainer"
         style={{
@@ -41,7 +29,7 @@ export default function FullScreen() {
         <div
           className="fullscreen-main-container"
           style={{
-            height: `${main.current?.offsetHeight}px`,
+            height: `100%`,
           }}
         >
           <div className="fullscreen-songArea">

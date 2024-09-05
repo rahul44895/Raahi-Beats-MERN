@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import { AlertContext } from "../Alert/AlertState";
-import Cookies from "js-cookie";
 
 const SongContext = createContext();
 export { SongContext };
@@ -10,25 +9,19 @@ const SongState = (props) => {
   const host = process.env.REACT_APP_HOST;
   const [songDetails, setSongDetails] = useState();
   const { showAlert } = useContext(AlertContext);
-  const fetchSongs = async (queryParams) => {
+  const fetchSongs = async (songID) => {
     try {
-      let url = new URL(`${host}/songs/get/all`);
-      if (queryParams) {
-        Object.keys(queryParams).forEach((key) =>
-          url.searchParams.append(key, queryParams[key])
-        );
-      }
-      url = url.toString();
-
-      const response = await fetch(url, { method: "POST" });
+      const url = songID ? `${host}/songs?search=${songID}` : `${host}/songs`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
       const data = await response.json();
-      if (response.ok) {
-        setSongList(data.songs);
-        return true;
+      if (data.success) {
+        return data.songs;
       } else {
-        console.error(data.error);
         showAlert(data.error);
-        return false;
+        return null;
       }
     } catch (error) {
       showAlert("Error fetching the songs");
@@ -81,7 +74,7 @@ const SongState = (props) => {
   };
 
   const updatePlayDetails = async (songID) => {
-    console.log("updating...",songID);
+    console.log("updating...", songID);
   };
 
   return (
