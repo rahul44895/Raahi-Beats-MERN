@@ -28,7 +28,7 @@ export default function Navbar() {
   // Update state whenever cookie changes
   useEffect(() => {
     const handleCookieChange = () => {
-      user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+      let user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
       setUsername(user ? user.username : "Guest User");
       setUserAvatar(user ? user.avatar : null);
     };

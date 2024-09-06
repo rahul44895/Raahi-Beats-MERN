@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { AlertContext } from "../Alert/AlertState";
 
 const { createContext, useContext } = require("react");

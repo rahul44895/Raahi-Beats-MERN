@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { ShareContext } from "../../Context/Share/ShareState";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineContentCopy } from "react-icons/md";
@@ -11,8 +11,6 @@ const ShareDialogue = () => {
     useContext(ShareContext);
   const { showAlert } = useContext(AlertContext);
 
-  // ref
-  const ShareDialogueRef = useRef(null);
   // useState
 
   // functions
