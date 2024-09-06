@@ -11,12 +11,13 @@ export default function WestTunes({ range, navbarHeight }) {
   const [songList, setSongList] = useState(null);
   const handleSongList = async (range) => {
     const result = await getPublicPlaylist("66d8aff152ca27ed86ffa9bf");
-    setSongList(result[0].songs?.slice(0, range));
+    if (result[0] && result[0].songs)
+      setSongList(result[0].songs.slice(0, range));
   };
   useEffect(() => {
     handleSongList(range);
     // eslint-disable-next-line
-  }, [range,setSongList]);
+  }, [range, setSongList]);
   // const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
 

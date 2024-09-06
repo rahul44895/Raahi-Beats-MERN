@@ -13,7 +13,8 @@ export default function UrbanPunjabiTadka({ range, navbarHeight }) {
   const [songList, setSongList] = useState(null);
   const handleSongList = async (range) => {
     const result = await getPublicPlaylist("66d8a419c231a442ebb2325c");
-    setSongList(result[0].songs?.slice(0, range));
+    if (result[0] && result[0].songs)
+      setSongList(result[0].songs.slice(0, range));
   };
   useEffect(() => {
     handleSongList(range);
