@@ -1,0 +1,51 @@
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: #0000003b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.share-dialogue {
+  background: white;
+  color: black;
+  padding: 1em;
+  border-radius: 10px;
+  min-width: 60%;
+}
+
+.share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-title {
+  margin: 0;
+}
+
+.share-close-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.share-url {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+}
+
+.share-url .share-url-text {
+  padding: 10px;
+  flex: 2;
+}
+.share-url span {
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+.share-url span:hover{
+    background-color: #0000003b;
+}

@@ -7,6 +7,7 @@ import SongState from "./Context/Songs/SongState";
 import AudioState from "./Context/Audio/AudioState";
 import AuthenticationState from "./Context/Authentication/AuthenticationState";
 import LoginPage from "./Components/Authentication/LoginPage";
+import SignUp from "./Components/Authentication/SignUp";
 import { Route, Routes } from "react-router-dom";
 import BottomControls from "./Components/ControlArea/BottomControls";
 import SongDetailsPage from "./Components/SongDetailsPage/SongDetailsPage";
@@ -16,9 +17,11 @@ import SideNav from "./Components/SideNav/SideNav";
 import AllSongs from "./Components/Home/Sections/AllSongs";
 import PlaylistState from "./Context/Playlist/PlaylistState";
 import ArtistState from "./Context/Artists/ArtistState";
+import ShareState from "./Context/Share/ShareState";
 import Artists from "./Components/Artists/Artists";
 import ParticularArtist from "./Components/Artists/ParticularArtist";
 import FullScreen from "./Components/FullScreen/FullScreen";
+import ShareDialogue from "./Components/ShareDialgoue/ShareDialogue";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -51,57 +54,72 @@ function App() {
           <AudioState>
             <ArtistState>
               <PlaylistState>
-                {isMobile && !portrait && (
-                  <div className="landscape-warning">
-                    You can use this website only on portrait modes
-                  </div>
-                )}
-                {(!isMobile || (isMobile && portrait)) && (
-                  <>
-                    <Navbar />
-                    <SideNav />
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        height: `${windowHeight}px`,
-                        width: `${windowWidth}px`,
-                      }}
-                    >
-                      <Routes>
-                        <Route exact path="/" element={<Home />} />
-                        <Route
-                          path="/song/:songID"
-                          element={<SongDetailsPage />}
-                        />
-                        <Route exact path="/login" element={<LoginPage />} />
-                        <Route exact path="/allsongs" element={<AllSongs />} />
-                        <Route exact path="/artists" element={<Artists />} />
-                        <Route
-                          exact
-                          path="/artists/:id"
-                          element={<ParticularArtist />}
-                        />
-                        <Route path="*" element={<div className="homeContainer">404 not found</div>} />
-                      </Routes>
+                <ShareState>
+                  {isMobile && !portrait && (
+                    <div className="landscape-warning">
+                      You can use this website only on portrait modes
+                    </div>
+                  )}
+                  {(!isMobile || (isMobile && portrait)) && (
+                    <>
+                      <Navbar />
+                      <SideNav />
                       <div
                         style={{
-                          height: `${showFullScreen ? "100%" : ""}`,
                           display: "flex",
                           flexDirection: "column",
-                          overflow: `${showFullScreen ? "hidden" : "auto"}`,
+                          height: `${windowHeight}px`,
+                          width: `${windowWidth}px`,
                         }}
                       >
-                        {showFullScreen && <FullScreen />}
-                        <BottomControls
-                          showFullScreen={showFullScreen}
-                          setShowFullScreen={setShowFullScreen}
-                        />
+                        <Routes>
+                          <Route exact path="/" element={<Home />} />
+                          <Route
+                            path="/song/:songID"
+                            element={<SongDetailsPage />}
+                          />
+                          <Route exact path="/login" element={<LoginPage />} />
+                          <Route exact path="/signup" element={<SignUp />} />
+                          <Route
+                            exact
+                            path="/allsongs"
+                            element={<AllSongs />}
+                          />
+                          <Route exact path="/artists" element={<Artists />} />
+                          <Route
+                            exact
+                            path="/artists/:id"
+                            element={<ParticularArtist />}
+                          />
+                          <Route
+                            path="*"
+                            element={
+                              <div className="homeContainer">404 not found</div>
+                            }
+                          />
+                        </Routes>
+                        <div
+                          style={{
+                            height: `${showFullScreen ? "100%" : ""}`,
+                            display: "flex",
+                            flexDirection: "column",
+                            overflow: `${showFullScreen ? "hidden" : "auto"}`,
+                          }}
+                        >
+                          {showFullScreen && (
+                            <FullScreen setShowFullScreen={setShowFullScreen} />
+                          )}
+                          <BottomControls
+                            showFullScreen={showFullScreen}
+                            setShowFullScreen={setShowFullScreen}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <PlaylistDialogue />
-                  </>
-                )}
+                      <ShareDialogue />
+                      <PlaylistDialogue />
+                    </>
+                  )}
+                </ShareState>
               </PlaylistState>
             </ArtistState>
           </AudioState>

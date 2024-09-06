@@ -9,10 +9,12 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import Marquee from "react-fast-marquee";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
+import { ShareContext } from "../../../Context/Share/ShareState";
 
 export default function SongCardMedium({ song }) {
   const { play, addToQueue, playbtnAddToQueue } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
+  const { share } = useContext(ShareContext);
   const [liked, setLiked] = useState(false);
   const host = process.env.REACT_APP_HOST;
   return (
@@ -55,7 +57,11 @@ export default function SongCardMedium({ song }) {
             </span>
           </span>
           <span className="song-card-xl-lower-icons">
-            <span onClick={() => alert("Under Development")}>
+            <span
+              onClick={() => {
+                share(song);
+              }}
+            >
               <FaShareFromSquare />
             </span>
             <span onClick={() => handleshowPlaylistDialogue(song)}>

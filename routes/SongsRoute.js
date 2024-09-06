@@ -104,35 +104,6 @@ router.post(
 );
 
 // POST route to fetch all songs
-router.post("/get/all", async (req, res) => {
-  try {
-    const { search, page = 1 } = req.query;
-    const searchQuery = search
-      ? {
-          $or: [
-            { title: { $regex: search, $options: "i" } },
-            { "artists.name": { $regex: search, $options: "i" } },
-            { album: { $regex: search, $options: "i" } },
-            { genre: { $regex: search, $options: "i" } },
-          ],
-        }
-      : {};
-
-    const contentsPerPage = 10;
-    const skip = (Number(page) - 1) * contentsPerPage;
-    const songs = await SongsSchema.find({ ...searchQuery })
-      // .limit(contentsPerPage)
-      // .skip(skip)
-      .sort({ title: 1 });
-    const total = songs.length;
-    res.status(200).json({ total, songs });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      error: "An error occurred while fetching songs",
-    });
-  }
-});
 
 router.post("/", async (req, res) => {
   const { search } = req.query;

@@ -150,6 +150,7 @@ const AudioState = (props) => {
     tempQueue.push(song);
     setQueue(tempQueue);
   };
+
   const addToQueue = (song) => {
     let tempQueue = queueRef.current;
     let index = tempQueue.findIndex((curr) => curr === song);

@@ -37,7 +37,7 @@ export default function SongDetailsPage() {
   useEffect(() => {
     handleFetching();
     // eslint-disable-next-line
-  }, []);
+  }, [songID]);
 
   return (
     <>

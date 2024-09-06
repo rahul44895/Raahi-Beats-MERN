@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
 import { MdPlaylistAdd } from "react-icons/md";
@@ -8,7 +9,7 @@ import { FaShareFromSquare } from "react-icons/fa6";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 
-export default function FullScreen() {
+export default function FullScreen({setShowFullScreen}) {
   //useContext
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
@@ -73,10 +74,14 @@ export default function FullScreen() {
                 {currSong.artists
                   ? currSong.artists.map((e, index) => {
                       return (
-                        <span key={e._id}>
-                          {e.name}
-                          {index !== currSong.artists.length - 1 ? ", " : ""}
-                        </span>
+                        <Link to={`/artists/${e._id}`} key={e._id} onClick={()=>{
+                          setShowFullScreen(false)
+                        }}>
+                          <span>
+                            {e.name}
+                            {index !== currSong.artists.length - 1 ? ", " : ""}
+                          </span>
+                        </Link>
                       );
                     })
                   : "Unknown artist"}

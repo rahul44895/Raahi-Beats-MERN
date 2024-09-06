@@ -109,7 +109,9 @@ router.post("/", async (req, res) => {
           return song;
         })
       );
-      tempArtists.songs.sort((a, b) => a.title.localeCompare(b.title));
+      tempArtists.songs.sort((a, b) => {
+        if (a.title) return a.title.localeCompare(b.title);
+      });
     } else {
       for (const currArtist in tempArtists) {
         tempArtists[currArtist].songs = [];
@@ -123,6 +125,50 @@ router.post("/", async (req, res) => {
       error: "Some error occured while fetching the artist info.",
     });
   }
+});
+
+// update the song IDs in all the artists
+router.put("/update/artists/songs", async (req, res) => {
+  try {
+    let songs = await SongsSchema.find();
+    for (const currSong of songs) {
+      let artists = currSong.artists;
+      if (artists) {
+        for (const key in artists) {
+          const currArtist = artists[key];
+          let artist = await ArtistSchema.findOne({
+            _id: currArtist._id,
+          });
+          if (artist) {
+            let songsArr = JSON.parse(JSON.stringify(artist.songs));
+            let condition = songsArr.some((e) => e._id == currSong._id);
+            if (!condition) songsArr.push({ _id: currSong._id.toString() });
+            artist.songs = songsArr;
+          } else {
+            artist = new ArtistSchema({
+              name: currArtist.name.trim(),
+              avatar: "undefined",
+              songs: [{ _id: newSong._id.toString() }],
+            });
+          }
+          await artist.save();
+        }
+      }
+    }
+    res.status(200).json({ success: true, songs });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+//delete all the songs from the artist array
+router.delete("/delete/songs", async (req, res) => {
+  let artists = await ArtistSchema.find();
+  for (const currArtist of artists) {
+    currArtist.songs = [];
+    await currArtist.save();
+  }
+  res.send(artists);
 });
 
 module.exports = router;
