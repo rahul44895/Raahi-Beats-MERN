@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
@@ -25,9 +25,10 @@ app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
 }
 
-app.use("/api/songs", require("./routes/SongsRoute"));
-app.use("/api/playlist", require("./routes/PlaylistRoute"));
 app.use("/api/artists", require("./routes/ArtistsRoute.js"));
+app.use("/api/playlist", require("./routes/PlaylistRoute.js"));
+app.use("/api/songs", require("./routes/SongsRoute.js"));
+app.use('/api/users', require('./routes/UsersRoute.js'))
 
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", (req, res) => {

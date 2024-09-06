@@ -45,6 +45,8 @@
 .nav-menu-dropdown-icon {
   height: 40px;
   width: 40px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 100%;
 }
 

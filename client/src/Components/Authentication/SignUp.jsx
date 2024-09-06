@@ -13,10 +13,10 @@ export default function SignUp() {
   const { signup } = useContext(AuthenticationContext);
 
   const [credentials, setCredentials] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    username: "Rahul Singh",
+    email: "rahulsingh@email.com",
+    password: "aA1$aA1$",
+    confirmPassword: "aA1$aA1$",
     userAvatar: "",
   });
   const onChange = (e) => {

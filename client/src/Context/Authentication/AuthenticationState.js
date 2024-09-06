@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { AlertContext } from "../Alert/AlertState";
 
-const { createContext } = require("react");
+const { createContext, useContext } = require("react");
 
 const AuthenticationContext = createContext();
 export { AuthenticationContext };
 
 const AuthenticationState = (props) => {
+  const { showAlert } = useContext(AlertContext);
+
   const navigate = useNavigate();
-  // const host = process.env.REACT_APP_HOST;
-  const host = 'http://localhost:8001/api';
+  const host = process.env.REACT_APP_HOST;
 
   // SIGNUP
   const signup = async (credentials) => {
@@ -18,20 +20,14 @@ const AuthenticationState = (props) => {
       Object.entries(credentials).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      const response = await fetch(`${host}/user/signup`, {
+      const response = await fetch(`${host}/users/signup`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
       const data = await response.json();
-
-      if (response.ok) {
-        Object.entries(data.user).forEach(([key, value]) => {
-          let date = new Date();
-          date.setTime(date.getTime() + 1 * 60 * 60 * 1000);
-          Cookies.set(key, value, { expires: date });
-        });
-        alert(data.message + " " + data.user.username);
+      if (data.success) {
+        showAlert(data.message);
         window.dispatchEvent(new Event("cookies"));
         navigate("/");
       } else {
@@ -47,7 +43,7 @@ const AuthenticationState = (props) => {
   const login = async (credentials) => {
     const { email, password } = credentials;
     try {
-      const response = await fetch(`${host}/user/login`, {
+      const response = await fetch(`${host}/users/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
@@ -57,14 +53,8 @@ const AuthenticationState = (props) => {
       });
 
       const data = await response.json();
-      console.log(data);
-      if (response.status === 200) {
-        Object.entries(data.user).forEach(([key, value]) => {
-          let date = new Date();
-          date.setTime(date.getTime() + 1 * 60 * 60 * 1000);
-          Cookies.set(key, value, { expires: date });
-        });
-        alert(data.message + " " + data.user.username);
+      if (data.success) {
+        showAlert(data.message);
         window.dispatchEvent(new Event("cookies"));
         navigate("/");
       } else {
@@ -78,7 +68,7 @@ const AuthenticationState = (props) => {
   // Logout
   const logout = async () => {
     try {
-      const response = await fetch(`${host}/user/logout`, {
+      const response = await fetch(`${host}/users/logout`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -89,12 +79,7 @@ const AuthenticationState = (props) => {
       const data = await response.json();
 
       if (response.status === 200) {
-        alert(data.message);
-        let cookies = Cookies.get();
-        console.log(cookies);
-        for (const cookie in cookies) {
-          Cookies.remove(cookie);
-        }
+        showAlert(data.message);
         window.dispatchEvent(new Event("cookies"));
         navigate("/login");
       }

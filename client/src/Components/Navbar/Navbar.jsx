@@ -22,27 +22,23 @@ export default function Navbar() {
       });
     }
   }, []);
-
-  const [username, setUsername] = useState(
-    Cookies.get("username") || "Guest User"
-  );
-  const [userAvatar, setUserAvatar] = useState(Cookies.get("userAvatar") || "");
-
+  let user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+  const [username, setUsername] = useState(user ? user.username : "Guest User");
+  const [userAvatar, setUserAvatar] = useState(user ? user.avatar : null);
   // Update state whenever cookie changes
   useEffect(() => {
     const handleCookieChange = () => {
-      setUsername(Cookies.get("username") || "Guest User");
-      setUserAvatar(Cookies.get("userAvatar") || "");
+      user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+      setUsername(user ? user.username : "Guest User");
+      setUserAvatar(user ? user.avatar : null);
     };
-
     // Add event listener for cookie changes
     window.addEventListener("cookies", handleCookieChange);
-
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("cookies", handleCookieChange);
     };
-  }, []);
+  });
 
   const hamburgerSlave = useRef();
   const isMobileDevice = () => {
