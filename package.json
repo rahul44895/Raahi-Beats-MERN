@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "client-build": "npm build --prefix client",
+    "client-build": "npm run build --prefix client",
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
