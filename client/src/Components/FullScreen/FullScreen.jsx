@@ -8,11 +8,13 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
+import { ShareContext } from "../../Context/Share/ShareState";
 
-export default function FullScreen({setShowFullScreen}) {
+export default function FullScreen({ setShowFullScreen }) {
   //useContext
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
+  const { share } = useContext(ShareContext);
 
   // //useState
   const [liked, setLiked] = useState(false);
@@ -56,10 +58,7 @@ export default function FullScreen({setShowFullScreen}) {
                   {liked ? <FaHeart /> : <FaRegHeart />}
                   <span className="tooltiptext">Like</span>
                 </div>
-                <div
-                  onClick={() => alert("Under Development")}
-                  className="tooltip"
-                >
+                <div onClick={() => share(currSong)} className="tooltip">
                   <FaShareFromSquare />
                   <span className="tooltiptext">Share</span>
                 </div>
@@ -74,9 +73,13 @@ export default function FullScreen({setShowFullScreen}) {
                 {currSong.artists
                   ? currSong.artists.map((e, index) => {
                       return (
-                        <Link to={`/artists/${e._id}`} key={e._id} onClick={()=>{
-                          setShowFullScreen(false)
-                        }}>
+                        <Link
+                          to={`/artists/${e._id}`}
+                          key={e._id}
+                          onClick={() => {
+                            setShowFullScreen(false);
+                          }}
+                        >
                           <span>
                             {e.name}
                             {index !== currSong.artists.length - 1 ? ", " : ""}
