@@ -85,7 +85,7 @@
 
 .bottom-song-title {
   flex: 1;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 @media screen and (max-width: 450px) {

@@ -70,7 +70,9 @@ export default function ParticularArtist() {
                 {artist.songs.map((ele, index) => {
                   return (
                     <tr className="artistPageTableRow" key={index}>
-                      <td className="artistPageTableCell">{index + 1}.</td>
+                      <td className="artistPageTableCell" style={{ flex: 1 }}>
+                        {index + 1}.
+                      </td>
                       <td className="artistPageSongDetails">
                         <div
                           className="artistPageSongCoverImageContainer"
