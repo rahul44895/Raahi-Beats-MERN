@@ -16,6 +16,7 @@ const UserSchema = new Schema({
       category: { type: String, enum: ["Artist", "Song"] },
     },
   ],
+  plays: { type: Number, default: 0 },
   role: { type: String, enum: ["user", "admin"], default: "user" },
 });
 module.exports = mongoose.model("User", UserSchema);

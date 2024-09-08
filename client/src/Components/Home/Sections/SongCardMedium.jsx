@@ -1,21 +1,22 @@
 import React, { useContext, useState } from "react";
-import { AudioContext } from "../../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { MdQueueMusic, MdOutlinePlaylistAdd } from "react-icons/md";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
 import Marquee from "react-fast-marquee";
+import { AudioContext } from "../../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../../Context/Share/ShareState";
+import { SongContext } from "../../../Context/Songs/SongState";
 
 export default function SongCardMedium({ song }) {
   const { play, addToQueue, playbtnAddToQueue } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
-  const [liked, setLiked] = useState(false);
+  const { updatePlayDetails } = useContext(SongContext);
+  const [liked, setLiked] = useState(song.liked ? true : false);
   const host = process.env.REACT_APP_HOST;
   return (
     <div className="song-card-medium">
@@ -49,7 +50,14 @@ export default function SongCardMedium({ song }) {
             <IoIosPlayCircle />
           </span>
           <span className="song-card-xl-upper-icons">
-            <span onClick={() => setLiked(!liked)}>
+            <span
+              onClick={() => {
+                if (liked === false)
+                  updatePlayDetails({ songID: song._id, likeCount: 1 });
+                else updatePlayDetails({ songID: song._id, likeCount: -1 });
+                setLiked(!liked);
+              }}
+            >
               {liked ? <FaHeart /> : <FaRegHeart />}
             </span>
             <span onClick={() => addToQueue(song)}>

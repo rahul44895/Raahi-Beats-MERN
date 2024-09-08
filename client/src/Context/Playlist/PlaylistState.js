@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import Cookies from "js-cookie";
+import Cookie from "js-cookie";
 import { AlertContext } from "../Alert/AlertState";
 
 const PlaylistContext = createContext();
@@ -14,12 +14,16 @@ const PlaylistState = (props) => {
 
   //GET PLAYLIST FUNC
   const getPublicPlaylist = async (playlistID) => {
+    const userToken = Cookie.get("token");
     try {
       const response = await fetch(`${host}/playlist/get/public`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ _id: playlistID ? playlistID : null }),
+        body: JSON.stringify({
+          _id: playlistID ? playlistID : null,
+          userToken: userToken ? userToken : null,
+        }),
       });
 
       const data = await response.json();
@@ -37,12 +41,16 @@ const PlaylistState = (props) => {
   };
 
   const getPrivatePlaylist = async (playlistID) => {
+    const userToken = Cookie.get("token");
     try {
       const response = await fetch(`${host}/playlist/get/private`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ _id: playlistID ? playlistID : undefined }),
+        body: JSON.stringify({
+          _id: playlistID ? playlistID : undefined,
+          userToken: userToken ? userToken : null,
+        }),
       });
       const data = await response.json();
       // console.log(data);
@@ -61,7 +69,7 @@ const PlaylistState = (props) => {
   };
 
   const handleshowPlaylistDialogue = (song) => {
-    const login = Cookies.get("token");
+    const login = Cookie.get("token");
     if (!login) return showAlert("You need to login first.");
     setshowPlaylistDialogue(true);
     setTempPlaylistSong(song);
@@ -69,7 +77,7 @@ const PlaylistState = (props) => {
 
   const addToPlaylistFunc = async (playlistID) => {
     try {
-      const login = Cookies.get("token");
+      const login = Cookie.get("token");
       if (!login) return showAlert("You need to login first.");
       const response = await fetch(`${host}/playlist/update`, {
         method: "PUT",
@@ -89,7 +97,7 @@ const PlaylistState = (props) => {
   };
   const updatePlaylistOrderFunc = async (playlist) => {
     try {
-      const login = Cookies.get("token");
+      const login = Cookie.get("token");
       if (!login) return showAlert("You need to login first.");
       const response = await fetch(`${host}/playlist/update`, {
         method: "PUT",
@@ -110,7 +118,7 @@ const PlaylistState = (props) => {
   };
 
   const updatePlaylistDetailsFunc = async (playlistDetails) => {
-    const login = Cookies.get("token");
+    const login = Cookie.get("token");
     if (!login) return showAlert("You need to login first.");
     const tempPlaylist = {};
     tempPlaylist._id = playlistDetails._id;
@@ -137,7 +145,7 @@ const PlaylistState = (props) => {
 
   const deletePlaylist = async (playlistID) => {
     try {
-      const login = Cookies.get("token");
+      const login = Cookie.get("token");
       if (!login) return showAlert("You need to login first.");
       const confirm = window.confirm(
         "Are you sure that you want to delete the playlist ?"
@@ -168,7 +176,7 @@ const PlaylistState = (props) => {
 
   const createPlaylist = async (playlistDetails) => {
     try {
-      const login = Cookies.get("token");
+      const login = Cookie.get("token");
       if (!login) return showAlert("You need to login first.");
       const tempPlaylist = {};
       if (playlistDetails.name) tempPlaylist.name = playlistDetails.name;
@@ -200,7 +208,7 @@ const PlaylistState = (props) => {
 
   const deleteSongFromPlaylist = async (playlistID, songID) => {
     try {
-      const login = Cookies.get("token");
+      const login = Cookie.get("token");
       if (!login) return showAlert("You need to login first.");
       const response = await fetch(`${host}/playlist/update/song`, {
         method: "DELETE",

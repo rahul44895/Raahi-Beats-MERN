@@ -53,7 +53,9 @@ const AudioState = (props) => {
     let song = JSON.parse(JSON.stringify(tempSong));
     song.filePath = host + "/" + tempSong.filePath.replace(/\\/g, "/");
     song.coverImage = host + "/" + tempSong.coverImage.replace(/\\/g, "/");
-
+    if (audio && currSong && currSong._id === tempSong._id) {
+      return;
+    }
     if (audio) {
       audio.pause();
       audio.removeEventListener("timeupdate", handleAudioSync);
@@ -72,7 +74,7 @@ const AudioState = (props) => {
         setIsPlaying(true);
         duration.current = newAudio.duration;
         document.title = "Raahi Beats | " + song.title;
-        updatePlayDetails(tempSong._id);
+        updatePlayDetails({ songID: tempSong._id, playCount: true });
       })
       .catch((error) => {
         showAlert("Some Error Occured");

@@ -8,12 +8,14 @@ import { MdQueueMusic, MdOutlinePlaylistAdd } from "react-icons/md";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../../Context/Share/ShareState";
+import { SongContext } from "../../../Context/Songs/SongState";
 
 export default function SongCardXL({ song }) {
   const { play, addToQueue, playbtnAddToQueue } = useContext(AudioContext);
   const { share } = useContext(ShareContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
-  const [liked, setLiked] = useState(false);
+  const { updatePlayDetails } = useContext(SongContext);
+  const [liked, setLiked] = useState(song.liked ? true : false);
   const host = process.env.REACT_APP_HOST;
 
   return (
@@ -43,7 +45,14 @@ export default function SongCardXL({ song }) {
             <IoIosPlayCircle />
           </span>
           <span className="song-card-xl-upper-icons">
-            <span onClick={() => setLiked(!liked)}>
+            <span
+              onClick={() => {
+                if (liked === false)
+                  updatePlayDetails({ songID: song._id, likeCount: 1 });
+                else updatePlayDetails({ songID: song._id, likeCount: -1 });
+                setLiked(!liked);
+              }}
+            >
               {liked ? <FaHeart /> : <FaRegHeart />}
             </span>
             <span onClick={() => addToQueue(song)}>

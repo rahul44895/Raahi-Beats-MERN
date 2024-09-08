@@ -1,8 +1,11 @@
 const express = require("express");
 const Playlist = require("../models/PlaylistSchema");
+const UserSchema = require("../models/UserSchema");
 const Song = require("../models/SongSchema");
 const decodeToken = require("../middlewares/decodeToken");
 const router = express.Router();
+const JWT = require("jsonwebtoken");
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 router.post("/add", decodeToken, async (req, res) => {
   try {
@@ -50,7 +53,22 @@ router.post("/get/private", decodeToken, async (req, res) => {
     if (req.body._id) {
       tempPlaylist[0].songs = await Promise.all(
         tempPlaylist[0].songs.map(async (currSong) => {
-          let song = await Song.findById(currSong._id);
+          let song = JSON.parse(
+            JSON.stringify(await Song.findById(currSong._id))
+          );
+          if (req.body.userToken) {
+            const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+            const user = await UserSchema.findById(token.userID);
+            const userFavourites = user.favourites;
+
+            const check = userFavourites.some(
+              (favourite) =>
+                favourite._id.equals(song._id) && favourite.category === "Song"
+            );
+            if (check) {
+              song.liked = true;
+            }
+          }
           return song;
         })
       );
@@ -72,7 +90,23 @@ router.post("/get/public", async (req, res) => {
     if (req.body._id) {
       tempPlaylist[0].songs = await Promise.all(
         tempPlaylist[0].songs.map(async (currSong) => {
-          let song = await Song.findById(currSong._id);
+          let song = JSON.parse(
+            JSON.stringify(await Song.findById(currSong._id))
+          );
+          if (req.body.userToken) {
+            const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+            const user = await UserSchema.findById(token.userID);
+            const userFavourites = user.favourites;
+
+            const check = userFavourites.some(
+              (favourite) =>
+                favourite._id.equals(song._id) && favourite.category === "Song"
+            );
+            if (check) {
+              song.liked = true;
+            }
+          }
+
           return song;
         })
       );

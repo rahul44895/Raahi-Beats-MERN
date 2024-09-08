@@ -7,6 +7,9 @@ const decodeToken = require("../middlewares/decodeToken");
 const ArtistSchema = require("../models/ArtistSchema");
 const { default: mongoose } = require("mongoose");
 const fs = require("fs");
+const UserSchema = require("../models/UserSchema");
+const JWT = require("jsonwebtoken");
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 // POST route to add a new song
 router.post(
@@ -127,6 +130,20 @@ router.post("/", async (req, res) => {
   songs = await SongsSchema.find({ ...searchQuery }).sort({ title: 1 });
 
   let tempArr = JSON.parse(JSON.stringify(songs));
+  if (req.body.userToken) {
+    const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+    const user = await UserSchema.findById(token.userID);
+    const userFavourites = user.favourites;
+    for (let currSong of tempArr) {
+      const check = userFavourites.some(
+        (favourite) =>
+          favourite._id.equals(currSong._id) && favourite.category === "Song"
+      );
+      if (check) {
+        currSong.liked = true;
+      }
+    }
+  }
   if (songs.length == 1) {
     tempArr[0].artists = await Promise.all(
       tempArr[0].artists.map(async (currArtist) => {
@@ -139,14 +156,30 @@ router.post("/", async (req, res) => {
 });
 
 // GET route to fetch new release songs
-router.get("/get/newrelease", async (req, res) => {
+router.post("/get/newrelease", async (req, res) => {
   try {
     const contentsPerPage = 10;
     const songs = await SongsSchema.find()
       .sort({ releaseDate: -1 })
       .limit(contentsPerPage);
     const total = songs.length;
-    res.status(200).json({ total, songs });
+
+    let tempArr = JSON.parse(JSON.stringify(songs));
+    if (req.body.userToken) {
+      const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+      const user = await UserSchema.findById(token.userID);
+      const userFavourites = user.favourites;
+      for (let currSong of tempArr) {
+        const check = userFavourites.some(
+          (favourite) =>
+            favourite._id.equals(currSong._id) && favourite.category === "Song"
+        );
+        if (check) {
+          currSong.liked = true;
+        }
+      }
+    }
+    res.status(200).json({ total, songs: tempArr });
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -156,7 +189,7 @@ router.get("/get/newrelease", async (req, res) => {
 });
 
 // GET route to fetch old songs
-router.get("/get/oldsongs", async (req, res) => {
+router.post("/get/oldsongs", async (req, res) => {
   try {
     const contentsPerPage = 10;
 
@@ -169,7 +202,24 @@ router.get("/get/oldsongs", async (req, res) => {
       .sort({ releaseDate: -1 })
       .limit(contentsPerPage);
     const total = songs.length;
-    res.status(200).json({ total, songs });
+
+    let tempArr = JSON.parse(JSON.stringify(songs));
+    if (req.body.userToken) {
+      const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+      const user = await UserSchema.findById(token.userID);
+      const userFavourites = user.favourites;
+      for (let currSong of tempArr) {
+        const check = userFavourites.some(
+          (favourite) =>
+            favourite._id.equals(currSong._id) && favourite.category === "Song"
+        );
+        if (check) {
+          currSong.liked = true;
+        }
+      }
+    }
+
+    res.status(200).json({ total, songs: tempArr });
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -247,6 +297,72 @@ router.put("/update/songs/artists", async (req, res) => {
   }
 
   res.json({ total: artistNotInDataBase.length, artistNotInDataBase });
+});
+
+//update play count and likes of the songs and artists
+router.put("/update/playnlikes", async (req, res) => {
+  try {
+    const { songID, user, playCount, likeCount } = req.body;
+    if (!songID) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Song ID is required" });
+    }
+
+    const song = await SongsSchema.findById(songID);
+    if (!song) {
+      return res.status(400).json({ success: false, error: "Song not found" });
+    }
+    if (playCount) song.playCount += 1;
+    if (likeCount && !user) {
+      return res
+        .status(400)
+        .json({ success: false, error: "You need to login to like a song." });
+    }
+    for (let currArtist of song.artists) {
+      const artist = await ArtistSchema.findById(currArtist._id);
+      if (playCount) artist.playedCount += 1;
+      if (likeCount) artist.likedCount += Number(likeCount);
+      await artist.save();
+    }
+
+    if (user) {
+      const token = JWT.verify(user, JWT_SECRET_KEY);
+      const exisitingUser = await UserSchema.findById(token.userID);
+      if (exisitingUser) {
+        if (playCount) {
+          exisitingUser.plays += 1;
+        }
+        if (likeCount === 1) {
+          song.likes += Number(likeCount);
+          const check = exisitingUser.favourites.some(
+            (favourite) =>
+              favourite._id.equals(song._id) && favourite.category === "Song"
+          );
+
+          if (!check) {
+            exisitingUser.favourites.push({
+              _id: song._id,
+              category: "Song",
+            });
+          }
+        } else if (likeCount === -1) {
+          song.likes += Number(likeCount);
+          exisitingUser.favourites = exisitingUser.favourites.filter((curr) => {
+            return curr._id.toString() !== song._id.toString();
+          });
+        }
+        await exisitingUser.save();
+      }
+    }
+    await song.save();
+    res.status(200).json({ success: true, message: "Updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error." });
+  }
 });
 
 module.exports = router;

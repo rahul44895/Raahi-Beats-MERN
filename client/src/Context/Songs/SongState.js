@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { AlertContext } from "../Alert/AlertState";
+import Cookie from "js-cookie";
 
 const SongContext = createContext();
 export { SongContext };
@@ -10,6 +11,7 @@ const SongState = (props) => {
   const [songDetails, setSongDetails] = useState();
   const { showAlert } = useContext(AlertContext);
   const fetchSongs = async (songShortID) => {
+    const userToken = Cookie.get("token");
     try {
       const url = songShortID
         ? `${host}/songs?search=${songShortID}`
@@ -17,6 +19,7 @@ const SongState = (props) => {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userToken: userToken ? userToken : null }),
       });
 
       const data = await response.json();
@@ -33,12 +36,15 @@ const SongState = (props) => {
   };
 
   let newReleaseFunc = async () => {
+    const userToken = Cookie.get("token");
     try {
       let url = new URL(`${host}/songs/get/newrelease`);
       url = url.toString();
 
       const response = await fetch(url, {
-        method: "GET",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userToken: userToken ? userToken : null }),
       });
 
       const data = await response.json();
@@ -56,12 +62,15 @@ const SongState = (props) => {
   };
 
   let oldReleaseFunc = async () => {
+    const userToken = Cookie.get("token");
     try {
       let url = new URL(`${host}/songs/get/oldsongs`);
       url = url.toString();
 
       const response = await fetch(url, {
-        method: "GET",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userToken: userToken ? userToken : null }),
       });
 
       const data = await response.json();
@@ -78,8 +87,28 @@ const SongState = (props) => {
     }
   };
 
-  const updatePlayDetails = async (songID) => {
-    console.log("updating...", songID);
+  const updatePlayDetails = async ({ songID, playCount, likeCount }) => {
+    try {
+      const user = Cookie.get("token");
+
+      const response = await fetch(`${host}/songs/update/playnlikes`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          songID,
+          user: user ? user : null,
+          playCount: playCount ? playCount : null,
+          likeCount: likeCount ? likeCount : null,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        if (likeCount) showAlert(data.error);
+        else console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -9,15 +9,17 @@ import { FaShareFromSquare } from "react-icons/fa6";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../Context/Share/ShareState";
+import { SongContext } from "../../Context/Songs/SongState";
 
 export default function FullScreen({ setShowFullScreen }) {
   //useContext
   const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
+  const { updatePlayDetails } = useContext(SongContext);
 
   // //useState
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(currSong && currSong.liked ? true : false);
 
   return (
     <div className="fullscreen-song-container">
@@ -54,7 +56,15 @@ export default function FullScreen({ setShowFullScreen }) {
                 />
               </div>
               <div className="like-share-container">
-                <div onClick={() => setLiked(!liked)} className="tooltip">
+                <div
+                  onClick={() => {
+                    if (liked === false)
+                      updatePlayDetails({ songID: currSong._id, likeCount: 1 });
+                    else updatePlayDetails({ songID: currSong._id, likeCount: -1 });
+                    setLiked(!liked);
+                  }}
+                  className="tooltip"
+                >
                   {liked ? <FaHeart /> : <FaRegHeart />}
                   <span className="tooltiptext">Like</span>
                 </div>

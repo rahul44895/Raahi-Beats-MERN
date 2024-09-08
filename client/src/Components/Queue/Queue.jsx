@@ -64,7 +64,6 @@ export default function Queue() {
                               item._id === currSong._id ? activeSongRef : null
                             }
                           >
-                            {console.log("hi")}
                             <div className="queue-image-container">
                               {item._id === currSong._id ? (
                                 <>
