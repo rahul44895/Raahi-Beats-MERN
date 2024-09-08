@@ -80,6 +80,7 @@ router.post("/get/public", async (req, res) => {
     const total = tempPlaylist.length;
     res.status(200).json({ success: true, total, playlist: tempPlaylist });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
@@ -142,10 +143,10 @@ router.put("/update", decodeToken, async (req, res) => {
       playlist: updatedPlaylist,
     });
   } catch (err) {
+    console.error(err);
     res
       .status(500)
       .json({ error: "Some error occurred while updating the playlist" });
-    console.error(err);
   }
 });
 
@@ -206,11 +207,11 @@ router.delete("/delete", decodeToken, async (req, res) => {
       deletedPlaylist,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       error: "Some error occured",
     });
-    console.log(err);
   }
 });
 

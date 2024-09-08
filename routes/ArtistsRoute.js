@@ -71,7 +71,7 @@ router.post(
 );
 
 // POST - Get Artists
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let artists;
     let total;
@@ -181,6 +181,7 @@ router.put("/update/artists/songs", async (req, res) => {
     }
     res.status(200).json({ success: true, songs });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

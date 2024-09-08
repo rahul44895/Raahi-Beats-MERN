@@ -6,11 +6,6 @@ const mongoose = require("mongoose");
 const ArtistSchema = require("../models/ArtistSchema");
 const { Schema } = mongoose;
 
-let ShortenURLSchema = new Schema({
-  songID: { type: Schema.Types.ObjectId, ref: "songs", required: true },
-  shortenURL: { type: String, required: true },
-});
-ShortenURLSchema = mongoose.model("ShortenLinks", ShortenURLSchema);
 
 router.post("/share-link", async (req, res) => {
   try {
@@ -44,7 +39,7 @@ router.post("/share-link", async (req, res) => {
       songURL: `song/${song.shortenURL}`,
     });
   } catch (error) {
-    console.error("Error generating unique ID:", error);
+    console.log("Error generating unique ID:", error);
     res.status(500).json({
       success: false,
       error: "An error occurred while generating the shareable link",

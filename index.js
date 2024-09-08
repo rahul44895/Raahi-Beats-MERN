@@ -21,13 +21,6 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  const userIp = req.ip || req.connection.remoteAddress;
-  if (userIp) {
-    next();
-  } else res.send("hi");
-});
-
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/users", require("./routes/UsersRoute.js"));

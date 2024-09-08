@@ -15,7 +15,7 @@ const deleteFiles = (file) => {
       console.log(`${file.filename} is deleted successfully`);
     }
   } catch (error) {
-    console.error(`Error deleting file ${file.filename}:`, error);
+    console.log(`Error deleting file ${file.filename}:`, error);
   }
 };
 
@@ -114,7 +114,7 @@ router.post(
         message: `Welcome! We are excited to welcome you, ${user.username}`,
       });
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       deleteFiles(req.file);
       res.status(500).json({
         success: false,
@@ -150,7 +150,7 @@ router.post("/login", async (req, res) => {
       success: true,
       message: `Welcome! We are excited to welcome you, ${user.username}`,
     });
-  } catch (error) {
+  } catch (error) {console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
