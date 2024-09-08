@@ -19,19 +19,21 @@ export default function ParticularArtist() {
   const { play, playbtnAddToQueue, addPlaylistToQueue, currSong } =
     useContext(AudioContext);
 
-  const { id } = useParams();
+  const { artistName, artistID } = useParams();
   const host = process.env.REACT_APP_HOST;
   const [artist, setArtist] = useState(null);
   useEffect(() => {
     const fetchArtist = async () => {
-      if (id) {
-        const response = await fetchArtists({ artistID: id });
+      if (artistName && artistID) {
+        const response = await fetchArtists({
+          artistShortID: `${artistName}/${artistID}`,
+        });
         setArtist(response);
-        // console.log(response);
+        console.log(response);
       }
     };
     fetchArtist();
-  }, [id, fetchArtists]);
+  }, [artistName, artistID, fetchArtists]);
 
   return (
     <div className="homeContainer">
@@ -102,8 +104,7 @@ export default function ParticularArtist() {
                             alt={ele.title}
                           />
                         </div>
-                        <Link to={`/song/${ele._id}`}>
-                          {" "}
+                        <Link to={`/song/${ele.shortenURL}`}>
                           <p>{ele.title}</p>
                         </Link>
                       </td>
@@ -112,7 +113,7 @@ export default function ParticularArtist() {
                           ele.artists.map((currArtist, currArtistIndex) => {
                             return (
                               <Link
-                                to={`/artists/${currArtist._id}`}
+                                to={`/artists/${currArtist.shortenURL}`}
                                 key={currArtist._id}
                               >
                                 {currArtist.name}

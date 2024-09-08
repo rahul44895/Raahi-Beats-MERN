@@ -13,6 +13,7 @@ const SongSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      shortenURL: { type: String },
     },
   ],
   album: { type: String, index: true },
@@ -52,6 +53,7 @@ const SongSchema = new mongoose.Schema({
       rating: String,
     },
   ],
+  shortenURL: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

@@ -4,6 +4,7 @@ const upload = require("../middlewares/multer");
 const deleteFiles = require("../Utils/DeleteFile");
 const ArtistSchema = require("../models/ArtistSchema");
 const SongsSchema = require("../models/SongSchema");
+const { default: mongoose } = require("mongoose");
 
 //POST - Add Artists
 router.post(
@@ -74,9 +75,20 @@ router.post("/", async (req, res) => {
   try {
     let artists;
     let total;
-    if (req.body.id) {
-      artists = await ArtistSchema.findById(req.body.id);
-      total = await ArtistSchema.countDocuments({ _id: req.body.id });
+    const search = req.query.search;
+    if (search) {
+      let searchQuery = {};
+      const isObjectId = mongoose.Types.ObjectId.isValid(search);
+
+      searchQuery = {
+        $or: [
+          ...(isObjectId ? [{ _id: search }] : []),
+          { name: { $regex: search, $options: "i" } },
+          { shortenURL: search },
+        ],
+      };
+      artists = await ArtistSchema.find({ ...searchQuery });
+      total = await ArtistSchema.countDocuments({ ...searchQuery });
     } else {
       let countOfArtists = req.body.countOfArtists || 0;
       artists = ArtistSchema.aggregate([
@@ -101,11 +113,23 @@ router.post("/", async (req, res) => {
       artists = await artists.exec();
       total = artists.length;
     }
+
     let tempArtists = JSON.parse(JSON.stringify(artists));
-    if (artists && req.body.id) {
+
+    if (artists && artists.length == 1) {
+      tempArtists = JSON.parse(JSON.stringify(artists[0]));
+
       tempArtists.songs = await Promise.all(
         tempArtists.songs.map(async (currSong) => {
-          let song = await SongsSchema.findById(currSong._id);
+          let song = JSON.parse(
+            JSON.stringify(await SongsSchema.findById(currSong._id))
+          );
+          song.artists = await Promise.all(
+            song.artists.map(async (currArtist) => {
+              let temp = await ArtistSchema.findById(currArtist._id);
+              return temp;
+            })
+          );
           return song;
         })
       );

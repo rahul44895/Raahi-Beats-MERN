@@ -81,7 +81,7 @@ export default function Artists() {
                 {topArtists.map((currArtist) => {
                   return (
                     <Link
-                      to={`/artists/${currArtist._id}`}
+                      to={`/artists/${currArtist.shortenURL}`}
                       key={currArtist._id}
                     >
                       <div className="artist-card">
@@ -118,7 +118,7 @@ export default function Artists() {
             <div className="artist-card-container">
               {allArtists.map((currArtist) => {
                 return (
-                  <Link to={`/artists/${currArtist._id}`} key={currArtist._id}>
+                  <Link to={`/artists/${currArtist.shortenURL}`} key={currArtist._id}>
                     <div className="artist-card">
                       <div className="artist-card-image-container">
                         {currArtist.avatar !== "undefined" ? (

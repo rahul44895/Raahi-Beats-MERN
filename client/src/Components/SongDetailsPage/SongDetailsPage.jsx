@@ -5,6 +5,7 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
+import { ArtistContext } from "../../Context/Artists/ArtistState";
 
 export default function SongDetailsPage() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -16,16 +17,17 @@ export default function SongDetailsPage() {
 
   const { fetchSongs } = useContext(SongContext);
   const { play, playbtnAddToQueue, currSong } = useContext(AudioContext);
+  const { fetchArtists } = useContext(ArtistContext);
 
-  const { songID } = useParams();
+  const { songName, songID } = useParams();
   const host = process.env.REACT_APP_HOST;
 
   const [song, setSong] = useState(null);
   const [songAlbum, setSongAlbum] = useState(null);
 
   const handleFetching = async () => {
-    if (songID) {
-      const response = await fetchSongs(songID);
+    if (songName && songID) {
+      const response = await fetchSongs(`${songName}/${songID}`);
       setSong(response[0]);
       if (response[0].album) {
         const responseAlbum = await fetchSongs(response[0].album);
@@ -66,7 +68,7 @@ export default function SongDetailsPage() {
                     song.artists.map((currArtist, currArtistIndex) => {
                       return (
                         <Link
-                          to={`/artists/${currArtist._id}`}
+                          to={`/artists/${currArtist.shortenURL}`}
                           key={currArtist._id}
                         >
                           {currArtist.name}
@@ -144,7 +146,7 @@ export default function SongDetailsPage() {
                               ele.artists.map((currArtist, currArtistIndex) => {
                                 return (
                                   <Link
-                                    to={`/artists/${currArtist._id}`}
+                                    to={`/artists/${currArtist.shortenURL}`}
                                     key={currArtist._id}
                                   >
                                     {currArtist.name}

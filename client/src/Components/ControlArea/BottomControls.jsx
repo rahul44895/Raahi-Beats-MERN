@@ -126,7 +126,7 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
           </span>
         </div>
         <div className="controls-container">
-          <Link to={`/song/${currSong._id}`}>
+          <Link to={`/song/${currSong.shortenURL}`}>
             <div
               className="bottom-song-info-container"
               ref={bottomSongInfoContainer}

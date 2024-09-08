@@ -36,7 +36,8 @@
 
 .artistPageTableRow {
   table-layout: fixed;
-  border-bottom: 2px solid white;display: flex;
+  border-bottom: 2px solid white;
+  display: flex;
 }
 
 .artistPageTableCell {
@@ -59,6 +60,7 @@
   width: 40px;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .artistPageSongCoverPlayIcon {

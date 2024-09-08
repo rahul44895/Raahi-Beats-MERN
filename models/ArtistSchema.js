@@ -7,5 +7,6 @@ const ArtistSchema = new Schema({
   songs: [{ _id: { type: mongoose.Types.ObjectId, ref: "Songs" } }],
   playedCount: { type: Number, default: 0 },
   likedCount: { type: Number, default: 0 },
+  shortenURL: { type: String, required: true },
 });
 module.exports = mongoose.model("Artist", ArtistSchema);

@@ -75,7 +75,7 @@ function App() {
                         <Routes>
                           <Route exact path="/" element={<Home />} />
                           <Route
-                            path="/song/:songID"
+                            path="/song/:songName/:songID"
                             element={<SongDetailsPage />}
                           />
                           <Route exact path="/login" element={<LoginPage />} />
@@ -88,13 +88,25 @@ function App() {
                           <Route exact path="/artists" element={<Artists />} />
                           <Route
                             exact
-                            path="/artists/:id"
+                            path="/artists/:artistName/:artistID"
                             element={<ParticularArtist />}
                           />
                           <Route
                             path="*"
                             element={
-                              <div className="homeContainer">404 not found</div>
+                              <div
+                                className="homeContainer"
+                                style={{
+                                  height: "100vh",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <h1>404</h1>
+                                <h3>PAGE NOT_FOUND</h3>
+                              </div>
                             }
                           />
                         </Routes>

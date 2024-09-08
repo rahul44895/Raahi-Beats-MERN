@@ -9,9 +9,9 @@ const SongState = (props) => {
   const host = process.env.REACT_APP_HOST;
   const [songDetails, setSongDetails] = useState();
   const { showAlert } = useContext(AlertContext);
-  const fetchSongs = async (songID) => {
+  const fetchSongs = async (songShortID) => {
     try {
-      const url = songID ? `${host}/songs?search=${songID}` : `${host}/songs`;
+      const url = songShortID ? `${host}/songs?search=${songShortID}` : `${host}/songs`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -14,12 +14,14 @@ const ArtistState = (props) => {
   const host = process.env.REACT_APP_HOST;
 
   //functions
-  const fetchArtists = async ({ artistID, countOfArtists }) => {
+  const fetchArtists = async ({ artistShortID, countOfArtists }) => {
     try {
-      const response = await fetch(`${host}/artists/`, {
+      const url = artistShortID
+        ? `${host}/artists/?search=${artistShortID}`
+        : `${host}/artists/`;
+      const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          id: artistID ? artistID : undefined,
           countOfArtists: countOfArtists ? countOfArtists : undefined,
         }),
         headers: { "Content-Type": "application/json" },

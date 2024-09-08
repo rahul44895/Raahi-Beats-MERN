@@ -119,13 +119,23 @@ router.post("/", async (req, res) => {
         { "artists.name": { $regex: search, $options: "i" } },
         { album: { $regex: search, $options: "i" } },
         { genre: { $regex: search, $options: "i" } },
+        { shortenURL: search },
       ],
     };
   }
 
   songs = await SongsSchema.find({ ...searchQuery }).sort({ title: 1 });
 
-  res.status(200).json({ success: true, total: songs.length, songs });
+  let tempArr = JSON.parse(JSON.stringify(songs));
+  if (songs.length == 1) {
+    tempArr[0].artists = await Promise.all(
+      tempArr[0].artists.map(async (currArtist) => {
+        let temp = await ArtistSchema.findById(currArtist._id);
+        return temp;
+      })
+    );
+  }
+  res.status(200).json({ success: true, total: songs.length, songs: tempArr });
 });
 
 // GET route to fetch new release songs
