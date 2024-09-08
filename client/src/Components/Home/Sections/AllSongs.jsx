@@ -66,10 +66,13 @@ export default function AllSongs() {
             </div>
           </div>
           <div className="new-releases-grid">
-            {songList &&
+            {songList ? (
               songList.map((currSong) => {
                 return <NewReleasesCard song={currSong} key={currSong._id} />;
-              })}
+              })
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
         </div>
       </div>

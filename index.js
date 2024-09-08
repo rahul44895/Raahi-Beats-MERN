@@ -13,6 +13,7 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.set("trust proxy", true);
 app.use(
   cors({
     origin: ["http://localhost:3000", "*"],
@@ -20,12 +21,19 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  const userIp = req.ip || req.connection.remoteAddress;
+  if (userIp) {
+    next();
+  } else res.send("hi");
+});
+
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.use("/api/users", require("./routes/UsersRoute.js"));
+app.use("/api/songs", require("./routes/SongsRoute.js"));
 app.use("/api/artists", require("./routes/ArtistsRoute.js"));
 app.use("/api/playlist", require("./routes/PlaylistRoute.js"));
-app.use("/api/songs", require("./routes/SongsRoute.js"));
-app.use("/api/users", require("./routes/UsersRoute.js"));
 app.use("/api/utils", require("./routes/UtilsRoute.js"));
 
 if (

@@ -39,9 +39,9 @@ export default function HomePage() {
       </div>
       <>
         <NewReleases navbarHeight={navbarHeight} />
-        <OldReleases range={10} navbarHeight={navbarHeight} />
-        <UrbanPunjabiTadka range={10} navbarHeight={navbarHeight} />
-        <WestTunes range={10} navbarHeight={navbarHeight} />
+        <OldReleases navbarHeight={navbarHeight} />
+        <UrbanPunjabiTadka navbarHeight={navbarHeight} />
+        <WestTunes navbarHeight={navbarHeight} />
       </>
       Most Liked Song of this week Most Played Song of this week Most shared
       song

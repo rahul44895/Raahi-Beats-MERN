@@ -1,25 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
 
-export default function UrbanPunjabiTadka({ range, navbarHeight }) {
-  const { handlePunjabiFunc } = useContext(SongContext);
+export default function UrbanPunjabiTadka({ navbarHeight }) {
   const { addPlaylistToQueue } = useContext(AudioContext);
   const { getPublicPlaylist } = useContext(PlaylistContext);
 
   const [songList, setSongList] = useState(null);
-  const handleSongList = async (range) => {
+  const handleSongList = async () => {
     const result = await getPublicPlaylist("66d8a419c231a442ebb2325c");
-    if (result[0] && result[0].songs)
-      setSongList(result[0].songs.slice(0, range));
+    if (result && result[0] && result[0].songs) setSongList(result[0].songs);
   };
   useEffect(() => {
-    handleSongList(range);
+    handleSongList();
     // eslint-disable-next-line
-  }, [range, handlePunjabiFunc]);
+  }, []);
   // const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
 

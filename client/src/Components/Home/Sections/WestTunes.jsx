@@ -5,19 +5,18 @@ import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 
-export default function WestTunes({ range, navbarHeight }) {
+export default function WestTunes({ navbarHeight }) {
   const { getPublicPlaylist } = useContext(PlaylistContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const [songList, setSongList] = useState(null);
-  const handleSongList = async (range) => {
+  const handleSongList = async () => {
     const result = await getPublicPlaylist("66d8aff152ca27ed86ffa9bf");
-    if (result[0] && result[0].songs)
-      setSongList(result[0].songs.slice(0, range));
+    if (result && result[0] && result[0].songs) setSongList(result[0].songs);
   };
   useEffect(() => {
-    handleSongList(range);
+    handleSongList();
     // eslint-disable-next-line
-  }, [range, setSongList]);
+  }, []);
   // const [visibility, setVisibility] = useState(true);
   const main = useRef(null);
 

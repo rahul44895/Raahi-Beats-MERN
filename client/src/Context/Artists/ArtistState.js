@@ -26,6 +26,7 @@ const ArtistState = (props) => {
         }),
         headers: { "Content-Type": "application/json" },
       });
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -38,7 +39,7 @@ const ArtistState = (props) => {
       }
     } catch (error) {
       showAlert("Some error occured.");
-      console.error(error);
+      // console.error(error);
       return null;
     }
   };

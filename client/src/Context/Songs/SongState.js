@@ -11,11 +11,14 @@ const SongState = (props) => {
   const { showAlert } = useContext(AlertContext);
   const fetchSongs = async (songShortID) => {
     try {
-      const url = songShortID ? `${host}/songs?search=${songShortID}` : `${host}/songs`;
+      const url = songShortID
+        ? `${host}/songs?search=${songShortID}`
+        : `${host}/songs`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
+
       const data = await response.json();
       if (data.success) {
         return data.songs;
@@ -34,7 +37,10 @@ const SongState = (props) => {
       let url = new URL(`${host}/songs/get/newrelease`);
       url = url.toString();
 
-      const response = await fetch(url, { method: "GET" });
+      const response = await fetch(url, {
+        method: "GET",
+      });
+
       const data = await response.json();
       if (response.ok) {
         return data.songs;
@@ -54,7 +60,10 @@ const SongState = (props) => {
       let url = new URL(`${host}/songs/get/oldsongs`);
       url = url.toString();
 
-      const response = await fetch(url, { method: "GET" });
+      const response = await fetch(url, {
+        method: "GET",
+      });
+
       const data = await response.json();
       if (response.ok) {
         return data.songs;
@@ -69,10 +78,6 @@ const SongState = (props) => {
     }
   };
 
-  let getDetails = (song) => {
-    console.log(song);
-  };
-
   const updatePlayDetails = async (songID) => {
     console.log("updating...", songID);
   };
@@ -83,7 +88,6 @@ const SongState = (props) => {
         fetchSongs,
         newReleaseFunc,
         oldReleaseFunc,
-        getDetails,
         songDetails,
         setSongDetails,
         songList,

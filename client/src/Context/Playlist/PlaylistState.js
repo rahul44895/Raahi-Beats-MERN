@@ -19,8 +19,9 @@ const PlaylistState = (props) => {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ _id: playlistID ? playlistID : undefined }),
+        body: JSON.stringify({ _id: playlistID ? playlistID : null }),
       });
+
       const data = await response.json();
       if (response.ok && data.success) {
         return data.playlist;

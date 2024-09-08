@@ -4,18 +4,18 @@ import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 
-export default function OldReleases({ range, navbarHeight }) {
+export default function OldReleases({ navbarHeight }) {
   const { oldReleaseFunc } = useContext(SongContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const [newRelease, setNewRelease] = useState(null);
-  const handleSongList = async (range) => {
-    const result = await oldReleaseFunc(range);
+  const handleSongList = async () => {
+    const result = await oldReleaseFunc();
     setNewRelease(result);
   };
   useEffect(() => {
-    handleSongList(range);
+    handleSongList();
     // eslint-disable-next-line
-  }, [range, oldReleaseFunc]);
+  }, []);
   // const [visibility, setVisibility] = useState(true);
   const main = useRef();
   return (
@@ -66,7 +66,7 @@ export default function OldReleases({ range, navbarHeight }) {
           <div className="new-releases-grid">
             {newRelease &&
               newRelease.map((currSong) => {
-                return <NewReleasesCard song={currSong} key={currSong._id}/>;
+                return <NewReleasesCard song={currSong} key={currSong._id} />;
               })}
           </div>
         </div>

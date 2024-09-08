@@ -5,7 +5,6 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
-import { ArtistContext } from "../../Context/Artists/ArtistState";
 
 export default function SongDetailsPage() {
   const [navbarHeight, setnavbarHeight] = useState(0);
@@ -17,7 +16,6 @@ export default function SongDetailsPage() {
 
   const { fetchSongs } = useContext(SongContext);
   const { play, playbtnAddToQueue, currSong } = useContext(AudioContext);
-  const { fetchArtists } = useContext(ArtistContext);
 
   const { songName, songID } = useParams();
   const host = process.env.REACT_APP_HOST;
