@@ -29,7 +29,6 @@ export default function ParticularArtist() {
           artistShortID: `${artistName}/${artistID}`,
         });
         setArtist(response);
-        console.log(response);
       }
     };
     fetchArtist();
