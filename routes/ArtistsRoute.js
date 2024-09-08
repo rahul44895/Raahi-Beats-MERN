@@ -71,7 +71,7 @@ router.post(
 );
 
 // POST - Get Artists
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let artists;
     let total;
