@@ -124,8 +124,4 @@ a {
   opacity: 1;
 }
 
-@media screen and (max-width: 450px) {
-  html {
-    font-size: 12px;
-  }
-}
+

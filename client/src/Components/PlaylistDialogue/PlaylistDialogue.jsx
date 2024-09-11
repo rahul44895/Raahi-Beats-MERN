@@ -15,7 +15,6 @@ export default function PlaylistDialogue() {
     showPlaylistDialogue,
     setshowPlaylistDialogue,
     getPrivatePlaylist,
-    // getPlaylistDetails,
     addToPlaylistFunc,
     updatePlaylistOrderFunc,
     updatePlaylistDetailsFunc,
@@ -35,7 +34,7 @@ export default function PlaylistDialogue() {
       setPlaylist(response);
     }
     // eslint-disable-next-line
-  }, [setPlaylist, showPlaylistDialogue]);
+  }, [setPlaylist, showPlaylistDialogue, getPrivatePlaylist]);
   useEffect(() => {
     handleAllPlaylist();
   }, [handleAllPlaylist]);

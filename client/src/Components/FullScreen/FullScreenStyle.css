@@ -145,13 +145,3 @@
 .queue-content {
   overflow: auto;
 }
-
-@media screen and (max-width: 450px) {
-  .fullscreen-main-container {
-    flex-wrap: wrap;
-    overflow: auto;
-  }
-  .fullscreen-queueArea {
-    width: 100%;
-  }
-}

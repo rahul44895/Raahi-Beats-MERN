@@ -73,49 +73,10 @@ export default function Artists() {
                 <center>Top Artists</center>
               </h1>
             </div>
-            {topArtists && topArtists.length > 0 && (
+            {
               <div className="artist-card-container">
-                {topArtists.map((currArtist) => {
-                  return (
-                    <Link
-                      to={`/artists/${currArtist.shortenURL}`}
-                      key={currArtist._id}
-                    >
-                      <div className="artist-card">
-                        <div className="artist-card-image-container">
-                          {currArtist.avatar !== "undefined" ? (
-                            <img
-                              src={`${host}/${currArtist.avatar}`}
-                              className="artist-card-image"
-                              alt="artistavatar"
-                            />
-                          ) : (
-                            <img
-                              src={noArtistImage}
-                              className="artist-card-image"
-                              alt="artistavatar"
-                            />
-                          )}
-                        </div>
-                        <div className="artist-card-name">
-                          {currArtist.name}
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
-            <div className="h-100vh-min scroll-item artist-sec-2">
-              <div
-                style={{ height: `${navbarHeight}px`, width: "100vw" }}
-              ></div>
-              <h1 style={{ fontFamily: "'Dancing Script', cursive" }}>
-                <center>All Artists</center>
-              </h1>
-              {allArtists && allArtists.length > 0 && (
-                <div className="artist-card-container">
-                  {allArtists.map((currArtist) => {
+                {topArtists && topArtists.length > 0 ? (
+                  topArtists.map((currArtist) => {
                     return (
                       <Link
                         to={`/artists/${currArtist.shortenURL}`}
@@ -143,9 +104,55 @@ export default function Artists() {
                         </div>
                       </Link>
                     );
-                  })}
-                </div>
-              )}
+                  })
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
+            }
+            <div className="h-100vh-min scroll-item artist-sec-2">
+              <div
+                style={{ height: `${navbarHeight}px`, width: "100vw" }}
+              ></div>
+              <h1 style={{ fontFamily: "'Dancing Script', cursive" }}>
+                <center>All Artists</center>
+              </h1>
+
+              <div className="artist-card-container">
+                {allArtists && allArtists.length > 0 ? (
+                  allArtists.map((currArtist) => {
+                    return (
+                      <Link
+                        to={`/artists/${currArtist.shortenURL}`}
+                        key={currArtist._id}
+                      >
+                        <div className="artist-card">
+                          <div className="artist-card-image-container">
+                            {currArtist.avatar !== "undefined" ? (
+                              <img
+                                src={`${host}/${currArtist.avatar}`}
+                                className="artist-card-image"
+                                alt="artistavatar"
+                              />
+                            ) : (
+                              <img
+                                src={noArtistImage}
+                                className="artist-card-image"
+                                alt="artistavatar"
+                              />
+                            )}
+                          </div>
+                          <div className="artist-card-name">
+                            {currArtist.name}
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,20 @@
+@media screen and (max-width: 450px) {
+  html {
+    font-size: 12px !important;
+  }
+  .homeContainer {
+    background-size: cover !important ;
+  }
+
+  /* song-card */
+  .song-card-xl {
+    height: 10.625rem !important;
+    width: 10.625rem !important;
+  }
+  .song-card-xl-overlay-text {
+    font-size: 1.5rem;
+  }
+  .new-releases-grid {
+    justify-content: center;
+  }
+}

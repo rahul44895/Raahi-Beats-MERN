@@ -250,12 +250,3 @@
   padding: 0.5em;
   cursor: pointer;
 }
-
-@media screen and (max-width: 450px) {
-  .homeContainer {
-    background-size: cover;
-  }
-  .new-releases-grid {
-    justify-content: center;
-  }
-}

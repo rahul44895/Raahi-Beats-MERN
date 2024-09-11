@@ -24,6 +24,10 @@ const cookieOptions = {
   httpOnly: false,
   secure:
     process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging",
+  sameSite:
+    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
+      ? "None"
+      : "Lax",
 };
 
 // POST /signup - Handles user registration by validating input
@@ -140,17 +144,20 @@ router.post("/login", async (req, res) => {
         .json({ success: false, error: "Password is incorrect." });
     }
     const token = JWT.sign({ userID: user._id }, JWT_SECRET_KEY);
-    res.cookie("token", token, cookieOptions);
-    res.cookie(
-      "user",
-      JSON.stringify({ username: user.username, avatar: user.avatar }),
-      cookieOptions
-    );
-    res.status(200).json({
-      success: true,
-      message: `Welcome! We are excited to welcome you, ${user.username}`,
-    });
-  } catch (error) {console.log(error);
+    res
+      .cookie("token", token, cookieOptions)
+      .cookie(
+        "user",
+        JSON.stringify({ username: user.username, avatar: user.avatar }),
+        cookieOptions
+      )
+      .status(200)
+      .json({
+        success: true,
+        message: `Welcome! We are excited to welcome you, ${user.username}`,
+      });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

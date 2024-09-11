@@ -6,7 +6,8 @@
   color: white;
   flex-shrink: 0;
   border: 2px solid white;
-  position: relative;z-index: 1001;
+  position: relative;
+  z-index: 1001;
 }
 
 .seekbar-container {
@@ -86,18 +87,4 @@
 .bottom-song-title {
   flex: 1;
   /* white-space: nowrap; */
-}
-
-@media screen and (max-width: 450px) {
-  .controls-container {
-    flex-direction: column;
-  }
-  .bottom-song-info-container {
-    justify-content: flex-start;
-    width: 100%;
-  }
-  .play-pause-icon {
-    position: static;
-    transform: translate(0, 0);
-  }
 }

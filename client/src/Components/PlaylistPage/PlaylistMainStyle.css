@@ -1,0 +1,23 @@
+.mainPagePlaylistContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mainPagePlaylistItem {
+  width: 150px;
+  text-wrap: wrap;
+  padding: 1em;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.mainPagePlaylistItem:hover {
+  background-color: #00000069;
+  transform: scale(0.99);
+}
+
+.mainPagePlaylistImage {
+  max-height: 200px;
+  width: 100%;
+  object-fit: cover;
+}

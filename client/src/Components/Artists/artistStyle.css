@@ -83,19 +83,3 @@
   padding-top: 25%;
 }
 
-@media screen and (max-width: 450px) {
-  .artist-sec-2-subsec {
-    flex-direction: column;
-  }
-  .artist-sec-2-subsec-image-container img {
-    height: 70vh;
-    width: 70vh;
-  }
-  .artist-sec-2-subsec-text {
-    font-size: 25px;
-    text-align: center;
-  }
-  .artist-sec-2-subsec-2 {
-    padding-top: 100%;
-  }
-}

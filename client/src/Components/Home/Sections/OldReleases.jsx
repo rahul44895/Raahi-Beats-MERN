@@ -38,36 +38,13 @@ export default function OldReleases({ navbarHeight }) {
                 <IoIosPlayCircle />
               </span>
             </div>
-            {/* <div style={{ display: "flex", alignItems: "center" }}>
-              {visibility && (
-                <div
-                  className="new-releases-see-more"
-                  onClick={() => {
-                    handleSongList(20);
-                    setVisibility(!visibility);
-                  }}
-                >
-                  See More
-                </div>
-              )}
-              {!visibility && (
-                <div
-                  className="new-releases-see-more"
-                  onClick={() => {
-                    handleSongList(range);
-                    setVisibility(!visibility);
-                  }}
-                >
-                  See Less
-                </div>
-              )}
-            </div> */}
+            
           </div>
           <div className="new-releases-grid">
-            {newRelease &&
+            {newRelease ?
               newRelease.map((currSong) => {
                 return <NewReleasesCard song={currSong} key={currSong._id} />;
-              })}
+              }):<p>Loading...</p>}
           </div>
         </div>
       </div>

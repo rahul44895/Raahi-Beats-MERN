@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useCallback } from "react";
 import { useState } from "react";
 import AlertBox from "./AlertBox";
 const AlertContext = createContext();
@@ -7,9 +7,9 @@ export { AlertContext };
 const AlertState = (props) => {
   const [alert, setAlert] = useState({ message: "", visibile: false });
 
-  const showAlert = (message) => {
+  const showAlert = useCallback((message) => {
     setAlert({ message, visibile: true });
-  };
+  }, []);
 
   const hideAlert = () => {
     setAlert({ message: "", visibile: false });

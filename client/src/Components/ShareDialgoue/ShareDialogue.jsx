@@ -24,7 +24,10 @@ const ShareDialogue = () => {
               <h1 className="share-title">Share</h1>
               <span
                 className="share-close-icon"
-                onClick={() => showShareDialogue(false)}
+                onClick={() => {
+                  shareURL.current = "";
+                  showShareDialogue(false);
+                }}
               >
                 <IoMdClose />
               </span>

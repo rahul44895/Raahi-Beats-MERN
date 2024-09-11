@@ -95,39 +95,3 @@
 .hide {
   display: none;
 }
-@media screen and (max-width: 450px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    backdrop-filter: blur(20px);
-  }
-  .nav-hamburger-menu {
-    display: flex;
-    margin: 10px;
-  }
-  .nav-menu-container {
-    transform: translateX(-36%);
-  }
-  .navbar-icon-container {
-    width: 100%;
-    padding: 1em;
-  }
-  .search-input:focus {
-    width: 100%;
-  }
-
-  .search-area {
-    justify-content: center;
-    width: 100%;
-  }
-  .search-input-area {
-    width: 90%;
-  }
-  .search-area:hover .search-input-area {
-    width: 90%;
-  }
-  .navbar-options-section {
-    width: 100%;
-    flex-direction: column;
-  }
-}

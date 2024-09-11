@@ -72,7 +72,7 @@ export default function SideNav() {
           <div className="sidenav-text">Artists</div>
         </div>
       </Link>
-      <Link to={"/genre"}>
+      <Link to={"/playlist"}>
         <div className="sidenav-item">
           <div className="sidenav-icon">
             <svg
