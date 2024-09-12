@@ -111,6 +111,14 @@ const SongState = (props) => {
     }
   };
 
+  const updateSong = async ({ songID, details }) => {
+    const response = await fetch(`${host}/songs/update`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: songID, details }),
+    });
+    await response.json();
+  };
   return (
     <SongContext.Provider
       value={{
@@ -119,8 +127,8 @@ const SongState = (props) => {
         oldReleaseFunc,
         songDetails,
         setSongDetails,
-        // songList,
         updatePlayDetails,
+        updateSong,
       }}
     >
       {props.children}

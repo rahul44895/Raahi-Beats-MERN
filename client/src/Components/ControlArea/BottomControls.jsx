@@ -129,9 +129,9 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
         <div className="controls-container">
           <Link
             to={
-              window.innerWidth < minWindowWidth
+              window.innerWidth > minWindowWidth
                 ? `/song/${currSong.shortenURL}`
-                : ""
+                : window.location
             }
           >
             <div
@@ -143,7 +143,7 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
                       setShowFullScreen(!showFullScreen);
                       setSongDetails(currSong);
                     }
-                  : {}
+                  : () => {}
               }
             >
               <img

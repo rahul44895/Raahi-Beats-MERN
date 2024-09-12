@@ -20,7 +20,7 @@ const AudioState = (props) => {
   const loopRef = useRef(loop);
 
   const { showAlert } = useContext(AlertContext);
-  const { updatePlayDetails } = useContext(SongContext);
+  const { updatePlayDetails, updateSong } = useContext(SongContext);
   const host = process.env.REACT_APP_HOST;
 
   useEffect(() => {
@@ -75,6 +75,10 @@ const AudioState = (props) => {
         duration.current = newAudio.duration;
         document.title = "Raahi Beats | " + song.title;
         updatePlayDetails({ songID: tempSong._id, playCount: true });
+        updateSong({
+          songID: tempSong._id,
+          details: { duration: newAudio.duration },
+        });
       })
       .catch((error) => {
         showAlert("Some Error Occured");

@@ -366,4 +366,54 @@ router.put("/update/playnlikes", async (req, res) => {
   }
 });
 
+//update song duration
+router.put("/update", async (req, res) => {
+  // allSongs();
+  try {
+    const { _id, details } = req.body;
+    if (!_id) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Song id is required." });
+    }
+    if (!details) {
+      return res.status(400).json({
+        success: false,
+        error: "Song details to be updated are required.",
+      });
+    }
+    const { duration } = details;
+    const updateDetails = {};
+    if (duration) updateDetails.duration = duration;
+
+    const updatedSong = await SongsSchema.findByIdAndUpdate(
+      _id,
+      { $set: updateDetails },
+      { new: true }
+    );
+    if (!updatedSong) {
+      return res.status(404).json({ success: false, error: "Song not found." });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Song updated successfully.",
+      song: updatedSong,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal error occured" });
+  }
+});
+
+const allSongs = async () => {
+  const songs = await SongsSchema.find();
+  const totalDuration = songs.reduce(
+    (acc, song) => acc + (song.duration ? song.duration : 0),
+    0
+  );
+  console.log({ totalDuration });
+};
+
 module.exports = router;

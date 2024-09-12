@@ -22,8 +22,8 @@ const deleteFiles = (file) => {
 const cookieOptions = {
   expires: new Date(Date.now() + 30 * 60 * 1000),
   httpOnly: false,
-  secure:
-    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging",
+  secure: false,
+  samesite: "none",
 };
 
 // POST /signup - Handles user registration by validating input

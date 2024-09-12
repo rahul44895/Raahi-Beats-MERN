@@ -18,6 +18,7 @@ const SongSchema = new mongoose.Schema({
   ],
   album: { type: String, index: true },
   genre: { type: String, index: true },
+  duration: { type: Number, default: 0 },
   releaseDate: { type: Date },
   filePath: { type: String, required: true },
   coverImage: { type: String },

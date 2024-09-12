@@ -38,6 +38,19 @@ export default function FullScreen({ setShowFullScreen }) {
   // //useState
   const [liked, setLiked] = useState(currSong && currSong.liked ? true : false);
 
+  const formatTime = (ms) => {
+    const totalSeconds = Math.floor(ms);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  };
+
   return (
     <div className="fullscreen-song-container">
       <div
@@ -129,6 +142,10 @@ export default function FullScreen({ setShowFullScreen }) {
                   ? new Date(currSong.releaseDate).getFullYear()
                   : "Unknown year"}
               </p>
+              <p className="song-info">
+                Duration:{" "}
+                {currSong.duration ? formatTime(currSong.duration) : "Unknown"}
+              </p>
 
               <div className="like-dislike-bar">
                 <div className="like-bar">
@@ -139,43 +156,48 @@ export default function FullScreen({ setShowFullScreen }) {
                 </div>
               </div>
             </div>
-            <div className="play-pause-icon">
-              {loop === 0 && (
-                <span style={{ fontSize: "2.5rem" }} onClick={() => setLoop(2)}>
-                  <SlLoop />
-                </span>
-              )}
-              {loop === 2 && (
-                <span
-                  style={{ fontSize: "2.5rem", color: "#0075ff" }}
-                  onClick={() => setLoop(1)}
-                >
-                  <SlLoop />
-                </span>
-              )}
-              {loop === 1 && (
-                <span
-                  style={{ fontSize: "2.5rem", color: "#0075ff" }}
-                  onClick={() => setLoop(0)}
-                >
-                  <SlLoop />1
-                </span>
-              )}
+            {window.innerWidth < 1000 && (
+              <div className="play-pause-icon">
+                {loop === 0 && (
+                  <span
+                    style={{ fontSize: "2.5rem" }}
+                    onClick={() => setLoop(2)}
+                  >
+                    <SlLoop />
+                  </span>
+                )}
+                {loop === 2 && (
+                  <span
+                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                    onClick={() => setLoop(1)}
+                  >
+                    <SlLoop />
+                  </span>
+                )}
+                {loop === 1 && (
+                  <span
+                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                    onClick={() => setLoop(0)}
+                  >
+                    <SlLoop />1
+                  </span>
+                )}
 
-              <span style={{ fontSize: "2.5rem" }} onClick={previous}>
-                <BiSolidSkipPreviousCircle />
-              </span>
-              <span onClick={() => playnpause()}>
-                {!isPlaying && <IoIosPlayCircle />}
-                {isPlaying && <MdPauseCircle />}
-              </span>
-              <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
-                <BiSolidSkipNextCircle />
-              </span>
-              <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
-                <PiShuffleBold />
-              </span>
-            </div>
+                <span style={{ fontSize: "2.5rem" }} onClick={previous}>
+                  <BiSolidSkipPreviousCircle />
+                </span>
+                <span onClick={() => playnpause()}>
+                  {!isPlaying && <IoIosPlayCircle />}
+                  {isPlaying && <MdPauseCircle />}
+                </span>
+                <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
+                  <BiSolidSkipNextCircle />
+                </span>
+                <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
+                  <PiShuffleBold />
+                </span>
+              </div>
+            )}
           </div>
           <div className="fullscreen-queueArea">
             <h1 className="queue-header">
