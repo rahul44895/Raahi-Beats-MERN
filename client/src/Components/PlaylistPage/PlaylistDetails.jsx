@@ -14,47 +14,47 @@ export default function PlaylistDetails() {
     }
   }, [navbarHeight]);
 
-  const { getPrivatePlaylist } = useContext(PlaylistContext);
+  const { getPublicPlaylist } = useContext(PlaylistContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
 
   const { playlistID } = useParams();
-  const [privatePlaylist, setPrivatePlaylist] = useState(null);
+  const [publicPlaylist, setPublicPlaylist] = useState(null);
 
-  const handlePrivatePlaylist = useCallback(
+  const handlePublicPlaylist = useCallback(
     async (playlistID) => {
-      const response = await getPrivatePlaylist(playlistID);
+      const response = await getPublicPlaylist(playlistID);
       // console.log(response);
-      if (response) setPrivatePlaylist(response[0]);
+      if (response) setPublicPlaylist(response[0]);
     },
-    [getPrivatePlaylist]
+    [getPublicPlaylist]
   );
 
   const navigate = useNavigate();
   useEffect(() => {
-    const user = Cookie.get("user");
-    if (!user) navigate("/login");
+    // const user = Cookie.get("user");
+    // if (!user) navigate("/login");
     if (!playlistID) navigate("/error");
-    handlePrivatePlaylist(playlistID);
-  }, [handlePrivatePlaylist, navigate, playlistID]);
+    handlePublicPlaylist(playlistID);
+  }, [handlePublicPlaylist, navigate, playlistID]);
   return (
     <div className="homeContainer">
       <div style={{ height: `${navbarHeight}px` }}></div>
-      {privatePlaylist && (
+      {publicPlaylist && (
         <div style={{ padding: "2em" }}>
           <div className="new-releases-header">
             <div className="new-releases-title">
               Tunu tunu meow meow
               <span
                 className="song-card-medium-play-icon"
-                onClick={() => addPlaylistToQueue(privatePlaylist.songs)}
+                onClick={() => addPlaylistToQueue(publicPlaylist.songs)}
               >
                 <IoIosPlayCircle />
               </span>
             </div>
           </div>
           <div className="mainPagePlaylistContainer" style={{ gap: "10px" }}>
-            {privatePlaylist ? (
-              privatePlaylist.songs.map((currSong) => {
+            {publicPlaylist ? (
+              publicPlaylist.songs.map((currSong) => {
                 return <SongCardMedium song={currSong} key={currSong._id} />;
               })
             ) : (

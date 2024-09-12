@@ -49,6 +49,11 @@ router.post("/get/private", decodeToken, async (req, res) => {
     const query = { user: req.user };
     if (req.body._id) query._id = req.body._id;
     let playlist = await Playlist.find(query);
+    console.log(query);
+    if (playlist.length <= 0)
+      return res
+        .status(400)
+        .json({ success: false, error: "Playlist not found." });
     let tempPlaylist = JSON.parse(JSON.stringify(playlist));
     if (req.body._id) {
       tempPlaylist[0].songs = await Promise.all(

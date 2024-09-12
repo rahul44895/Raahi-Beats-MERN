@@ -108,7 +108,7 @@ export default function FullScreen({ setShowFullScreen }) {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="fullscreenInfoContainer">
               <h1 className="song-title">
                 {currSong.title ? currSong.title : "Unknown title"}
               </h1>

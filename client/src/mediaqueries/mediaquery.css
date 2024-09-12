@@ -87,6 +87,11 @@
     flex: 0 !important;
   }
 
+  .fullscreenInfoContainer {
+    width: 80%;
+    margin: 10px auto 5px auto;
+  }
+
   .fullscreen-main-container {
     display: block !important;
     overflow-y: auto;

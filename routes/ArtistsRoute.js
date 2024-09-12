@@ -79,7 +79,6 @@ router.post("/", async (req, res) => {
     if (search) {
       let searchQuery = {};
       const isObjectId = mongoose.Types.ObjectId.isValid(search);
-
       searchQuery = {
         $or: [
           ...(isObjectId ? [{ _id: search }] : []),
@@ -141,6 +140,7 @@ router.post("/", async (req, res) => {
         tempArtists[currArtist].songs = [];
       }
     }
+
     res.status(200).json({ success: true, total, artists: tempArtists });
   } catch (error) {
     console.log(error);

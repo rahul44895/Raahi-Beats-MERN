@@ -1,15 +1,15 @@
 import "./App.css";
 import "./mediaqueries/mediaquery.css";
 import "./fonts.css";
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import Home from "./Components/Home/HomePage";
 import Navbar from "./Components/Navbar/Navbar";
-import { useEffect, useState } from "react";
 import SongState from "./Context/Songs/SongState";
 import AudioState from "./Context/Audio/AudioState";
 import AuthenticationState from "./Context/Authentication/AuthenticationState";
 import LoginPage from "./Components/Authentication/LoginPage";
 import SignUp from "./Components/Authentication/SignUp";
-import { Route, Routes } from "react-router-dom";
 import BottomControls from "./Components/ControlArea/BottomControls";
 import SongDetailsPage from "./Components/SongDetailsPage/SongDetailsPage";
 import PlaylistDialogue from "./Components/PlaylistDialogue/PlaylistDialogue";
@@ -25,6 +25,7 @@ import FullScreen from "./Components/FullScreen/FullScreen";
 import ShareDialogue from "./Components/ShareDialgoue/ShareDialogue";
 import PlaylistMain from "./Components/PlaylistPage/PlaylistMain";
 import PlaylistDetails from "./Components/PlaylistPage/PlaylistDetails";
+import SearchPage from "./Components/SearchPage/SearchPage";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -131,6 +132,7 @@ function App() {
                               path="/playlist/:playlistID"
                               element={<PlaylistDetails />}
                             />
+                            <Route exact path="/search/:searchQuery" element={<SearchPage/>}/>
                             <Route
                               path="*"
                               element={

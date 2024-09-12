@@ -47,7 +47,7 @@ export default function Navbar() {
     e.preventDefault();
     if (searchQuery === "") return;
     let searchURI = encodeURIComponent(searchQuery);
-    navigate(`/search?=${searchURI}`);
+    navigate(`/search/${searchURI}`);
     handleNavVisibility();
   };
 
