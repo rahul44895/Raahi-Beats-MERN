@@ -118,7 +118,7 @@ export default function FullScreen({ setShowFullScreen }) {
                   ? currSong.artists.map((e, index) => {
                       return (
                         <Link
-                          to={`/artists/${e._id}`}
+                          to={`/artists/${e.shortenURL}`}
                           key={e._id}
                           onClick={() => {
                             setShowFullScreen(false);
