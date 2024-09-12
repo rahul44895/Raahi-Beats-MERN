@@ -11,7 +11,7 @@ export default function Queue() {
   const activeSongRef = useRef(null);
   const host = process.env.REACT_APP_HOST;
   useEffect(() => {
-    if (activeSongRef.current) {
+    if (activeSongRef.current && window.innerWidth > 1000) {
       activeSongRef.current.scrollIntoView({
         behaviour: "smooth",
         block: "center",

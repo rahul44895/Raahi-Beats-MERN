@@ -22,7 +22,7 @@ const ShareState = (props) => {
       });
       const data = await response.json();
       if (!data.success) {
-        return showAlert("Some error occured while generating the Share link");
+        return showAlert("Some error occured while generating the Share link.");
       }
 
       const hostUrl = window.location.origin;
@@ -33,7 +33,9 @@ const ShareState = (props) => {
           showAlert("Song URL copied to clipboard: ");
         })
         .catch((err) => {
-          showAlert("Some error occured while generating the Share link");
+          showAlert(
+            "Some error occured while copying the Share link to the clipboard."
+          );
           console.error("Failed to copy text: ", err);
         });
     } catch (error) {

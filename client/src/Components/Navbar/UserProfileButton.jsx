@@ -4,7 +4,11 @@ import raahi_beats_logo from "../../assets/images/Apps/raahi-beats-logo.png";
 import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../Context/Authentication/AuthenticationState";
 
-export default function UserProfileButton({ username, userAvatar }) {
+export default function UserProfileButton({
+  username,
+  userAvatar,
+  handleNavVisibility,
+}) {
   const { logout } = useContext(AuthenticationContext);
   const host = process.env.REACT_APP_HOST;
 
@@ -28,11 +32,11 @@ export default function UserProfileButton({ username, userAvatar }) {
           <p style={{ marginBottom: "10px", color: "black" }}>{username}</p>
           {!userAvatar && (
             <div>
-              <Link to="/login">
+              <Link to="/login" onClick={handleNavVisibility}>
                 <button className="btn">Login</button>
               </Link>
               <br />
-              <Link to="/signup">
+              <Link to="/signup" onClick={handleNavVisibility}>
                 <button className="btn">SignUp</button>
               </Link>
             </div>

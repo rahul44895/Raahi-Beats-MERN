@@ -80,18 +80,39 @@
   font-size: 25px;
   color: white;
   margin: 0px 5px;
-  height: 50px;
-  position: absolute;
-  right: 10px;
-  top: 0;
   display: none;
   justify-content: center;
   align-items: center;
 }
 
-.nav-hamburger-menu:hover .navbar-options-section {
-  display: flex;
-}
-.hide {
-  display: none;
+@media screen and (max-width: 1000px) {
+  .navbar {
+    flex-direction: column;
+    backdrop-filter: blur(20px);
+  }
+
+  .navtemp {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-hamburger-menu {
+    display: flex;
+  }
+
+  .navbar-options-section {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 80vw;
+    margin: auto;
+  }
+
+  .nav-hamburger-menu:hover .navbar-options-section {
+    display: flex;
+  }
+
+  .search-area:hover .search-input-area {
+    width: 100%;
+  }
 }

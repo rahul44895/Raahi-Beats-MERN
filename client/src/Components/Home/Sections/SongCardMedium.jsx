@@ -5,7 +5,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { MdQueueMusic, MdOutlinePlaylistAdd } from "react-icons/md";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import Marquee from "react-fast-marquee";
 import { AudioContext } from "../../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../../Context/Share/ShareState";
@@ -32,11 +31,9 @@ export default function SongCardMedium({ song }) {
         />
       </div>
       <div className="song-card-medium-overlay-text">
-        {song.title && song.title.length > 20 ? (
-          <Marquee>{song.song || "Unknown Title"}</Marquee>
-        ) : (
-          song.title || "Unknown Title"
-        )}
+        {song.title && song.title.length > 20
+          ? song.title.slice(0, 20) + "..."
+          : song.title || "Unknown Title"}
       </div>
       <div className="song-card-medium-overlay">
         <div className="song-card-medium-overlay-controls">

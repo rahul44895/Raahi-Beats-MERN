@@ -1,20 +1,97 @@
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 1000px) {
   html {
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
+
   .homeContainer {
     background-size: cover !important ;
   }
 
+  .overlay-text h1 {
+    font-size: 3.6rem !important;
+  }
+
+  .sidenav-container:hover .sidenav-text {
+    width: 30vw !important;
+  }
+
+  .new-releases-container {
+    padding: 0 !important;
+  }
+
+  .new-releases-grid {
+    justify-content: center !important;
+  }
+
+  .new-releases-header {
+    padding: 2em 0 0 2em !important;
+  }
+
+  .new-releases-title {
+    font-size: 2rem !important;
+  }
   /* song-card */
   .song-card-xl {
-    height: 10.625rem !important;
-    width: 10.625rem !important;
+    height: 9.625rem !important;
+    width: 9.625rem !important;
   }
   .song-card-xl-overlay-text {
-    font-size: 1.5rem;
+    font-size: 1.4rem !important;
   }
-  .new-releases-grid {
-    justify-content: center;
+
+  .song-card-medium {
+    width: 9.25rem !important;
+  }
+
+  .artist-sec-2-subsec {
+    height: 100vh !important;
+    flex-direction: column !important;
+  }
+
+  .artist-sec-2-subsec-image-container {
+    flex: 0 !important;
+  }
+
+  .artist-sec-2-subsec-image-container img {
+    width: 90vw !important;
+    height: 70vh !important;
+  }
+
+  .artist-sec-2-subsec-text {
+    flex: 0 !important;
+    font-size: 1.4rem !important;
+    text-align: center !important;
+    width: 80% !important;
+  }
+
+  .artist-sec-2-subsec-2 {
+    position: static !important;
+    padding-top: 0 !important;
+  }
+
+  .artistPageHeaderContainer {
+    justify-content: center !important;
+  }
+
+  .artistPage-artistList {
+    display: none !important;
+  }
+
+  .bottom-song-info-container {
+    width: 80vw !important;
+  }
+
+  .play-pause-icon {
+    position: static !important ;
+    transform: translate(0%, 0%) !important;
+    flex: 0 !important;
+  }
+
+  .fullscreen-main-container {
+    display: block !important;
+    overflow-y: auto;
+  }
+  .fullscreen-queueArea {
+    width: 100% !important;
   }
 }

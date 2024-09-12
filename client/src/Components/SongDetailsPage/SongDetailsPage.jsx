@@ -97,7 +97,7 @@ export default function SongDetailsPage() {
             {songAlbum && (
               <div>
                 <h1>More Like This</h1>
-                <table className="artistPageTable">
+                {/* <table className="artistPageTable">
                   <tbody>
                     {songAlbum.map((ele, index) => {
                       return (
@@ -159,7 +159,67 @@ export default function SongDetailsPage() {
                       );
                     })}
                   </tbody>
-                </table>
+                </table> */}
+                <div className="artistPage-row-container">
+                  {songAlbum.map((ele, index) => {
+                    return (
+                      <div key={index} className="artistPage-row">
+                        <div className="artistPage-index">{index + 1}.</div>
+                        <div
+                          className="artistPageSongCoverImageContainer"
+                          onClick={() => {
+                            if (!currSong || ele._id !== currSong._id) {
+                              play(ele);
+                              playbtnAddToQueue(ele);
+                            }
+                          }}
+                        >
+                          {currSong && ele._id === currSong._id ? (
+                            <>
+                              <img
+                                src={PlayingBarGif}
+                                className="queue-playing-image"
+                                alt="play button"
+                              />
+                            </>
+                          ) : (
+                            <span className="artistPageSongCoverPlayIcon">
+                              <IoIosPlayCircle />
+                            </span>
+                          )}
+                          <img
+                            src={`${host}/${ele.coverImage}`}
+                            className="artistPageSongCoverImage"
+                            alt={ele.title}
+                          />
+                        </div>
+                        <div className="artistPage-infoContainer">
+                          <div className="artistPage-title">
+                            <Link to={`/song/${ele.shortenURL}`}>
+                              <p>{ele.title}</p>
+                            </Link>
+                          </div>
+                          <div className="artistPage-artistList">
+                            {ele.artists &&
+                              ele.artists.map((currArtist, currArtistIndex) => {
+                                return (
+                                  <Link
+                                    to={`/artists/${currArtist.shortenURL}`}
+                                    key={currArtist._id}
+                                  >
+                                    {currArtist.name}
+                                    {currArtistIndex !== ele.artists.length - 1
+                                      ? ", "
+                                      : ""}
+                                  </Link>
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

@@ -52,7 +52,6 @@ const PlaylistState = (props) => {
       const userToken = Cookie.get("token");
       if (!userToken) {
         showAlert("You need to login first to see your private playlists.");
-        navigate("/login");
         return null;
       }
       try {
@@ -80,7 +79,7 @@ const PlaylistState = (props) => {
         return null;
       }
     },
-    [host, showAlert, navigate]
+    [host, showAlert]
   );
 
   const handleshowPlaylistDialogue = (song) => {

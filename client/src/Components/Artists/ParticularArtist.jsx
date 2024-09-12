@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import "./ParticularPageStyle.css";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
-import "./ParticularPageStyle.css";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 
@@ -65,69 +65,66 @@ export default function ParticularArtist() {
               </div>
             </div>
           </div>
-          <div>
-            <table className="artistPageTable">
-              <tbody>
-                {artist.songs.map((ele, index) => {
-                  return (
-                    <tr className="artistPageTableRow" key={index}>
-                      <td className="artistPageTableCell" style={{ flex: 1 }}>
-                        {index + 1}.
-                      </td>
-                      <td className="artistPageSongDetails">
-                        <div
-                          className="artistPageSongCoverImageContainer"
-                          onClick={() => {
-                            if (!currSong || ele._id !== currSong._id) {
-                              play(ele);
-                              playbtnAddToQueue(ele);
-                            }
-                          }}
-                        >
-                          {currSong && ele._id === currSong._id ? (
-                            <>
-                              <img
-                                src={PlayingBarGif}
-                                className="queue-playing-image"
-                                alt="play button"
-                              />
-                            </>
-                          ) : (
-                            <span className="artistPageSongCoverPlayIcon">
-                              <IoIosPlayCircle />
-                            </span>
-                          )}
-                          <img
-                            src={`${host}/${ele.coverImage}`}
-                            className="artistPageSongCoverImage"
-                            alt={ele.title}
-                          />
-                        </div>
-                        <Link to={`/song/${ele.shortenURL}`}>
-                          <p>{ele.title}</p>
-                        </Link>
-                      </td>
-                      <td className="artistPageTableCell">
-                        {ele.artists &&
-                          ele.artists.map((currArtist, currArtistIndex) => {
-                            return (
-                              <Link
-                                to={`/artists/${currArtist.shortenURL}`}
-                                key={currArtist._id}
-                              >
-                                {currArtist.name}
-                                {currArtistIndex !== ele.artists.length - 1
-                                  ? ", "
-                                  : ""}
-                              </Link>
-                            );
-                          })}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+
+          <div className="artistPage-row-container">
+            {artist.songs.map((ele, index) => {
+              return (
+                <div key={index} className="artistPage-row">
+                  <div className="artistPage-index">{index + 1}.</div>
+                  <div
+                    className="artistPageSongCoverImageContainer"
+                    onClick={() => {
+                      if (!currSong || ele._id !== currSong._id) {
+                        play(ele);
+                        playbtnAddToQueue(ele);
+                      }
+                    }}
+                  >
+                    {currSong && ele._id === currSong._id ? (
+                      <>
+                        <img
+                          src={PlayingBarGif}
+                          className="queue-playing-image"
+                          alt="play button"
+                        />
+                      </>
+                    ) : (
+                      <span className="artistPageSongCoverPlayIcon">
+                        <IoIosPlayCircle />
+                      </span>
+                    )}
+                    <img
+                      src={`${host}/${ele.coverImage}`}
+                      className="artistPageSongCoverImage"
+                      alt={ele.title}
+                    />
+                  </div>
+                  <div className="artistPage-infoContainer">
+                    <div className="artistPage-title">
+                      <Link to={`/song/${ele.shortenURL}`}>
+                        <p>{ele.title}</p>
+                      </Link>
+                    </div>
+                    <div className="artistPage-artistList">
+                      {ele.artists &&
+                        ele.artists.map((currArtist, currArtistIndex) => {
+                          return (
+                            <Link
+                              to={`/artists/${currArtist.shortenURL}`}
+                              key={currArtist._id}
+                            >
+                              {currArtist.name}
+                              {currArtistIndex !== ele.artists.length - 1
+                                ? ", "
+                                : ""}
+                            </Link>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       ) : (

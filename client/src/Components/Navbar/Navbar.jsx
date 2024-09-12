@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/images/miscellaneous/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AppsButton from "./AppsButton/AppsButton";
 import UserProfileButton from "./UserProfileButton";
 import { FaSearch } from "react-icons/fa";
@@ -40,30 +40,48 @@ export default function Navbar() {
     };
   });
 
-  const hamburgerSlave = useRef();
-  const isMobileDevice = () => {
-    return /Mobi|Android/i.test(navigator.userAgent);
+  const navbarOptionsSection = useRef(null);
+  const [searchQuery, setsearchQuery] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery === "") return;
+    let searchURI = encodeURIComponent(searchQuery);
+    navigate(`/search?=${searchURI}`);
+    handleNavVisibility();
   };
-  const [isMobile] = useState(isMobileDevice());
+
+  const handleNavVisibility = () => {
+    navbarOptionsSection.current.style.display !== "flex"
+      ? (navbarOptionsSection.current.style.display = "flex")
+      : (navbarOptionsSection.current.style.display = "");
+  };
   return (
     <>
       <div className="navbar" ref={navbar}>
-        <Link to="/">
-          <div className="navbar-logo">
-            <img src={logo} alt="logo" className="navbar-logo-image" />
-            <span className="navbar-title">RAAHI BEATS</span>
-          </div>
-        </Link>
+        <div className="navtemp">
+          <Link to="/">
+            <div className="navbar-logo">
+              <img src={logo} alt="logo" className="navbar-logo-image" />
+              <span className="navbar-title">RAAHI BEATS</span>
+            </div>
+          </Link>
+          <span
+            className="nav-hamburger-menu"
+            onClick={() => handleNavVisibility()}
+          >
+            <GiHamburgerMenu />
+          </span>
+        </div>
 
-        <div
-          className={`navbar-options-section  ${isMobile ? "hide" : ""}`}
-          ref={hamburgerSlave}
-        >
-          <form className="search-area">
+        <div className={`navbar-options-section `} ref={navbarOptionsSection}>
+          <form className="search-area" onSubmit={handleSubmit}>
             <div className="search-input-area">
               <input
                 placeholder="What's on your mind..."
                 className="search-input"
+                value={searchQuery}
+                onChange={(e) => setsearchQuery(e.target.value)}
               />
             </div>
             <div className="search-icon">
@@ -72,23 +90,13 @@ export default function Navbar() {
           </form>
           <div className="navbar-icon-container">
             <AppsButton />
-            <UserProfileButton username={username} userAvatar={userAvatar} />
+            <UserProfileButton
+              username={username}
+              userAvatar={userAvatar}
+              handleNavVisibility={handleNavVisibility}
+            />
           </div>
         </div>
-        <span
-          className="nav-hamburger-menu"
-          onClick={() => {
-            if (hamburgerSlave.current.classList.contains("hide")) {
-              hamburgerSlave.current.classList.remove("hide");
-              hamburgerSlave.current.style.height = "100vh";
-            } else {
-              hamburgerSlave.current.classList.add("hide");
-              hamburgerSlave.current.style.height = "";
-            }
-          }}
-        >
-          <GiHamburgerMenu />
-        </span>
       </div>
     </>
   );

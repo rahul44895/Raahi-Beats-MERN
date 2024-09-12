@@ -29,30 +29,16 @@
   flex: 1;
 }
 
-.artistPageTable {
-  width: 100%;
-  border-spacing: 0px;
-}
-
-.artistPageTableRow {
-  table-layout: fixed;
-  border-bottom: 2px solid white;
+.artistPage-row {
   display: flex;
-}
-
-.artistPageTableCell {
-  border-bottom: 2px solid white;
-  padding: 1em;
-  flex: 2;
-}
-
-.artistPageSongDetails {
-  flex: 2;
-  display: flex;
-  gap: 10px;
   align-items: center;
-  border-bottom: 2px solid white;
-  padding: 1em;
+  border-bottom: 1px solid white;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  gap: 10px;
+}
+
+.artistPage-index {
 }
 
 .artistPageSongCoverImageContainer {
@@ -60,7 +46,6 @@
   width: 40px;
   position: relative;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
 .artistPageSongCoverPlayIcon {
@@ -83,4 +68,17 @@
   height: 40px;
   width: 40px;
   object-fit: cover;
+}
+
+.artistPage-infoContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.artistPage-title {
+  flex: 1;
+}
+.artistPage-artistList {
+  flex: 2;
+  overflow: hidden;
 }

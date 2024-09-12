@@ -10,13 +10,30 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../Context/Share/ShareState";
 import { SongContext } from "../../Context/Songs/SongState";
+import { MdPauseCircle } from "react-icons/md";
+import {
+  BiSolidSkipPreviousCircle,
+  BiSolidSkipNextCircle,
+} from "react-icons/bi";
+import { IoIosPlayCircle } from "react-icons/io";
+import { SlLoop } from "react-icons/sl";
+import { PiShuffleBold } from "react-icons/pi";
 
 export default function FullScreen({ setShowFullScreen }) {
   //useContext
-  const { currSong } = useContext(AudioContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
   const { updatePlayDetails } = useContext(SongContext);
+  const {
+    playnpause,
+    isPlaying,
+    currSong,
+    next,
+    previous,
+    loop,
+    setLoop,
+    shuffle,
+  } = useContext(AudioContext);
 
   // //useState
   const [liked, setLiked] = useState(currSong && currSong.liked ? true : false);
@@ -60,7 +77,11 @@ export default function FullScreen({ setShowFullScreen }) {
                   onClick={() => {
                     if (liked === false)
                       updatePlayDetails({ songID: currSong._id, likeCount: 1 });
-                    else updatePlayDetails({ songID: currSong._id, likeCount: -1 });
+                    else
+                      updatePlayDetails({
+                        songID: currSong._id,
+                        likeCount: -1,
+                      });
                     setLiked(!liked);
                   }}
                   className="tooltip"
@@ -117,6 +138,43 @@ export default function FullScreen({ setShowFullScreen }) {
                   <AiFillDislike /> 40%
                 </div>
               </div>
+            </div>
+            <div className="play-pause-icon">
+              {loop === 0 && (
+                <span style={{ fontSize: "2.5rem" }} onClick={() => setLoop(2)}>
+                  <SlLoop />
+                </span>
+              )}
+              {loop === 2 && (
+                <span
+                  style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                  onClick={() => setLoop(1)}
+                >
+                  <SlLoop />
+                </span>
+              )}
+              {loop === 1 && (
+                <span
+                  style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                  onClick={() => setLoop(0)}
+                >
+                  <SlLoop />1
+                </span>
+              )}
+
+              <span style={{ fontSize: "2.5rem" }} onClick={previous}>
+                <BiSolidSkipPreviousCircle />
+              </span>
+              <span onClick={() => playnpause()}>
+                {!isPlaying && <IoIosPlayCircle />}
+                {isPlaying && <MdPauseCircle />}
+              </span>
+              <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
+                <BiSolidSkipNextCircle />
+              </span>
+              <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
+                <PiShuffleBold />
+              </span>
             </div>
           </div>
           <div className="fullscreen-queueArea">

@@ -31,7 +31,9 @@ export default function SongCardXL({ song }) {
       />
       <div className="song-card-xl-overlay">
         <div className="song-card-xl-overlay-text">
-          {song.title || "Unknown Title"}
+          {song.title && song.title.length > 20
+            ? song.title.slice(0, 20) + "..."
+            : song.title || "Unknown Title"}
         </div>
         <div className="song-card-xl-overlay-controls">
           <span

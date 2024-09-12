@@ -24,10 +24,6 @@ const cookieOptions = {
   httpOnly: false,
   secure:
     process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging",
-  sameSite:
-    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
-      ? "None"
-      : "Lax",
 };
 
 // POST /signup - Handles user registration by validating input

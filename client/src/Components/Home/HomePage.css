@@ -241,6 +241,9 @@
 .song-card-medium-play-icon {
   font-size: 3.5rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .song-card-medium-heart-icon {
   font-size: 1.625rem;

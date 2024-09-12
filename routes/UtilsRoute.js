@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const ArtistSchema = require("../models/ArtistSchema");
 const { Schema } = mongoose;
 
-
 router.post("/share-link", async (req, res) => {
   try {
     if (!req.body.songID) {
@@ -30,8 +29,6 @@ router.post("/share-link", async (req, res) => {
       )}/${uniqueID}`;
       await song.save();
     }
-
-    
 
     res.status(200).json({
       success: true,
@@ -79,7 +76,6 @@ router.post("/short-link/songs", async (req, res) => {
     });
   }
 });
-
 
 router.get("/short-link/artists", async (req, res) => {
   try {

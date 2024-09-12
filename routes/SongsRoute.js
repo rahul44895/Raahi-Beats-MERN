@@ -144,14 +144,15 @@ router.post("/", async (req, res) => {
       }
     }
   }
-  if (songs.length == 1) {
-    tempArr[0].artists = await Promise.all(
-      tempArr[0].artists.map(async (currArtist) => {
+  for (const currSong of tempArr) {
+    currSong.artists = await Promise.all(
+      currSong.artists.map(async (currArtist) => {
         let temp = await ArtistSchema.findById(currArtist._id);
         return temp;
       })
     );
   }
+
   res.status(200).json({ success: true, total: songs.length, songs: tempArr });
 });
 

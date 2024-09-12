@@ -6,7 +6,7 @@ const SongContext = createContext();
 export { SongContext };
 
 const SongState = (props) => {
-  let [songList, setSongList] = useState([]);
+  // let [songList, setSongList] = useState([]);
   const host = process.env.REACT_APP_HOST;
   const [songDetails, setSongDetails] = useState();
   const { showAlert } = useContext(AlertContext);
@@ -119,7 +119,7 @@ const SongState = (props) => {
         oldReleaseFunc,
         songDetails,
         setSongDetails,
-        songList,
+        // songList,
         updatePlayDetails,
       }}
     >

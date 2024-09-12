@@ -38,12 +38,14 @@ export default function AllSongs() {
           <div className="new-releases-header">
             <div className="new-releases-title">
               ALL SONGS
-              <span
-                className="song-card-medium-play-icon"
-                onClick={() => addPlaylistToQueue(songList)}
-              >
-                <IoIosPlayCircle />
-              </span>
+              {songList && (
+                <span
+                  className="song-card-medium-play-icon"
+                  onClick={() => addPlaylistToQueue(songList)}
+                >
+                  <IoIosPlayCircle />
+                </span>
+              )}
             </div>
             <div>
               <div

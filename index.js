@@ -13,13 +13,19 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.set("trust proxy", true);
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "*"],
-    credentials: true,
-  })
-);
+
+const corsOptions = {
+  origin: [
+    "*",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://192.168.1.6:3000",
+    "*",
+  ],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
