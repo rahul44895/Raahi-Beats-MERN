@@ -1,0 +1,34 @@
+.chat-route__container {
+  background-color: black;
+  flex: 1;
+  padding: 1em;
+  overflow: auto;
+}
+
+.chat-route__contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 1em;
+}
+
+.chat-route__contact-item:hover {
+  background-color: #3b3b3b;
+}
+
+.chat-route__contact-avatar {
+  height: 50px;
+  width: 50px;
+}
+
+.chat-route__contact-avatar img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+
+.chat-route__contact-username {
+  font-size: 1rem;
+}

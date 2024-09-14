@@ -96,7 +96,7 @@ export default function SideNav() {
           <div className="sidenav-text">Genre/Playlist</div>
         </div>
       </Link>
-      <Link to={"/liked"}>
+      <Link to={"/chat"}>
         <div className="sidenav-item">
           <div className="sidenav-icon">
             <svg
@@ -111,7 +111,7 @@ export default function SideNav() {
               ></path>
             </svg>
           </div>
-          <div className="sidenav-text">Liked</div>
+          <div className="sidenav-text">Chat</div>
         </div>
       </Link>
     </div>

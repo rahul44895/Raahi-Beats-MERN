@@ -3,6 +3,8 @@ const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+const http = require("http");
+const chatWebsocket = require("./websocket/chatWebsocket.js");
 
 const mongoose = require("mongoose");
 mongoose
@@ -11,21 +13,27 @@ mongoose
   .catch((error) => console.log(error));
 
 const app = express();
+const server = http.createServer(app);
 app.use(express.json());
 app.use(cookieParser());
 
 const corsOptions = {
   origin: [
-    "*",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://192.168.1.6:3000",
-    "*",
+    "http://localhost:8000",
   ],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
 
 app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -34,6 +42,9 @@ app.use("/api/songs", require("./routes/SongsRoute.js"));
 app.use("/api/artists", require("./routes/ArtistsRoute.js"));
 app.use("/api/playlist", require("./routes/PlaylistRoute.js"));
 app.use("/api/utils", require("./routes/UtilsRoute.js"));
+app.use("/api/chat", require("./routes/ChatsRoute.js"));
+
+chatWebsocket(server);
 
 if (
   process.env.NODE_ENV === "production" ||
@@ -46,6 +57,6 @@ app.get("*", (req, res) => {
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });

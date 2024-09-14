@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
-import Cookie from "js-cookie";
 import { IoIosPlayCircle } from "react-icons/io";
 import SongCardMedium from "../Home/Sections/SongCardMedium";
 import { AudioContext } from "../../Context/Audio/AudioState";

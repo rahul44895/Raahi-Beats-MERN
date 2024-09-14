@@ -28,7 +28,8 @@ const AuthenticationState = (props) => {
       if (data.success) {
         showAlert(data.message);
         window.dispatchEvent(new Event("cookies"));
-        navigate("/");
+        const redirectPath = localStorage.getItem("redirectPath") || "/";
+        navigate(redirectPath);
       } else {
         alert(data.error);
       }
@@ -55,7 +56,8 @@ const AuthenticationState = (props) => {
       if (data.success) {
         showAlert(data.message);
         window.dispatchEvent(new Event("cookies"));
-        navigate("/");
+        const redirectPath = localStorage.getItem("redirectPath") || "/";
+        navigate(redirectPath);
       } else {
         alert(data.error);
       }

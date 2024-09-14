@@ -26,6 +26,8 @@ import ShareDialogue from "./Components/ShareDialgoue/ShareDialogue";
 import PlaylistMain from "./Components/PlaylistPage/PlaylistMain";
 import PlaylistDetails from "./Components/PlaylistPage/PlaylistDetails";
 import SearchPage from "./Components/SearchPage/SearchPage";
+import ChatApp from "./Components/ChatApplication/ChatApp";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -132,7 +134,17 @@ function App() {
                               path="/playlist/:playlistID"
                               element={<PlaylistDetails />}
                             />
-                            <Route exact path="/search/:searchQuery" element={<SearchPage/>}/>
+                            <Route
+                              exact
+                              path="/search/:searchQuery"
+                              element={<SearchPage />}
+                            />
+                            <Route
+                              exact
+                              path="/chat"
+                              element={<ProtectedRoute element={<ChatApp />} />}
+                            />
+
                             <Route
                               path="*"
                               element={
@@ -152,6 +164,7 @@ function App() {
                               }
                             />
                           </Routes>
+
                           <div
                             style={{
                               height: `${showFullScreen ? "100%" : ""}`,
