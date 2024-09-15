@@ -22,8 +22,6 @@ const chatWebsocket = (server) => {
 
   const chatNameSpace = io.of("/api/chatnamespace");
   chatNameSpace.on("connection", (socket) => {
-    console.log(`Connected: ${socket.id}`);
-
     // REGISTRATION
     socket.on("register", async (msg) => {
       const { token } = msg;
@@ -64,36 +62,82 @@ const chatWebsocket = (server) => {
     //   CHATTING
     socket.on("private-message", async (data) => {
       const senderEmail = await ChatSchema.findOne({ socketID: socket.id });
+      if (!senderEmail || !senderEmail.email) {
+        return chatNameSpace.to(socket.id).emit("registerResponse", {
+          success: false,
+          message: "Please, check if you're logged in.",
+        });
+      }
       let contact = await ChatSchema.findOne({ email: data.receiverEmail });
       if (!contact) {
         contact = new ChatSchema({
           email: data.receiverEmail,
-          messages: [{ senderEmail: senderEmail.email, message: data.message }],
+          messages: [
+            {
+              senderEmail: senderEmail.email,
+              receiverEmail: data.receiverEmail,
+              message: data.message,
+            },
+          ],
         });
         await contact.save();
       } else {
         contact.messages = [
           ...contact.messages,
-          { senderEmail: senderEmail.email, message: data.message },
+          {
+            senderEmail: senderEmail.email,
+            receiverEmail: data.receiverEmail,
+            message: data.message,
+          },
         ];
         contact.save();
       }
-      if (!contact.socketID) {
-        chatNameSpace.to(socket.id).emit("registerResponse", {
-          success: true,
-          message: "Message not delivered.",
+
+      let sender = await ChatSchema.findOne({ email: senderEmail.email });
+      if (!sender) {
+        sender = new ChatSchema({
+          email: senderEmail.email,
+          messages: [
+            {
+              senderEmail: senderEmail.email,
+              receiverEmail: data.receiverEmail,
+              message: data.message,
+            },
+          ],
         });
+        await sender.save();
+      } else {
+        sender.messages = [
+          ...sender.messages,
+          {
+            senderEmail: senderEmail.email,
+            receiverEmail: data.receiverEmail,
+            message: data.message,
+          },
+        ];
+        await sender.save();
       }
 
+      // if (!contact.socketID) {
+      //   chatNameSpace.to(socket.id).emit("registerResponse", {
+      //     success: true,
+      //     message: "Message not delivered or user is Offline.",
+      //   });
+      // }
       chatNameSpace.to(contact.socketID).emit("server-message", {
         senderEmail: senderEmail.email,
+        receiverEmail: data.receiverEmail,
         message: data.message,
         _id: uuid(),
+        timestamp: Date.now(),
       });
-    });
-
-    socket.on("disconnect", () => {
-      console.log(`Disconnected: ${socket.id}`);
+      chatNameSpace.to(socket.id).emit("private-message-response", {
+        senderEmail: senderEmail.email,
+        receiverEmail: data.receiverEmail,
+        message: data.message,
+        _id: uuid(),
+        timestamp: Date.now(),
+      });
     });
   });
 };

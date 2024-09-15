@@ -36,40 +36,96 @@ export default function ChatApp() {
     socket.on("registerResponse", (msg) => {
       if (msg.success === false) {
         showAlert(msg.error);
-        localStorage.setItem("redirectPath", location);
+        localStorage.setItem("redirectPath", location.pathname);
         navigate("/login");
-      } else showAlert("Registered. You're ready to chat...");
+      } else showAlert(msg.message);
     });
 
     // CHATTING
     socket.on("server-message", (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
+
+    socket.on("private-message-response", (msg) => {
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
     return () => socket.disconnect();
   }, [host, location, navigate, showAlert]);
 
   const handleSendMessage = ({ message, receiverEmail }) => {
+    if (!Cookies.get("token")) {
+      localStorage.setItem("redirectPath", location.pathname);
+      navigate("/login");
+      showAlert("Please login.");
+    }
     ownSocket.emit("private-message", { message, receiverEmail });
   };
+
+  const [activeView, setactiveView] = useState("contacts");
+  const toggleView = (view) => {
+    if (view === "chats") {
+      // Add a new entry to the history stack when switching to chat
+      window.history.pushState(null, "", "");
+    }
+    setactiveView(view);
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      toggleView("contacts");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   return (
     <div className="homeContainer" ref={chatAppContainer}>
       <div style={{ height: `${navbarHeight}px` }}></div>
-      <div
-        style={{
-          display: "flex",
-          height: `${chatAppContainer?.current?.offsetHeight - navbarHeight}px`,
-        }}
-      >
-        <ContactsArea setCurrContactDetails={setCurrContactDetails} />
-        <ChatArea
-          currContactDetails={currContactDetails}
-          ownSocket={ownSocket}
-          handleSendMessage={handleSendMessage}
-          messages={messages}
-          setMessages={setMessages}
-        />
-      </div>
+      {window.innerWidth > 1000 && (
+        <div
+          style={{
+            height: `${
+              chatAppContainer?.current?.offsetHeight - navbarHeight
+            }px`,
+          }}
+          className="chat-app-container-desktop-8XyAQ"
+        >
+          <ContactsArea setCurrContactDetails={setCurrContactDetails} />
+          <ChatArea
+            currContactDetails={currContactDetails}
+            ownSocket={ownSocket}
+            handleSendMessage={handleSendMessage}
+            messages={messages}
+            setMessages={setMessages}
+          />
+        </div>
+      )}
+      {window.innerWidth < 1000 && (
+        <div
+          style={{
+            height: `${
+              chatAppContainer?.current?.offsetHeight - navbarHeight
+            }px`,
+          }}
+        >
+          {activeView === "contacts" ? (
+            <ContactsArea
+              setCurrContactDetails={(contactDetails) => {
+                setCurrContactDetails(contactDetails);
+                toggleView("chats");
+              }}
+            />
+          ) : (
+            <ChatArea
+              currContactDetails={currContactDetails}
+              ownSocket={ownSocket}
+              handleSendMessage={handleSendMessage}
+              messages={messages}
+              setMessages={setMessages}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

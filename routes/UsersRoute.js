@@ -20,10 +20,14 @@ const deleteFiles = (file) => {
 };
 
 const cookieOptions = {
-  expires: new Date(Date.now() + 30 * 60 * 1000),
+  expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Cookie expires in 24 hours
   httpOnly: false,
-  secure: false,
-  samesite: "none",
+  secure:
+    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging", // Set secure based on the environment
+  sameSite:
+    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
+      ? "none"
+      : "lax", // Set SameSite based on the environment
 };
 
 // POST /signup - Handles user registration by validating input

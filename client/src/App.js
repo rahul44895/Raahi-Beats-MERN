@@ -93,8 +93,8 @@ function App() {
                           style={{
                             display: "flex",
                             flexDirection: "column",
-                            height: `${windowHeight}px`,
-                            width: `${windowWidth}px`,
+                            height: `${windowHeight - 1}px`,
+                            width: `${windowWidth - 1}px`,
                           }}
                         >
                           <Routes>

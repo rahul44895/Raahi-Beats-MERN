@@ -99,4 +99,11 @@
   .fullscreen-queueArea {
     width: 100% !important;
   }
+
+  /* CHAT APPLICATION */
+  .chat-route__container,
+  .chat-area-container-001 {
+    height: 100%;
+    width: 100vw;
+  }
 }

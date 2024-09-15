@@ -120,7 +120,9 @@ router.post("/get/messages", decodeToken, async (req, res) => {
       user: req.user,
     });
     const filteredMessages = user.messages.filter(
-      (currMessage) => currMessage.senderEmail === contactEmail
+      (currMessage) =>
+        currMessage.senderEmail === contactEmail ||
+        currMessage.receiverEmail === contactEmail
     );
     res.status(200).json({ success: true, messages: filteredMessages });
   } catch (err) {
