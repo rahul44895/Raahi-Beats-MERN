@@ -101,36 +101,6 @@
   margin-bottom: 5px;
 }
 
-.like-dislike-bar {
-  width: 300px;
-  height: 20px;
-  background: #ff8a8a;
-  border: 2px solid white;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.like-bar {
-  width: 60%;
-  background: red;
-  border-radius: 10px;
-  overflow: hidden;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-.dislike-bar {
-  width: 40%;
-  border-radius: 10px;
-  overflow: hidden;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
 .queue-header {
   padding: 1em;
   display: flex;

@@ -61,7 +61,6 @@ export default function PlaylistMain() {
                       key={currPlaylist._id}
                       to={`/playlist/${currPlaylist._id}`}
                     >
-                      {console.log(currPlaylist)}
                       <div
                         key={currPlaylist._id}
                         className="mainPagePlaylistItem"

@@ -16,7 +16,10 @@ import Marquee from "react-fast-marquee";
 import { SongContext } from "../../Context/Songs/SongState";
 import { Link } from "react-router-dom";
 
-export default function BottomControls({ showFullScreen, setShowFullScreen }) {
+export default function BottomControls({
+  isFullScreenVisible,
+  setFullScreenVisible,
+}) {
   const { setSongDetails } = useContext(SongContext);
   const {
     playnpause,
@@ -105,6 +108,19 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setFullScreenVisible(false);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [setFullScreenVisible]);
+
+  const handleFullScreenButton = () => {
+    if (isFullScreenVisible === false) window.history.pushState(null, "", "");
+    setFullScreenVisible(!isFullScreenVisible);
+  };
   return (
     audio && (
       <div className="bottom-controls">
@@ -130,7 +146,7 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
           <Link
             to={
               window.innerWidth > minWindowWidth
-                ? `/song/${currSong.shortenURL}`
+                ? `/song/${currSong?.shortenURL}`
                 : window.location
             }
           >
@@ -140,7 +156,6 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
               onClick={
                 window.innerWidth < minWindowWidth
                   ? () => {
-                      setShowFullScreen(!showFullScreen);
                       setSongDetails(currSong);
                     }
                   : () => {}
@@ -152,7 +167,7 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
                 alt="song-image"
               />
               <div className="bottom-song-title">
-                {currSong.title ? currSong.title : "Unknown"}
+                {currSong?.title ? currSong.title : "Unknown"}
                 <br />
                 {currSong && currSong.artists ? (
                   bottomSongInfoContainer.current ? (
@@ -273,8 +288,8 @@ export default function BottomControls({ showFullScreen, setShowFullScreen }) {
 
                 <span
                   onClick={() => {
-                    setShowFullScreen(!showFullScreen);
                     setSongDetails(currSong);
+                    handleFullScreenButton();
                   }}
                 >
                   <RiFullscreenLine />

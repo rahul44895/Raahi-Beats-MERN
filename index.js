@@ -29,6 +29,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.post("/api/deviceDetails", (req, res) => {
+  console.log({ message: "User signing details", ip: req.ip, body: req.body });
+  res.send("Received");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

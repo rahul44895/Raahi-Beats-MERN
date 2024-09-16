@@ -40,14 +40,14 @@ function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-  const [showFullScreen, setShowFullScreen] = useState(false);
+  const [isFullScreenVisible, setFullScreenVisible] = useState(false);
 
-  // Handler for online status
-  const handleOnlineStatus = () => {
-    setIsOnline(navigator.onLine);
-  };
-
+  // HANDLES DEVICE ONLINE/OFFLINE STATUS
   useEffect(() => {
+    // Handler for online status
+    const handleOnlineStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
     // Add event listeners for online and offline events
     window.addEventListener("online", handleOnlineStatus);
     window.addEventListener("offline", handleOnlineStatus);
@@ -59,6 +59,7 @@ function App() {
     };
   }, []);
 
+  // HANDLEs DEVICE RESIZE
   useEffect(() => {
     const handleResize = () => {
       setPortrait(window.innerHeight > window.innerWidth);
@@ -69,6 +70,40 @@ function App() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  // HANDLES MOBILE DEVICE REFRESH
+  useEffect(() => {
+    if (window.innerWidth < 1000) {
+      const handleBeforeUnload = (event) => {
+        // Prevent default behavior (refresh without confirmation)
+        event.preventDefault();
+        event.returnValue = ""; // Chrome requires returnValue to be set
+      };
+
+      // Add the event listener when component mounts
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      // Cleanup the event listener when component unmounts
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }
+  }, []);
+
+  // SEND DEVICE DIMENSIONS TO BACKEND
+  useEffect(() => {
+    const temp = async () => {
+      await fetch(`${process.env.REACT_APP_HOST}/deviceDetails`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          height: window.innerHeight,
+          width: window.innerWidth,
+        }),
+      });
+    };
+    temp();
   }, []);
 
   return (
@@ -167,22 +202,20 @@ function App() {
 
                           <div
                             style={{
-                              height: `${showFullScreen ? "100%" : ""}`,
-                              display: `${showFullScreen ? "flex" : ""}`,
+                              height: `${isFullScreenVisible ? "100%" : ""}`,
+                              display: `${isFullScreenVisible ? "flex" : ""}`,
                               flexDirection: `${
-                                showFullScreen ? "column" : ""
+                                isFullScreenVisible ? "column" : ""
                               }`,
-                              overflow: `${showFullScreen ? "hidden" : ""}`,
+                              overflow: `${
+                                isFullScreenVisible ? "hidden" : ""
+                              }`,
                             }}
                           >
-                            {showFullScreen && (
-                              <FullScreen
-                                setShowFullScreen={setShowFullScreen}
-                              />
-                            )}
+                            {isFullScreenVisible && <FullScreen />}
                             <BottomControls
-                              showFullScreen={showFullScreen}
-                              setShowFullScreen={setShowFullScreen}
+                              isFullScreenVisible={isFullScreenVisible}
+                              setFullScreenVisible={setFullScreenVisible}
                             />
                           </div>
                         </div>

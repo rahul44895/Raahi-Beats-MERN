@@ -27,7 +27,6 @@ export default function ChatArea({
       });
       const data = await response.json();
       if (data.success) {
-        console.log(data);
         setMessages(data.messages);
       } else {
         showAlert(data.error);

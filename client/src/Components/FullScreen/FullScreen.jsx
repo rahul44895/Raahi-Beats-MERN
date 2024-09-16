@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
 import { MdPlaylistAdd } from "react-icons/md";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { AudioContext } from "../../Context/Audio/AudioState";
@@ -19,7 +18,7 @@ import { IoIosPlayCircle } from "react-icons/io";
 import { SlLoop } from "react-icons/sl";
 import { PiShuffleBold } from "react-icons/pi";
 
-export default function FullScreen({ setShowFullScreen }) {
+export default function FullScreen() {
   //useContext
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
@@ -80,16 +79,19 @@ export default function FullScreen({ setShowFullScreen }) {
               </div>
               <div className="song-image-container">
                 <img
-                  src={`${currSong.coverImage}`}
+                  src={`${currSong?.coverImage}`}
                   className="song-image"
-                  alt={currSong.title ? currSong.title : "Unknown Artist"}
+                  alt={currSong?.title ? currSong.title : "Unknown Artist"}
                 />
               </div>
               <div className="like-share-container">
                 <div
                   onClick={() => {
                     if (liked === false)
-                      updatePlayDetails({ songID: currSong._id, likeCount: 1 });
+                      updatePlayDetails({
+                        songID: currSong._id,
+                        likeCount: 1,
+                      });
                     else
                       updatePlayDetails({
                         songID: currSong._id,
@@ -110,20 +112,14 @@ export default function FullScreen({ setShowFullScreen }) {
             </div>
             <div className="fullscreenInfoContainer">
               <h1 className="song-title">
-                {currSong.title ? currSong.title : "Unknown title"}
+                {currSong?.title ? currSong.title : "Unknown title"}
               </h1>
               <p className="song-info">
                 Artists:
-                {currSong.artists
+                {currSong?.artists
                   ? currSong.artists.map((e, index) => {
                       return (
-                        <Link
-                          to={`/artists/${e.shortenURL}`}
-                          key={e._id}
-                          onClick={() => {
-                            setShowFullScreen(false);
-                          }}
-                        >
+                        <Link to={`/artists/${e.shortenURL}`} key={e._id}>
                           <span>
                             {e.name}
                             {index !== currSong.artists.length - 1 ? ", " : ""}
@@ -134,27 +130,18 @@ export default function FullScreen({ setShowFullScreen }) {
                   : "Unknown artist"}
               </p>
               <p className="song-info">
-                Album: {currSong.album ? currSong.album : "Unknown album"}
+                Album: {currSong?.album ? currSong.album : "Unknown album"}
               </p>
               <p className="song-info">
                 Released Year:
-                {currSong.releaseDate
+                {currSong?.releaseDate
                   ? new Date(currSong.releaseDate).getFullYear()
                   : "Unknown year"}
               </p>
               <p className="song-info">
                 Duration:{" "}
-                {currSong.duration ? formatTime(currSong.duration) : "Unknown"}
+                {currSong?.duration ? formatTime(currSong.duration) : "Unknown"}
               </p>
-
-              <div className="like-dislike-bar">
-                <div className="like-bar">
-                  <AiFillLike /> 60%
-                </div>
-                <div className="dislike-bar">
-                  <AiFillDislike /> 40%
-                </div>
-              </div>
             </div>
             {window.innerWidth < 1000 && (
               <div className="play-pause-icon">
@@ -199,6 +186,7 @@ export default function FullScreen({ setShowFullScreen }) {
               </div>
             )}
           </div>
+
           <div className="fullscreen-queueArea">
             <h1 className="queue-header">
               Queue
