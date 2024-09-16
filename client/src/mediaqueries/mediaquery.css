@@ -78,7 +78,7 @@
   }
 
   .bottom-song-info-container {
-    width: 80vw !important;
+    width: 70vw !important;
   }
 
   .play-pause-icon {
@@ -98,6 +98,10 @@
   }
   .fullscreen-queueArea {
     width: 100% !important;
+  }
+
+  .playlist-dialogue {
+    width: 100vw !important;
   }
 
   /* CHAT APPLICATION */

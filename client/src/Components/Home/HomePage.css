@@ -5,7 +5,8 @@
   background-size: 200%;
   background-repeat: no-repeat;
   color: white;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   flex: 1;
 }
 
