@@ -29,7 +29,7 @@ export default function LoginPage() {
       <div
         className="d-flex justify-content-center align-items-center flex-column"
         style={{
-          height: `calc(${main.current?.offsetHeight}px - ${navbarHeight}px)`,
+          height: `calc(${main.current?.offsetHeight}px - ${navbarHeight+1}px )`,
         }}
       >
         <h1>Login</h1>

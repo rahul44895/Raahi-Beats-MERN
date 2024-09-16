@@ -54,18 +54,25 @@ export default function ContactsArea({
   return (
     <div className="chat-route__container">
       <div>
-        <h1>Add Contact</h1>
-        <div>
+        <form
+          style={{ textAlign: "center" }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleContactSave();
+          }}
+        >
+          <h1>Add Contact</h1>
           <input
             type="email"
             placeholder="Enter Email"
             value={newContactEmail}
             onChange={(e) => setnewContactEmail(e.target.value)}
+            style={{ padding: "1em", border: 0 }}
           />
-          <button onClick={handleContactSave} className="btn">
+          <button type="submit" className="btn" style={{ margin: 0 }}>
             Save
           </button>
-        </div>
+        </form>
       </div>
       {contactList
         ? contactList.map((currContact) => {

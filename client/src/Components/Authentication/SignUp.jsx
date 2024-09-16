@@ -29,10 +29,12 @@ export default function SignUp() {
   const main = useRef(null);
   return (
     <div className="authContainer" ref={main}>
+      <div style={{ height: `${navbarHeight}px`, width: "100vw" }}></div>
+
       <div
         className="d-flex justify-content-center align-items-center flex-column"
         style={{
-          height: `calc(${main.current?.offsetHeight}px - ${navbarHeight}px)`,
+          height: `calc(${main.current?.offsetHeight}px - ${navbarHeight+1}px)`,
         }}
       >
         <h1>SignUp</h1>

@@ -270,6 +270,83 @@ router.delete("/delete", async (req, res) => {
   }
 });
 
+router.post("/likedSongs", async (req, res) => {
+  try {
+    let result = {};
+    let songs = await SongsSchema.aggregate([
+      {
+        $addFields: {
+          score: {
+            $add: [
+              { $multiply: ["$playCount", 0.4] },
+              { $multiply: ["$likes", 0.6] },
+            ],
+          },
+        },
+      },
+      { $sort: { score: -1 } },
+      { $limit: 10 },
+    ]).sort({ title: 1 });
+
+    let tempArr = JSON.parse(JSON.stringify(songs));
+    if (req.body.userToken) {
+      const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+      const user = await UserSchema.findById(token.userID);
+      const userFavourites = user.favourites;
+      for (let currSong of tempArr) {
+        const check = userFavourites.some(
+          (favourite) =>
+            favourite._id.equals(currSong._id) && favourite.category === "Song"
+        );
+        if (check) {
+          currSong.liked = true;
+        }
+      }
+    }
+    for (const currSong of tempArr) {
+      currSong.artists = await Promise.all(
+        currSong.artists.map(async (currArtist) => {
+          let temp = await ArtistSchema.findById(currArtist._id);
+          return temp;
+        })
+      );
+    }
+    result.songs = tempArr;
+
+    // SONGS LIKED BY PARTICULAR USER
+    if (req.body.userToken) {
+      const token = JWT.verify(req.body.userToken, JWT_SECRET_KEY);
+      const user = await UserSchema.findById(token.userID);
+      const userFavourites = user.favourites;
+
+      const userLikedSongs = await SongsSchema.find({
+        _id: { $in: userFavourites.map((fav) => fav._id) },
+      }).sort({ title: 1 });
+      let tempArr = JSON.parse(JSON.stringify(userLikedSongs));
+      for (let currSong of tempArr) {
+        currSong.liked = true;
+      }
+      for (const currSong of tempArr) {
+        currSong.artists = await Promise.all(
+          currSong.artists.map(async (currArtist) => {
+            let temp = await ArtistSchema.findById(currArtist._id);
+            return temp;
+          })
+        );
+      }
+
+      result.userLiked = tempArr;
+    }
+    res.status(200).json({
+      success: true,
+      message: "All liked songs are as follows.",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 // update the artist IDs in all the songs
 router.put("/update/songs/artists", async (req, res) => {
   let songs = await SongsSchema.find();

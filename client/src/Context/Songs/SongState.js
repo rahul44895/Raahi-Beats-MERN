@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { AlertContext } from "../Alert/AlertState";
 import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 const SongContext = createContext();
 export { SongContext };
@@ -132,6 +133,26 @@ const SongState = (props) => {
     },
     [host]
   );
+
+  const fetchLikedSongs = useCallback(async () => {
+    try {
+      let userToken = Cookies.get("token");
+      const response = await fetch(`${host}/songs/likedSongs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userToken: userToken ? userToken : undefined }),
+      });
+      let data = await response.json();
+      if (data.success) {
+        return data.data;
+      } else {
+        showAlert(data.error);
+      }
+    } catch (error) {
+      showAlert("Some error occured");
+      console.log(error);
+    }
+  }, [host, showAlert]);
   return (
     <SongContext.Provider
       value={{
@@ -142,6 +163,7 @@ const SongState = (props) => {
         setSongDetails,
         updatePlayDetails,
         updateSong,
+        fetchLikedSongs,
       }}
     >
       {props.children}

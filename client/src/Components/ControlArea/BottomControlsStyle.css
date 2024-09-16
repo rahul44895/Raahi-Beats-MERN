@@ -1,11 +1,10 @@
 .bottom-controls {
-  /* height: 12vh; */
   background: url(../../assets/images/miscellaneous/websiteBg1.png),
     linear-gradient(45deg, rgb(88 23 49 / 99%), #26035d);
   padding: 0.5em 1em 1em 1em;
   color: white;
   flex-shrink: 0;
-  border: 2px solid white;
+  /* border: 2px solid white; */
   position: relative;
   z-index: 1001;
 }

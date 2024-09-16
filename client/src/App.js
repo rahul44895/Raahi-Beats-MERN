@@ -28,6 +28,7 @@ import PlaylistDetails from "./Components/PlaylistPage/PlaylistDetails";
 import SearchPage from "./Components/SearchPage/SearchPage";
 import ChatApp from "./Components/ChatApplication/ChatApp";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import LikedSongsPage from "./Components/LikedSongsPage/LikedSongsPage";
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -178,6 +179,12 @@ function App() {
                               exact
                               path="/chat"
                               element={<ProtectedRoute element={<ChatApp />} />}
+                            />
+
+                            <Route
+                              exact
+                              path="/liked"
+                              element={<LikedSongsPage />}
                             />
 
                             <Route

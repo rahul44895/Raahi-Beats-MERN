@@ -82,6 +82,12 @@ const chatWebsocket = (server) => {
         });
         await contact.save();
       } else {
+        if (!contact.user) {
+          const existingUser = await UserSchema.findOne({
+            email: contact.email,
+          });
+          if (existingUser) contact.user = existingUser._id;
+        }
         contact.messages = [
           ...contact.messages,
           {
