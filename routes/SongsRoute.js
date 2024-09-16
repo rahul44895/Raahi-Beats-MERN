@@ -1,14 +1,21 @@
+// Core Node.js modules
+const fs = require("fs");
+
+// Third-party modules
 const express = require("express");
+const mongoose = require("mongoose");
+const JWT = require("jsonwebtoken");
+const shortid = require("shortid");
+
+// Application-specific modules
 const router = express.Router();
 const SongsSchema = require("../models/SongSchema");
 const upload = require("../middlewares/multer");
 const deleteFiles = require("../Utils/DeleteFile");
-const decodeToken = require("../middlewares/decodeToken");
 const ArtistSchema = require("../models/ArtistSchema");
-const { default: mongoose } = require("mongoose");
-const fs = require("fs");
 const UserSchema = require("../models/UserSchema");
-const JWT = require("jsonwebtoken");
+
+// Environment variables
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 // POST route to add a new song
@@ -51,6 +58,11 @@ router.post(
       }
       // Create a new Song document
       let artists = req.body.artists || undefined;
+      const uniqueID = shortid.generate();
+      const shortenURL = `${title
+        .trim()
+        .replace(/[^a-zA-Z0-9]/g, "-")}/${uniqueID}`;
+
       const newSong = new SongsSchema({
         title: title.trim(),
         artists: artists,
@@ -63,6 +75,7 @@ router.post(
         likes: likes || 0,
         comments: comments || undefined,
         ratings: ratings || undefined,
+        shortenURL,
       });
 
       // Save the new song to the database
@@ -78,9 +91,15 @@ router.post(
             songsArr.push({ _id: newSong._id.toString() });
             artist.songs = songsArr;
           } else {
+            const artistuniqueID = shortid.generate();
+            let artistshortenURL = `${artist.name.replace(
+              /[^a-zA-Z0-9]/g,
+              "-"
+            )}/${artistuniqueID}`;
             artist = new ArtistSchema({
               name: currArtist.name.trim(),
               avatar: "undefined",
+              shortenURL: artistshortenURL,
               songs: [{ _id: newSong._id.toString() }],
             });
           }
@@ -180,6 +199,14 @@ router.post("/get/newrelease", async (req, res) => {
         }
       }
     }
+    for (const currSong of tempArr) {
+      currSong.artists = await Promise.all(
+        currSong.artists.map(async (currArtist) => {
+          let temp = await ArtistSchema.findById(currArtist._id);
+          return temp;
+        })
+      );
+    }
     res.status(200).json({ total, songs: tempArr });
   } catch (err) {
     console.error(err);
@@ -219,7 +246,14 @@ router.post("/get/oldsongs", async (req, res) => {
         }
       }
     }
-
+    for (const currSong of tempArr) {
+      currSong.artists = await Promise.all(
+        currSong.artists.map(async (currArtist) => {
+          let temp = await ArtistSchema.findById(currArtist._id);
+          return temp;
+        })
+      );
+    }
     res.status(200).json({ total, songs: tempArr });
   } catch (err) {
     console.error(err);
@@ -347,35 +381,6 @@ router.post("/likedSongs", async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-// update the artist IDs in all the songs
-router.put("/update/songs/artists", async (req, res) => {
-  let songs = await SongsSchema.find();
-  let artistNotInDataBase = [];
-  for (const currSong of songs) {
-    currSong.artists = await Promise.all(
-      currSong.artists.map(async (currArtist) => {
-        const artist = await ArtistSchema.findOne({
-          name: currArtist.name.trim(),
-        });
-        if (!artist) {
-          artistNotInDataBase.push(currArtist.name.trim());
-          let newArtist = await ArtistSchema({
-            name: currArtist.name.trim(),
-            avatar: "undefined",
-            songs: [{ _id: currSong._id }],
-          });
-          await newArtist.save();
-          return { ...currArtist, _id: newArtist._id };
-        } else {
-          return { ...currArtist, _id: artist._id };
-        }
-      })
-    );
-    await currSong.save();
-  }
-
-  res.json({ total: artistNotInDataBase.length, artistNotInDataBase });
-});
 
 //update play count and likes of the songs and artists
 router.put("/update/playnlikes", async (req, res) => {
@@ -441,6 +446,36 @@ router.put("/update/playnlikes", async (req, res) => {
       .status(500)
       .json({ success: false, error: "Internal server error." });
   }
+});
+
+// update the artist IDs in all the songs
+router.put("/update/songs/artists", async (req, res) => {
+  let songs = await SongsSchema.find();
+  let artistNotInDataBase = [];
+  for (const currSong of songs) {
+    currSong.artists = await Promise.all(
+      currSong.artists.map(async (currArtist) => {
+        const artist = await ArtistSchema.findOne({
+          name: currArtist.name.trim(),
+        });
+        if (!artist) {
+          artistNotInDataBase.push(currArtist.name.trim());
+          let newArtist = await ArtistSchema({
+            name: currArtist.name.trim(),
+            avatar: "undefined",
+            songs: [{ _id: currSong._id }],
+          });
+          await newArtist.save();
+          return { ...currArtist, _id: newArtist._id };
+        } else {
+          return { ...currArtist, _id: artist._id };
+        }
+      })
+    );
+    await currSong.save();
+  }
+
+  res.json({ total: artistNotInDataBase.length, artistNotInDataBase });
 });
 
 //update song duration

@@ -18,7 +18,7 @@ import { IoIosPlayCircle } from "react-icons/io";
 import { SlLoop } from "react-icons/sl";
 import { PiShuffleBold } from "react-icons/pi";
 
-export default function FullScreen() {
+export default function FullScreen({ setFullScreenVisible }) {
   //useContext
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
@@ -81,7 +81,7 @@ export default function FullScreen() {
                 <img
                   src={`${currSong?.coverImage}`}
                   className="song-image"
-                  alt={currSong?.title ? currSong.title : "Unknown Artist"}
+                  alt={currSong?.title ? currSong.title : "Unknown Title"}
                 />
               </div>
               <div className="like-share-container">
@@ -119,7 +119,11 @@ export default function FullScreen() {
                 {currSong?.artists
                   ? currSong.artists.map((e, index) => {
                       return (
-                        <Link to={`/artists/${e.shortenURL}`} key={e._id}>
+                        <Link
+                          to={`/artists/${e.shortenURL}`}
+                          key={e._id}
+                          onClick={() => setFullScreenVisible(false)}
+                        >
                           <span>
                             {e.name}
                             {index !== currSong.artists.length - 1 ? ", " : ""}
@@ -190,9 +194,9 @@ export default function FullScreen() {
           <div className="fullscreen-queueArea">
             <h1 className="queue-header">
               Queue
-              <span className="add-queue-icon">
+              {/* <span className="add-queue-icon">
                 <MdPlaylistAdd />
-              </span>
+              </span> */}
             </h1>
             <hr />
             <div className="queue-content">

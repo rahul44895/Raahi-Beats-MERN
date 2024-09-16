@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const shortid = require("shortid");
 const SongSchema = require("../models/SongSchema");
-const mongoose = require("mongoose");
 const ArtistSchema = require("../models/ArtistSchema");
-const { Schema } = mongoose;
 
 router.post("/share-link", async (req, res) => {
   try {

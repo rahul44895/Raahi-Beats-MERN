@@ -38,6 +38,7 @@ const AudioState = (props) => {
 
     if (newAudio.currentTime === newAudio.duration) {
       console.log("Ended");
+      setIsPlaying(false);
       if (loopRef.current === 1) {
         setLoop(0);
         play(song);

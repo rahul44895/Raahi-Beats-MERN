@@ -219,7 +219,7 @@ function App() {
                               }`,
                             }}
                           >
-                            {isFullScreenVisible && <FullScreen />}
+                            {isFullScreenVisible && <FullScreen setFullScreenVisible={setFullScreenVisible}/>}
                             <BottomControls
                               isFullScreenVisible={isFullScreenVisible}
                               setFullScreenVisible={setFullScreenVisible}
