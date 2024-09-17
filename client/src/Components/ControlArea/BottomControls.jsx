@@ -157,6 +157,7 @@ export default function BottomControls({
                 window.innerWidth < minWindowWidth
                   ? () => {
                       setSongDetails(currSong);
+                      setFullScreenVisible(!isFullScreenVisible);
                     }
                   : () => {}
               }
