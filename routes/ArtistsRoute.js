@@ -120,18 +120,20 @@ router.post("/", async (req, res) => {
 
       tempArtists.songs = await Promise.all(
         tempArtists.songs.map(async (currSong) => {
-          let song = JSON.parse(
-            JSON.stringify(await SongsSchema.findById(currSong._id))
-          );
-          song.artists = await Promise.all(
-            song.artists.map(async (currArtist) => {
-              let temp = await ArtistSchema.findById(currArtist._id);
-              return temp;
-            })
-          );
-          return song;
+          const song = await SongsSchema.findById(currSong._id);
+          if (song) {
+            song.artists = await Promise.all(
+              song.artists.map(async (currArtist) => {
+                const temp = await ArtistSchema.findById(currArtist._id);
+                return temp || null; // Return null if not found
+              })
+            );
+            return song;
+          }
+          return null; // Return null if song not found
         })
-      );
+      ).then((songs) => songs.filter((song) => song)); // Filter out nulls
+
       tempArtists.songs.sort((a, b) => {
         if (a.title) return a.title.localeCompare(b.title);
       });

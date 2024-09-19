@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext } from "react";
 import { AlertContext } from "../Alert/AlertState";
 
 const ArtistContext = createContext();
@@ -14,35 +14,38 @@ const ArtistState = (props) => {
   const host = process.env.REACT_APP_HOST;
 
   //functions
-  const fetchArtists = async ({ artistShortID, countOfArtists }) => {
-    try {
-      const url = artistShortID
-        ? `${host}/artists/?search=${artistShortID}`
-        : `${host}/artists/`;
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          countOfArtists: countOfArtists ? countOfArtists : undefined,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+  const fetchArtists = useCallback(
+    async ({ artistShortID, countOfArtists }) => {
+      try {
+        const url = artistShortID
+          ? `${host}/artists/?search=${artistShortID}`
+          : `${host}/artists/`;
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify({
+            countOfArtists: countOfArtists ? countOfArtists : undefined,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (data.success) {
-        return data.artists;
-      } else {
-        showAlert(data.error);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.success) {
+          return data.artists;
+        } else {
+          showAlert(data.error);
+          return null;
+        }
+      } catch (error) {
+        showAlert("Some error occured.");
+        // console.error(error);
         return null;
       }
-    } catch (error) {
-      showAlert("Some error occured.");
-      // console.error(error);
-      return null;
-    }
-  };
+    },
+    [host, showAlert]
+  );
 
   return (
     <ArtistContext.Provider value={{ fetchArtists }}>
