@@ -92,10 +92,9 @@ router.post(
             artist.songs = songsArr;
           } else {
             const artistuniqueID = shortid.generate();
-            let artistshortenURL = `${currArtist.name.trim().replace(
-              /[^a-zA-Z0-9]/g,
-              "-"
-            )}/${artistuniqueID}`;
+            let artistshortenURL = `${currArtist.name
+              .trim()
+              .replace(/[^a-zA-Z0-9]/g, "-")}/${artistuniqueID}`;
             artist = new ArtistSchema({
               name: currArtist.name.trim(),
               avatar: "undefined",
@@ -448,36 +447,6 @@ router.put("/update/playnlikes", async (req, res) => {
   }
 });
 
-// update the artist IDs in all the songs
-router.put("/update/songs/artists", async (req, res) => {
-  let songs = await SongsSchema.find();
-  let artistNotInDataBase = [];
-  for (const currSong of songs) {
-    currSong.artists = await Promise.all(
-      currSong.artists.map(async (currArtist) => {
-        const artist = await ArtistSchema.findOne({
-          name: currArtist.name.trim(),
-        });
-        if (!artist) {
-          artistNotInDataBase.push(currArtist.name.trim());
-          let newArtist = await ArtistSchema({
-            name: currArtist.name.trim(),
-            avatar: "undefined",
-            songs: [{ _id: currSong._id }],
-          });
-          await newArtist.save();
-          return { ...currArtist, _id: newArtist._id };
-        } else {
-          return { ...currArtist, _id: artist._id };
-        }
-      })
-    );
-    await currSong.save();
-  }
-
-  res.json({ total: artistNotInDataBase.length, artistNotInDataBase });
-});
-
 //update song duration
 router.put("/update", async (req, res) => {
   // allSongs();
@@ -517,6 +486,36 @@ router.put("/update", async (req, res) => {
       .status(500)
       .json({ success: false, error: "Internal error occured" });
   }
+});
+
+// update the artist IDs in all the songs
+router.put("/update/songs/artists", async (req, res) => {
+  let songs = await SongsSchema.find();
+  let artistNotInDataBase = [];
+  for (const currSong of songs) {
+    currSong.artists = await Promise.all(
+      currSong.artists.map(async (currArtist) => {
+        const artist = await ArtistSchema.findOne({
+          name: currArtist.name.trim(),
+        });
+        if (!artist) {
+          artistNotInDataBase.push(currArtist.name.trim());
+          let newArtist = await ArtistSchema({
+            name: currArtist.name.trim(),
+            avatar: "undefined",
+            songs: [{ _id: currSong._id }],
+          });
+          await newArtist.save();
+          return { ...currArtist, _id: newArtist._id };
+        } else {
+          return { ...currArtist, _id: artist._id };
+        }
+      })
+    );
+    await currSong.save();
+  }
+
+  res.json({ total: artistNotInDataBase.length, artistNotInDataBase });
 });
 
 const allSongs = async () => {
