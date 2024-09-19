@@ -92,7 +92,7 @@ router.post(
             artist.songs = songsArr;
           } else {
             const artistuniqueID = shortid.generate();
-            let artistshortenURL = `${artist.name.replace(
+            let artistshortenURL = `${currArtist.name.trim().replace(
               /[^a-zA-Z0-9]/g,
               "-"
             )}/${artistuniqueID}`;
