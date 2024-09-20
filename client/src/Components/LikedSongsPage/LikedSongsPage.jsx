@@ -52,7 +52,11 @@ export default function LikedSongsPage() {
       {result ? (
         <>
           {result.userLiked && (
-            <div style={{ padding: "2em 4em" }}>
+            <div
+              style={{
+                padding: `2em ${window.innerWidth > 1000 ? "4em" : "0"}`,
+              }}
+            >
               <div className="new-releases-header">
                 <div className="new-releases-title">
                   WE LOVE WHAT YOU LIKE !!
@@ -72,7 +76,11 @@ export default function LikedSongsPage() {
             </div>
           )}
           {result.songs && (
-            <div style={{ padding: "2em 4em" }}>
+            <div
+              style={{
+                padding: `2em ${window.innerWidth > 1000 ? "4em" : "0"}`,
+              }}
+            >
               <div className="new-releases-header">
                 <div className="new-releases-title">
                   Top 10 Liked Songs

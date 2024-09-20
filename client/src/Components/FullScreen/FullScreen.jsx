@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
@@ -17,6 +17,7 @@ import {
 import { IoIosPlayCircle } from "react-icons/io";
 import { SlLoop } from "react-icons/sl";
 import { PiShuffleBold } from "react-icons/pi";
+import Seekbar from "../ControlArea/Seekbar";
 
 export default function FullScreen({ setFullScreenVisible }) {
   //useContext
@@ -32,6 +33,10 @@ export default function FullScreen({ setFullScreenVisible }) {
     loop,
     setLoop,
     shuffle,
+    currTime,
+    duration,
+    audio,
+    handleSeek,
   } = useContext(AudioContext);
 
   // //useState
@@ -49,6 +54,51 @@ export default function FullScreen({ setFullScreenVisible }) {
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
+
+  const [currentTime, setcurrentTime] = useState(currTime.current);
+
+  useEffect(() => {
+    if (window.innerWidth < 1000) {
+      let intervalId;
+
+      const updateTime = () => {
+        setcurrentTime(currTime.current);
+      };
+
+      const startInterval = () => {
+        if (!intervalId) {
+          intervalId = setInterval(updateTime, 1000);
+        }
+      };
+
+      const clearExistingInterval = () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      };
+
+      if (audio) {
+        // Start the interval if the audio is already playing
+        if (!audio.paused) {
+          startInterval();
+        }
+
+        // Add event listeners to handle play and pause
+        audio.addEventListener("play", startInterval);
+        audio.addEventListener("pause", clearExistingInterval);
+      }
+
+      return () => {
+        // Clean up event listeners and interval on unmount or when audio changes
+        if (audio) {
+          audio.removeEventListener("play", startInterval);
+          audio.removeEventListener("pause", clearExistingInterval);
+        }
+        clearExistingInterval();
+      };
+    }
+  }, [audio, currTime]);
 
   return (
     <div className="fullscreen-song-container">
@@ -148,46 +198,53 @@ export default function FullScreen({ setFullScreenVisible }) {
               </p>
             </div>
             {window.innerWidth < 1000 && (
-              <div className="play-pause-icon">
-                {loop === 0 && (
-                  <span
-                    style={{ fontSize: "2.5rem" }}
-                    onClick={() => setLoop(2)}
-                  >
-                    <SlLoop />
-                  </span>
-                )}
-                {loop === 2 && (
-                  <span
-                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
-                    onClick={() => setLoop(1)}
-                  >
-                    <SlLoop />
-                  </span>
-                )}
-                {loop === 1 && (
-                  <span
-                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
-                    onClick={() => setLoop(0)}
-                  >
-                    <SlLoop />1
-                  </span>
-                )}
+              <>
+                <Seekbar
+                  currentTime={currentTime}
+                  duration={duration}
+                  handleSeek={handleSeek}
+                />
+                <div className="play-pause-icon">
+                  {loop === 0 && (
+                    <span
+                      style={{ fontSize: "2.5rem" }}
+                      onClick={() => setLoop(2)}
+                    >
+                      <SlLoop />
+                    </span>
+                  )}
+                  {loop === 2 && (
+                    <span
+                      style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                      onClick={() => setLoop(1)}
+                    >
+                      <SlLoop />
+                    </span>
+                  )}
+                  {loop === 1 && (
+                    <span
+                      style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                      onClick={() => setLoop(0)}
+                    >
+                      <SlLoop />1
+                    </span>
+                  )}
 
-                <span style={{ fontSize: "2.5rem" }} onClick={previous}>
-                  <BiSolidSkipPreviousCircle />
-                </span>
-                <span onClick={() => playnpause()}>
-                  {!isPlaying && <IoIosPlayCircle />}
-                  {isPlaying && <MdPauseCircle />}
-                </span>
-                <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
-                  <BiSolidSkipNextCircle />
-                </span>
-                <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
-                  <PiShuffleBold />
-                </span>
-              </div>
+                  <span style={{ fontSize: "2.5rem" }} onClick={previous}>
+                    <BiSolidSkipPreviousCircle />
+                  </span>
+                  <span onClick={() => playnpause()}>
+                    {!isPlaying && <IoIosPlayCircle />}
+                    {isPlaying && <MdPauseCircle />}
+                  </span>
+                  <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
+                    <BiSolidSkipNextCircle />
+                  </span>
+                  <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
+                    <PiShuffleBold />
+                  </span>
+                </div>
+              </>
             )}
           </div>
 

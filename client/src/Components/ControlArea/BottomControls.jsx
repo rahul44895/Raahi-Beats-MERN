@@ -15,6 +15,7 @@ import { PiShuffleBold } from "react-icons/pi";
 import Marquee from "react-fast-marquee";
 import { SongContext } from "../../Context/Songs/SongState";
 import { Link } from "react-router-dom";
+import Seekbar from "./Seekbar";
 
 export default function BottomControls({
   isFullScreenVisible,
@@ -27,8 +28,8 @@ export default function BottomControls({
     isPlaying,
     currTime,
     duration,
-    handleSeek,
     audio,
+    handleSeek,
     currSong,
     next,
     previous,
@@ -118,25 +119,21 @@ export default function BottomControls({
   }, [setFullScreenVisible]);
 
   const handleFullScreenButton = () => {
-    if (isFullScreenVisible === false) window.history.pushState(null, "", "");
+    if (isFullScreenVisible === false)
+      window.history.pushState(null, "", "#full");
     setFullScreenVisible(!isFullScreenVisible);
   };
+
   return (
-    audio && (
+    audio &&
+    (window.innerWidth < 1000 ? !isFullScreenVisible : true) && (
       <div className="bottom-controls">
         <div className="seekbar-container">
-          <input
-            max={duration.current}
-            min={0}
-            name="seekbar"
-            type="range"
-            style={{ flex: "2 1", cursor: "pointer" }}
-            value={currentTime}
-            onChange={(e) => {
-              handleSeek(e.target.value);
-            }}
+          <Seekbar
+            currentTime={currentTime}
+            duration={duration}
+            handleSeek={handleSeek}
           />
-
           <span>
             {currentTime ? formatTime(currentTime) : "--"}/
             {duration ? formatTime(duration.current) : "--"}
@@ -157,7 +154,8 @@ export default function BottomControls({
                 window.innerWidth < minWindowWidth
                   ? () => {
                       setSongDetails(currSong);
-                      setFullScreenVisible(!isFullScreenVisible);
+                      handleFullScreenButton()
+                      // setFullScreenVisible(!isFullScreenVisible);
                     }
                   : () => {}
               }
