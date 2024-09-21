@@ -209,6 +209,9 @@ function App() {
 
                           <div
                             style={{
+                              position: `${isFullScreenVisible ? "fixed" : ""}`,
+                              zIndex: `${isFullScreenVisible ? "1000" : ""}`,
+                              inset: `${isFullScreenVisible ? "0" : ""}`,
                               height: `${isFullScreenVisible ? "100%" : ""}`,
                               display: `${isFullScreenVisible ? "flex" : ""}`,
                               flexDirection: `${

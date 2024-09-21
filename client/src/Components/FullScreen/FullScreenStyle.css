@@ -11,16 +11,23 @@
   overflow: hidden;
   color: white;
   z-index: 1000;
+  top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   animation: fullscreen-entry-anime 0.2s linear;
 }
 @keyframes fullscreen-entry-anime {
   0% {
-    top: -100%;
-    border-radius: 100%;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    top: 100%;
+    transform: scale(0);
   }
   100% {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     top: 0;
-    border-radius: 0;
+    transform: scale(1);
   }
 }
 

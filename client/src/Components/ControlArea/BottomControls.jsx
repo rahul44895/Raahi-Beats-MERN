@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./BottomControlsStyle.css";
 import { AudioContext } from "../../Context/Audio/AudioState";
 import { FaVolumeHigh, FaVolumeLow, FaVolumeXmark } from "react-icons/fa6";
@@ -119,15 +125,40 @@ export default function BottomControls({
   }, [setFullScreenVisible]);
 
   const handleFullScreenButton = () => {
-    if (isFullScreenVisible === false)
-      window.history.pushState(null, "", "");
+    if (isFullScreenVisible === false) window.history.pushState(null, "", "");
     setFullScreenVisible(!isFullScreenVisible);
   };
-
+  const handleKeys = useCallback(
+    (e) => {
+      if (audio && e.code === "Space") {
+        playnpause();
+      }
+    },
+    [audio, playnpause]
+  );
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeys);
+    return () => {
+      window.removeEventListener("keydown", handleKeys);
+    };
+  }, [handleKeys]);
   return (
     audio &&
     (window.innerWidth < 1000 ? !isFullScreenVisible : true) && (
-      <div className="bottom-controls">
+      <div
+        className="bottom-controls"
+        style={
+          currSong && isFullScreenVisible
+            ? {
+                background: `url(${currSong.coverImage})`,
+                position: "relative",
+              }
+            : {}
+        }
+      >
+        {currSong && isFullScreenVisible && (
+          <div className="fullscreen-backdrop"></div>
+        )}
         <div className="seekbar-container">
           <Seekbar
             currentTime={currentTime}
