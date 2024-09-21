@@ -57,7 +57,7 @@ export default function Seekbar({ currentTime, duration, handleSeek }) {
         ref={SeekBarRef}
         style={{
           height: "5px",
-          backgroundColor: "#c20000",
+          backgroundColor: "red",
           width: `${
             (SeekBarContainerRef?.current?.offsetWidth / duration.current) *
             currentTime

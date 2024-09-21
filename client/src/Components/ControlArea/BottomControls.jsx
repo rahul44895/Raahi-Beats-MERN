@@ -120,7 +120,7 @@ export default function BottomControls({
 
   const handleFullScreenButton = () => {
     if (isFullScreenVisible === false)
-      window.history.pushState(null, "", "#full");
+      window.history.pushState(null, "", "");
     setFullScreenVisible(!isFullScreenVisible);
   };
 
@@ -135,8 +135,8 @@ export default function BottomControls({
             handleSeek={handleSeek}
           />
           <span>
-            {currentTime ? formatTime(currentTime) : "--"}/
-            {duration ? formatTime(duration.current) : "--"}
+            {currentTime ? formatTime(currentTime) : "00:00:00"}/
+            {duration ? formatTime(duration.current) : "00:00:00"}
           </span>
         </div>
         <div className="controls-container">
@@ -154,7 +154,7 @@ export default function BottomControls({
                 window.innerWidth < minWindowWidth
                   ? () => {
                       setSongDetails(currSong);
-                      handleFullScreenButton()
+                      handleFullScreenButton();
                       // setFullScreenVisible(!isFullScreenVisible);
                     }
                   : () => {}

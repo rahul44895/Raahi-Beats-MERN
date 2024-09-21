@@ -44,15 +44,11 @@ export default function FullScreen({ setFullScreenVisible }) {
 
   const formatTime = (ms) => {
     const totalSeconds = Math.floor(ms);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-
-    const formattedHours = hours.toString().padStart(2, "0");
     const formattedMinutes = minutes.toString().padStart(2, "0");
     const formattedSeconds = seconds.toString().padStart(2, "0");
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    return `${formattedMinutes}:${formattedSeconds}`;
   };
 
   const [currentTime, setcurrentTime] = useState(currTime.current);
@@ -111,53 +107,49 @@ export default function FullScreen({ setFullScreenVisible }) {
       >
         <div className="fullscreen-backdrop"></div>
         <div
-          className="fullscreen-main-container"
+          className="fullscreen-main-container scroll-container"
           style={{
             height: `100%`,
           }}
         >
-          <div className="fullscreen-songArea">
+          <div className="fullscreen-songArea scroll-item">
+            <div className="song-image-container">
+              <img
+                src={`${currSong?.coverImage}`}
+                className="song-image"
+                alt={currSong?.title ? currSong.title : "Unknown Title"}
+              />
+            </div>
             <div className="flex-display">
-              <div className="add-playlist-icon-container">
-                <div
-                  onClick={() => handleshowPlaylistDialogue(currSong)}
-                  className="tooltip"
-                >
-                  <MdPlaylistAdd />
-                  <span className="tooltiptext">Add to Playlist</span>
-                </div>
+              <div
+                onClick={() => handleshowPlaylistDialogue(currSong)}
+                className="tooltip"
+              >
+                <MdPlaylistAdd />
+                <span className="tooltiptext">Add to Playlist</span>
               </div>
-              <div className="song-image-container">
-                <img
-                  src={`${currSong?.coverImage}`}
-                  className="song-image"
-                  alt={currSong?.title ? currSong.title : "Unknown Title"}
-                />
+              <div
+                onClick={() => {
+                  if (liked === false)
+                    updatePlayDetails({
+                      songID: currSong._id,
+                      likeCount: 1,
+                    });
+                  else
+                    updatePlayDetails({
+                      songID: currSong._id,
+                      likeCount: -1,
+                    });
+                  setLiked(!liked);
+                }}
+                className="tooltip"
+              >
+                {liked ? <FaHeart /> : <FaRegHeart />}
+                <span className="tooltiptext">Like</span>
               </div>
-              <div className="like-share-container">
-                <div
-                  onClick={() => {
-                    if (liked === false)
-                      updatePlayDetails({
-                        songID: currSong._id,
-                        likeCount: 1,
-                      });
-                    else
-                      updatePlayDetails({
-                        songID: currSong._id,
-                        likeCount: -1,
-                      });
-                    setLiked(!liked);
-                  }}
-                  className="tooltip"
-                >
-                  {liked ? <FaHeart /> : <FaRegHeart />}
-                  <span className="tooltiptext">Like</span>
-                </div>
-                <div onClick={() => share(currSong)} className="tooltip">
-                  <FaShareFromSquare />
-                  <span className="tooltiptext">Share</span>
-                </div>
+              <div onClick={() => share(currSong)} className="tooltip">
+                <FaShareFromSquare />
+                <span className="tooltiptext">Share</span>
               </div>
             </div>
             <div className="fullscreenInfoContainer">
@@ -199,11 +191,25 @@ export default function FullScreen({ setFullScreenVisible }) {
             </div>
             {window.innerWidth < 1000 && (
               <>
-                <Seekbar
+                {/* <Seekbar
                   currentTime={currentTime}
                   duration={duration}
                   handleSeek={handleSeek}
-                />
+                /> */}
+                <div className="seekbar-container">
+                  <span>
+                    {currentTime ? formatTime(currentTime) : "00:00:00"}
+                  </span>
+                  <Seekbar
+                    currentTime={currentTime}
+                    duration={duration}
+                    handleSeek={handleSeek}
+                  />
+                  <span>
+                    {duration ? formatTime(duration.current) : "00:00:00"}
+                  </span>
+                </div>
+
                 <div className="play-pause-icon">
                   {loop === 0 && (
                     <span
@@ -248,7 +254,7 @@ export default function FullScreen({ setFullScreenVisible }) {
             )}
           </div>
 
-          <div className="fullscreen-queueArea">
+          <div className="fullscreen-queueArea scroll-item">
             <h1 className="queue-header">
               Queue
               {/* <span className="add-queue-icon">

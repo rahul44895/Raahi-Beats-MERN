@@ -43,11 +43,12 @@
   flex-direction: column;
   height: 100%;
   flex: 1;
+  position: relative;
 }
 
 .song-image-container {
-  height: 20vh;
-  width: 20vh;
+  height: 35vh;
+  width: 35vh;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 1px 1px 20px black;
@@ -70,6 +71,10 @@
 
 .flex-display {
   display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  font-size: 1.5rem;
+  margin: 10px 0;
 }
 
 .add-playlist-icon-container {
@@ -93,7 +98,7 @@
 
 .song-title {
   text-align: center;
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 
 .song-info {

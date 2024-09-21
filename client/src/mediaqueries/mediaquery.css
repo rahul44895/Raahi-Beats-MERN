@@ -87,15 +87,30 @@
     flex: 0 !important;
   }
 
-  .fullscreenInfoContainer {
-    width: 80%;
-    margin: 10px auto 5px auto;
-  }
-
   .fullscreen-main-container {
     display: block !important;
     overflow-y: auto;
   }
+
+  .fullscreen-songArea {
+    padding: 2em;
+  }
+
+  .flex-display {
+    position: absolute;
+    bottom: 10px;
+    margin: 0;
+  }
+
+  .song-image-container {
+    width: 35vh !important;
+    height: 35vh !important;
+  }
+
+  .fullscreenInfoContainer {
+    width: 100% !important;
+  }
+
   .fullscreen-queueArea {
     width: 100% !important;
   }
