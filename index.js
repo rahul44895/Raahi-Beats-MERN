@@ -51,7 +51,7 @@ setInterval(() => {
     .on("error", (err) => {
       console.log("Error: " + err.message);
     });
-}, 10000); // Ping every 10 minutes
+}, 600000); // Ping every 10 minutes
 
 app.post("/api/deviceDetails", (req, res) => {
   console.log({ message: "User signing details", ip: req.ip, body: req.body });
