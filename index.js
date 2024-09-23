@@ -30,6 +30,29 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+//self calling code to keep the hosting platform online
+const https = require("https");
+setInterval(() => {
+  https
+    .get("https://raahi-beats-mern.onrender.com/", (res) => {
+      let data = "";
+
+      // A chunk of data has been received.
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      res.on("end", () => {
+        // console.log(`Response: ${data}`);
+        console.log('Auto Checking: Server is online')
+      });
+    })
+    .on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+}, 10000); // Ping every 10 minutes
+
 app.post("/api/deviceDetails", (req, res) => {
   console.log({ message: "User signing details", ip: req.ip, body: req.body });
   res.send("Received");
