@@ -184,18 +184,13 @@ export default function FullScreen({ setFullScreenVisible }) {
                   ? new Date(currSong.releaseDate).getFullYear()
                   : "Unknown year"}
               </p>
-              <p className="song-info">
+              {/* <p className="song-info">
                 Duration:{" "}
                 {currSong?.duration ? formatTime(currSong.duration) : "Unknown"}
-              </p>
+              </p> */}
             </div>
             {window.innerWidth < 1000 && (
               <>
-                {/* <Seekbar
-                  currentTime={currentTime}
-                  duration={duration}
-                  handleSeek={handleSeek}
-                /> */}
                 <div className="seekbar-container">
                   <span>
                     {currentTime ? formatTime(currentTime) : "00:00:00"}
