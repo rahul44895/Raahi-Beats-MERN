@@ -1,3 +1,4 @@
+![MasterHead](website_screenshot.png)
 # Raahi Beats - MERN Stack Music Website 🎶
 
 **Raahi Beats** is a modern music platform that offers users the ability to listen to music, create and share playlists, and chat with friends in real time. Users can share the link of any music page with others and even enjoy a chat feature for a more interactive experience.
