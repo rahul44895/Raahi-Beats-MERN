@@ -8,7 +8,7 @@ export default function Seekbar({ currentTime, duration, handleSeek }) {
   const handleMouseMove = useCallback(
     (e) => {
       // Use e.touches[0] for touch events, or e.clientX for mouse events
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       if (isMouseDragging) {
         const currentSeekBarContainer =
           SeekBarContainerRef?.current?.getBoundingClientRect();
@@ -54,28 +54,54 @@ export default function Seekbar({ currentTime, duration, handleSeek }) {
       window.removeEventListener("touchend", handleMouseUp);
     };
   }, [isMouseDragging, handleMouseMove]);
+
+  const [seekVal, setSeekVal] = useState(0);
+
+  useEffect(() => {
+    setSeekVal(Math.floor((Math.floor(currentTime) * 100) / duration.current));
+  }, [currentTime]);
+
   return (
-    <div
-      ref={SeekBarContainerRef}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
-      style={{
-        height: "5px",
-        backgroundColor: "#efefef",
-        width: "100%",
-      }}
-    >
-      <div
-        ref={SeekBarRef}
+    <>
+      {" "}
+      <input
+        type="range"
+        name="volumeBar"
+        max={100}
+        min={0}
+        value={seekVal}
+        onChange={(e) => {
+          handleSeek((e.target.value * duration.current) / 100);
+          setSeekVal(e.target.value);
+        }}
         style={{
           height: "5px",
-          backgroundColor: "red",
-          width: `${
-            (SeekBarContainerRef?.current?.offsetWidth / duration.current) *
-            currentTime
-          }px`,
+          backgroundColor: "#efefef",
+          width: "100%",
         }}
-      ></div>
-    </div>
+      />
+      {/* <div
+        ref={SeekBarContainerRef}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
+        style={{
+          height: "5px",
+          backgroundColor: "#efefef",
+          width: "100%",
+        }}
+      >
+        <div
+          ref={SeekBarRef}
+          style={{
+            height: "5px",
+            backgroundColor: "red",
+            width: `${
+              (SeekBarContainerRef?.current?.offsetWidth / duration.current) *
+              currentTime
+            }px`,
+          }}
+        ></div>
+      </div> */}
+    </>
   );
 }

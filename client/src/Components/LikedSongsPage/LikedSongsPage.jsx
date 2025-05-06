@@ -57,17 +57,19 @@ export default function LikedSongsPage() {
                 padding: `2em ${window.innerWidth > 1000 ? "4em" : "0"}`,
               }}
             >
-              <div className="new-releases-header">
-                <div className="new-releases-title">
-                  WE LOVE WHAT YOU LIKE !!
-                  <span
-                    className="song-card-medium-play-icon"
-                    onClick={() => addPlaylistToQueue(result.userLiked)}
-                  >
-                    <IoIosPlayCircle />
-                  </span>
+              {result?.userLiked?.length > 0 && (
+                <div className="new-releases-header">
+                  <div className="new-releases-title">
+                    WE LOVE WHAT YOU LIKE !!
+                    <span
+                      className="song-card-medium-play-icon"
+                      onClick={() => addPlaylistToQueue(result.userLiked)}
+                    >
+                      <IoIosPlayCircle />
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="new-releases-grid">
                 {result.userLiked.map((currSong) => {
                   return <SongCardXL song={currSong} key={currSong._id} />;

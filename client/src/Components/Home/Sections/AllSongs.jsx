@@ -47,7 +47,7 @@ export default function AllSongs() {
                 </span>
               )}
             </div>
-            <div>
+            {/* <div>
               <div
                 className="new-releases-see-more"
                 onClick={() => {
@@ -65,7 +65,7 @@ export default function AllSongs() {
               >
                 See Less
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="new-releases-grid">
             {songList ? (

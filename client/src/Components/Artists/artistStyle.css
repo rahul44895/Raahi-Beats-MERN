@@ -6,7 +6,6 @@
   gap: 10px;
 }
 .artist-card {
-  background-color: rgba(255, 255, 255, 0.267);
   text-align: center;
   height: 10rem;
   width: 10rem;
@@ -14,7 +13,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease-in-out;
 }
+
+.artist-card:hover {
+  background-color: rgb(255 255 255 / 15%);
+  transform: scale(0.9);
+}
+
 .artist-card-image-container {
   height: 100px;
   width: 100%;
@@ -82,4 +88,3 @@
   z-index: 1;
   padding-top: 25%;
 }
-

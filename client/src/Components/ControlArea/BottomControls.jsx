@@ -10,7 +10,7 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { FaVolumeHigh, FaVolumeLow, FaVolumeXmark } from "react-icons/fa6";
 import { IoVolumeMediumSharp } from "react-icons/io5";
 import { RiFullscreenLine } from "react-icons/ri";
-import { MdPauseCircle } from "react-icons/md";
+import { MdLoop, MdPauseCircle } from "react-icons/md";
 import {
   BiSolidSkipPreviousCircle,
   BiSolidSkipNextCircle,
@@ -233,58 +233,113 @@ export default function BottomControls({
           <div className="play-pause-icon">
             {window.innerWidth > minWindowWidth && (
               <>
-                {" "}
                 {loop === 0 && (
                   <span
-                    style={{ fontSize: "2.5rem" }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      position: "relative",
+                    }}
                     onClick={() => setLoop(2)}
                   >
-                    <SlLoop />
+                    <MdLoop size={30} />
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {" "}
+                    </span>
                   </span>
                 )}
                 {loop === 2 && (
                   <span
-                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      position: "relative",
+                      color: "red",
+                    }}
                     onClick={() => setLoop(1)}
                   >
-                    <SlLoop />
+                    <MdLoop size={30} />
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {" "}
+                    </span>
                   </span>
                 )}
                 {loop === 1 && (
                   <span
-                    style={{ fontSize: "2.5rem", color: "#0075ff" }}
-                    onClick={() => setLoop(0)}
-                  >
-                    <SlLoop />1
-                  </span>
-                )}
-                <span style={{ fontSize: "2.5rem" }} onClick={previous}>
-                  <BiSolidSkipPreviousCircle />
-                </span>
-              </>
-            )}
-            <span
-              onClick={() => playnpause()}
-              style={
-                window.innerWidth < minWindowWidth
-                  ? {
+                    style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                    }
-                  : {}
-              }
-            >
-              {!isPlaying ? <IoIosPlayCircle /> : <MdPauseCircle />}
-            </span>
+                      cursor: "pointer",
+                      position: "relative",
+                      color: "red",
+                    }}
+                    onClick={() => setLoop(0)}
+                  >
+                    <MdLoop size={30} />
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      1
+                    </span>
+                  </span>
+                )}
+                <BiSolidSkipPreviousCircle size={30} onClick={previous} />
+              </>
+            )}
+            {/* // style={
+                //   window.innerWidth < minWindowWidth
+                //     ? {
+                  //         display: "flex",
+                  //         alignItems: "center",
+                  //         justifyContent: "center",
+                  //       }
+                  //     : {}
+                  // } */}
+            <>
+              {!isPlaying ? (
+                <IoIosPlayCircle size={50} onClick={() => playnpause()} />
+              ) : (
+                <MdPauseCircle size={50} onClick={() => playnpause()} />
+              )}
+            </>
             {window.innerWidth > minWindowWidth && (
               <>
-                <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
-                  <BiSolidSkipNextCircle />
-                </span>
-                <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
-                  <PiShuffleBold />
-                </span>
+                <BiSolidSkipNextCircle size={30} onClick={() => next()} />
+
+                <PiShuffleBold size={30} onClick={shuffle} />
               </>
             )}
           </div>
@@ -296,13 +351,13 @@ export default function BottomControls({
                   className="volume-icon"
                 >
                   {mute || volumeBar === 0 ? (
-                    <FaVolumeXmark />
+                    <FaVolumeXmark size={20} />
                   ) : volumeBar >= 66 ? (
-                    <FaVolumeHigh />
+                    <FaVolumeHigh size={20} />
                   ) : volumeBar <= 33 ? (
-                    <FaVolumeLow />
+                    <FaVolumeLow size={20} />
                   ) : (
-                    <IoVolumeMediumSharp />
+                    <IoVolumeMediumSharp size={20} />
                   )}
                 </span>
                 <input
@@ -322,7 +377,7 @@ export default function BottomControls({
                     handleFullScreenButton();
                   }}
                 >
-                  <RiFullscreenLine />
+                  <RiFullscreenLine size={20} />
                 </span>
               </div>
             </div>

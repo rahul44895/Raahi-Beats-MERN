@@ -82,7 +82,7 @@
 }
 
 .new-releases-title {
-  font-size: 3rem;
+  font-size: 1.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,8 +109,10 @@
 /* SONG CARD XL */
 .song-card-xl {
   position: relative;
-  height: 14.625rem;
-  width: 14.625rem;
+  /* height: 14.625rem;
+  width: 14.625rem; */
+  height: 9.625rem !important;
+  width: 9.625rem !important;
 }
 
 .song-card-xl-image {
@@ -130,7 +132,8 @@
 }
 
 .song-card-xl-overlay-text {
-  font-size: 2em;
+  /* font-size: 2em; */
+  font-size: 1rem;
   padding: 1em;
   opacity: 1;
   transition: all 0.2s linear;
