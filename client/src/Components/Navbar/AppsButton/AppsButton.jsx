@@ -19,47 +19,23 @@ export default function AppsButton() {
         </svg>
       </div>
       <div className="nav-menu-container">
-        <Link to={"https://www.contacts.raahi.com"} target="_blank">
-          <div className="nav-menu-dropdown-icon-container ">
-            <img
-              className="nav-menu-dropdown-icon"
-              src={raahi_beats_logo}
-              alt="raahi_beats_logo"
-            />
-            <div>Contacts</div>
-          </div>
-        </Link>
-        <Link to={"https://www.ecommerce.raahi.com"} target="_blank">
-          <div className="nav-menu-dropdown-icon-container ">
-            <img
-              className="nav-menu-dropdown-icon"
-              src={raahi_beats_logo}
-              alt="raahi_beats_logo"
-            />
-            <div>Ecommerce</div>
-          </div>
-        </Link>
-        <Link to={"https://www.beats.raahi.com"} target="_blank">
-          <div className="nav-menu-dropdown-icon-container ">
-            <img
-              className="nav-menu-dropdown-icon"
-              src={raahi_beats_logo}
-              alt="raahi_beats_logo"
-            />
-            <div>Beats</div>
-          </div>
-        </Link>
-
-        <Link to={"https://www.videos.raahi.com"} target="_blank">
-          <div className="nav-menu-dropdown-icon-container ">
-            <img
-              className="nav-menu-dropdown-icon"
-              src={raahi_beats_logo}
-              alt="raahi_beats_logo"
-            />
-            <div>Videos</div>
-          </div>
-        </Link>
+        {[
+          { link: "https://www.contacts.raahi.com", name: "Contacts" },
+          { link: "https://www.ecommerce.raahi.com", name: "Ecommerce" },
+          { link: "https://www.beats.raahi.com", name: "Beats" },
+          { link: "https://www.videos.raahi.com", name: "Videos" },
+        ].map((e) => (
+          <Link to={e.link} target="_blank">
+            <div className="nav-menu-dropdown-icon-container" style={{color: "black"}}>
+              <img
+                className="nav-menu-dropdown-icon"
+                src={raahi_beats_logo}
+                alt="raahi_beats_logo"
+              />
+              <div style={{paddingTop:'3px'}}>{e.name}</div>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

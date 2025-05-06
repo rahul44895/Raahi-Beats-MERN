@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
-import { MdPlaylistAdd } from "react-icons/md";
+import { MdLoop, MdPlaylistAdd } from "react-icons/md";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { AudioContext } from "../../Context/Audio/AudioState";
@@ -120,7 +120,7 @@ export default function FullScreen({ setFullScreenVisible }) {
                 alt={currSong?.title ? currSong.title : "Unknown Title"}
               />
             </div>
-            <div className="flex-display">
+            <div className="flex-display" style={{width:'35vh', marginTop:'15px'}}>
               <div
                 onClick={() => handleshowPlaylistDialogue(currSong)}
                 className="tooltip"
@@ -206,7 +206,7 @@ export default function FullScreen({ setFullScreenVisible }) {
                 </div>
 
                 <div className="play-pause-icon">
-                  {loop === 0 && (
+                  {/* {loop === 0 && (
                     <span
                       style={{ fontSize: "2.5rem" }}
                       onClick={() => setLoop(2)}
@@ -224,26 +224,109 @@ export default function FullScreen({ setFullScreenVisible }) {
                   )}
                   {loop === 1 && (
                     <span
-                      style={{ fontSize: "2.5rem", color: "#0075ff" }}
+                      style={{ color: "#0075ff" }}
                       onClick={() => setLoop(0)}
                     >
-                      <SlLoop />1
+                      <SlLoop size={30} />1
+                    </span>
+                  )} */}
+
+                  {loop === 0 && (
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        position: "relative",
+                      }}
+                      onClick={() => setLoop(2)}
+                    >
+                      <MdLoop size={30} />
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          position: "absolute",
+                          bottom: "0",
+                          right: "0",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {" "}
+                      </span>
+                    </span>
+                  )}
+                  {loop === 2 && (
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        position: "relative",
+                        color: "red",
+                      }}
+                      onClick={() => setLoop(1)}
+                    >
+                      <MdLoop size={30} />
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          position: "absolute",
+                          bottom: "0",
+                          right: "0",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {" "}
+                      </span>
+                    </span>
+                  )}
+                  {loop === 1 && (
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        position: "relative",
+                        color: "red",
+                      }}
+                      onClick={() => setLoop(0)}
+                    >
+                      <MdLoop size={30} />
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          position: "absolute",
+                          bottom: "0",
+                          right: "0",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        1
+                      </span>
                     </span>
                   )}
 
-                  <span style={{ fontSize: "2.5rem" }} onClick={previous}>
-                    <BiSolidSkipPreviousCircle />
-                  </span>
-                  <span onClick={() => playnpause()}>
-                    {!isPlaying && <IoIosPlayCircle />}
-                    {isPlaying && <MdPauseCircle />}
-                  </span>
-                  <span style={{ fontSize: "2.5rem" }} onClick={() => next()}>
-                    <BiSolidSkipNextCircle />
-                  </span>
-                  <span style={{ fontSize: "2.5rem" }} onClick={shuffle}>
-                    <PiShuffleBold />
-                  </span>
+                  <BiSolidSkipPreviousCircle size={30} onClick={previous} />
+
+                  {!isPlaying && (
+                    <IoIosPlayCircle size={50} onClick={() => playnpause()} />
+                  )}
+                  {isPlaying && (
+                    <MdPauseCircle size={50} onClick={() => playnpause()} />
+                  )}
+
+                  <BiSolidSkipNextCircle size={30} onClick={() => next()} />
+
+                  <PiShuffleBold size={30} onClick={shuffle} />
                 </div>
               </>
             )}
