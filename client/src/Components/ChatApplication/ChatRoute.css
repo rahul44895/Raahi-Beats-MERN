@@ -14,7 +14,7 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  padding: 1em;
+  padding: 6px;
 }
 
 .chat-route__contact-item:hover {
@@ -82,7 +82,7 @@
 /* Unique number suffixes added to class names */
 
 .chat-area-container-001 {
-  background-color: whitesmoke;
+  background-color: #272727;
   flex: 2;
 }
 
@@ -103,7 +103,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: #272727;
+  background-color: #1f1f1f;
   padding: 1em;
 }
 
@@ -174,7 +174,7 @@
 
 .start-conversation-001,
 .select-contact-001 {
-  color: black;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,25 +182,34 @@
 }
 
 .message-form-001 {
-  background: green;
+  /* background: green; */
   display: flex;
   align-items: center;
 }
 
 .message-form-input-001 {
   flex: 2;
-  padding: 1em;
+  padding: 0.8rem;
   height: 100%;
   border: none;
 }
 
 .message-form-button-001 {
   flex: 1;
-  padding: 1.5em;
+  padding: 0.8rem;
   border: none;
+  border-left: 1px solid black;
   height: 100%;
   cursor: pointer;
-  background-color: #ec167f;
+  background-color: #fff;
+  color: black;
+  transition: all 0.1s linear;
+}
+
+
+.message-form-button-001:hover{
+  background-color: black;
   color: white;
-  transition: all 0.2s linear;
+  transform: scale(0.96);
+
 }
