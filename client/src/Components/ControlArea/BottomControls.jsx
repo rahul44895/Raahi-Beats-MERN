@@ -16,7 +16,6 @@ import {
   BiSolidSkipNextCircle,
 } from "react-icons/bi";
 import { IoIosPlayCircle } from "react-icons/io";
-import { SlLoop } from "react-icons/sl";
 import { PiShuffleBold } from "react-icons/pi";
 import Marquee from "react-fast-marquee";
 import { SongContext } from "../../Context/Songs/SongState";
