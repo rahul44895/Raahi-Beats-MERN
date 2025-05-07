@@ -37,7 +37,7 @@ const AudioState = (props) => {
     currTime.current = newAudio.currentTime;
 
     if (newAudio.currentTime === newAudio.duration) {
-      console.log("Ended");
+      // console.log("Ended");
       setIsPlaying(false);
       if (loopRef.current === 1) {
         setLoop(0);
@@ -47,6 +47,22 @@ const AudioState = (props) => {
       } else {
         next(song);
       }
+    }
+  };
+
+  const handleMediaSession = (song) => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new window.MediaMetadata({
+        title: song.title,
+        artist: song.artists?.map((e) => e.name)?.join(" | "),
+        album: song.album,
+        artwork: [
+          {
+            src: song.coverImage.replace(/\\/g, "/"),
+            sizes: "500x500",
+          },
+        ],
+      });
     }
   };
 
@@ -80,6 +96,7 @@ const AudioState = (props) => {
           songID: tempSong._id,
           details: { duration: newAudio.duration },
         });
+        handleMediaSession(song);
       })
       .catch((error) => {
         showAlert("Some Error Occured");
