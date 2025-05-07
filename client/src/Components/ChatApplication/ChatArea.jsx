@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { AlertContext } from "../../Context/Alert/AlertState";
+import { IoIosSend } from "react-icons/io";
 
 export default function ChatArea({
   currContactDetails,
@@ -143,8 +144,14 @@ export default function ChatArea({
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type in your message..."
               className="message-form-input-001"
+              style={{ flex: '0 0 80%' }}
             />
-            <button type="submit" className="message-form-button-001">
+            <button
+              type="submit"
+              className="message-form-button-001 d-flex justify-content-center align-items-center"
+              style={{ flex: '0 0 20%' }}
+            >
+              <IoIosSend size={20} />
               Send
             </button>
           </form>
