@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "sync-client-env": "node scripts/sync-client-env.js",
     "client-install": "npm install --prefix client",
     "client-build": "npm run build --prefix client",
     "start": "node index.js",
