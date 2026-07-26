@@ -1,107 +1,84 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AudioContext } from "../../Context/Audio/AudioState";
 
-export default function Seekbar({ currentTime, duration, handleSeek }) {
-  // const SeekBarContainerRef = useRef(null);
-  // const SeekBarRef = useRef(null);
-  // const [isMouseDragging, setisMouseDragging] = useState(false);
+const POLL_INTERVAL_MS = 200;
 
-  // const handleMouseMove = useCallback(
-  //   (e) => {
-  //     // Use e.touches[0] for touch events, or e.clientX for mouse events
-  //     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  //     if (isMouseDragging) {
-  //       const currentSeekBarContainer =
-  //         SeekBarContainerRef?.current?.getBoundingClientRect();
-  //       const newWidth = clientX - currentSeekBarContainer.left;
-  //       if (newWidth >= 0 && newWidth < currentSeekBarContainer.width) {
-  //         SeekBarRef.current.style.width = `${newWidth}px`;
-  //         handleSeek(
-  //           (duration.current / currentSeekBarContainer.width) * newWidth
-  //         );
-  //       }
-  //     }
-  //   },
-  //   [isMouseDragging, handleSeek, duration]
-  // );
-
-  // const handleMouseDown = () => {
-  //   setisMouseDragging(true);
-  // };
-
-  // useEffect(() => {
-  //   const handleMouseUp = () => {
-  //     setisMouseDragging(false);
-  //   };
-
-  //   if (isMouseDragging) {
-  //     window.addEventListener("mousemove", handleMouseMove);
-  //     window.addEventListener("mouseup", handleMouseUp);
-
-  //     window.addEventListener("touchmove", handleMouseMove);
-  //     window.addEventListener("touchend", handleMouseUp);
-  //   } else {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //     window.removeEventListener("mouseup", handleMouseUp);
-
-  //     window.removeEventListener("touchmove", handleMouseMove);
-  //     window.removeEventListener("touchend", handleMouseUp);
-  //   }
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //     window.removeEventListener("mouseup", handleMouseUp);
-
-  //     window.removeEventListener("touchmove", handleMouseMove);
-  //     window.removeEventListener("touchend", handleMouseUp);
-  //   };
-  // }, [isMouseDragging, handleMouseMove]);
-
-  const [seekVal, setSeekVal] = useState(0);
+export default function Seekbar({ formatTime, split = false }) {
+  const { audio, duration, handleSeek } = useContext(AudioContext);
+  const [currentTime, setCurrentTime] = useState(audio ? audio.currentTime : 0);
 
   useEffect(() => {
-    setSeekVal(Math.floor((Math.floor(currentTime) * 100) / duration.current));
-  }, [currentTime]);
+    setCurrentTime(audio ? audio.currentTime : 0);
+
+    if (!audio) return;
+
+    let intervalId = null;
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const startInterval = () => {
+      if (!intervalId) intervalId = setInterval(updateTime, POLL_INTERVAL_MS);
+    };
+    const clearExistingInterval = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    if (!audio.paused) startInterval();
+    audio.addEventListener("play", startInterval);
+    audio.addEventListener("pause", clearExistingInterval);
+
+    return () => {
+      audio.removeEventListener("play", startInterval);
+      audio.removeEventListener("pause", clearExistingInterval);
+      clearExistingInterval();
+    };
+  }, [audio]);
+
+  if (!audio) return null;
+
+  const seekPercent = duration.current
+    ? Math.min(100, Math.max(0, Math.floor((currentTime * 100) / duration.current)))
+    : 0;
+
+  const handleChange = (e) => {
+    const newTime = (e.target.value * duration.current) / 100;
+    handleSeek(newTime);
+    setCurrentTime(newTime);
+  };
+
+  const input = (
+    <input
+      type="range"
+      name="volumeBar"
+      max={100}
+      min={0}
+      value={seekPercent}
+      onChange={handleChange}
+      style={{
+        height: "5px",
+        backgroundColor: "#efefef",
+        width: "100%",
+      }}
+    />
+  );
+
+  if (split) {
+    return (
+      <>
+        <span>{formatTime(currentTime)}</span>
+        {input}
+        <span>{formatTime(duration.current)}</span>
+      </>
+    );
+  }
 
   return (
     <>
-      {" "}
-      <input
-        type="range"
-        name="volumeBar"
-        max={100}
-        min={0}
-        value={seekVal}
-        onChange={(e) => {
-          handleSeek((e.target.value * duration.current) / 100);
-          setSeekVal(e.target.value);
-        }}
-        style={{
-          height: "5px",
-          backgroundColor: "#efefef",
-          width: "100%",
-        }}
-      />
-      {/* <div
-        ref={SeekBarContainerRef}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
-        style={{
-          height: "5px",
-          backgroundColor: "#efefef",
-          width: "100%",
-        }}
-      >
-        <div
-          ref={SeekBarRef}
-          style={{
-            height: "5px",
-            backgroundColor: "red",
-            width: `${
-              (SeekBarContainerRef?.current?.offsetWidth / duration.current) *
-              currentTime
-            }px`,
-          }}
-        ></div>
-      </div> */}
+      {input}
+      <span>
+        {formatTime(currentTime)}/{formatTime(duration.current)}
+      </span>
     </>
   );
 }

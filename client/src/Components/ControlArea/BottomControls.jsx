@@ -31,10 +31,7 @@ export default function BottomControls({
     playnpause,
     volumeChange,
     isPlaying,
-    currTime,
-    duration,
     audio,
-    handleSeek,
     currSong,
     next,
     previous,
@@ -42,48 +39,7 @@ export default function BottomControls({
     setLoop,
     shuffle,
   } = useContext(AudioContext);
-  const [currentTime, setcurrentTime] = useState(currTime.current);
   const minWindowWidth = 1000;
-  useEffect(() => {
-    let intervalId;
-
-    const updateTime = () => {
-      setcurrentTime(currTime.current);
-    };
-
-    const startInterval = () => {
-      if (!intervalId) {
-        intervalId = setInterval(updateTime, 1000);
-      }
-    };
-
-    const clearExistingInterval = () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
-    };
-
-    if (audio) {
-      // Start the interval if the audio is already playing
-      if (!audio.paused) {
-        startInterval();
-      }
-
-      // Add event listeners to handle play and pause
-      audio.addEventListener("play", startInterval);
-      audio.addEventListener("pause", clearExistingInterval);
-    }
-
-    return () => {
-      // Clean up event listeners and interval on unmount or when audio changes
-      if (audio) {
-        audio.removeEventListener("play", startInterval);
-        audio.removeEventListener("pause", clearExistingInterval);
-      }
-      clearExistingInterval();
-    };
-  }, [audio, currTime]);
 
   const [mute, setMute] = useState(false);
 
@@ -159,15 +115,7 @@ export default function BottomControls({
           <div className="fullscreen-backdrop"></div>
         )}
         <div className="seekbar-container">
-          <Seekbar
-            currentTime={currentTime}
-            duration={duration}
-            handleSeek={handleSeek}
-          />
-          <span>
-            {currentTime ? formatTime(currentTime) : "00:00:00"}/
-            {duration ? formatTime(duration.current) : "00:00:00"}
-          </span>
+          <Seekbar formatTime={formatTime} />
         </div>
         <div className="controls-container">
           <Link

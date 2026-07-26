@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
 import Queue from "../Queue/Queue";
@@ -15,7 +15,6 @@ import {
   BiSolidSkipNextCircle,
 } from "react-icons/bi";
 import { IoIosPlayCircle } from "react-icons/io";
-import { SlLoop } from "react-icons/sl";
 import { PiShuffleBold } from "react-icons/pi";
 import Seekbar from "../ControlArea/Seekbar";
 
@@ -33,10 +32,6 @@ export default function FullScreen({ setFullScreenVisible }) {
     loop,
     setLoop,
     shuffle,
-    currTime,
-    duration,
-    audio,
-    handleSeek,
   } = useContext(AudioContext);
 
   // //useState
@@ -50,51 +45,6 @@ export default function FullScreen({ setFullScreenVisible }) {
     const formattedSeconds = seconds.toString().padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
   };
-
-  const [currentTime, setcurrentTime] = useState(currTime.current);
-
-  useEffect(() => {
-    if (window.innerWidth < 1000) {
-      let intervalId;
-
-      const updateTime = () => {
-        setcurrentTime(currTime.current);
-      };
-
-      const startInterval = () => {
-        if (!intervalId) {
-          intervalId = setInterval(updateTime, 1000);
-        }
-      };
-
-      const clearExistingInterval = () => {
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
-        }
-      };
-
-      if (audio) {
-        // Start the interval if the audio is already playing
-        if (!audio.paused) {
-          startInterval();
-        }
-
-        // Add event listeners to handle play and pause
-        audio.addEventListener("play", startInterval);
-        audio.addEventListener("pause", clearExistingInterval);
-      }
-
-      return () => {
-        // Clean up event listeners and interval on unmount or when audio changes
-        if (audio) {
-          audio.removeEventListener("play", startInterval);
-          audio.removeEventListener("pause", clearExistingInterval);
-        }
-        clearExistingInterval();
-      };
-    }
-  }, [audio, currTime]);
 
   return (
     <div className="fullscreen-song-container">
@@ -192,17 +142,7 @@ export default function FullScreen({ setFullScreenVisible }) {
             {window.innerWidth < 1000 && (
               <>
                 <div className="seekbar-container">
-                  <span>
-                    {currentTime ? formatTime(currentTime) : "00:00:00"}
-                  </span>
-                  <Seekbar
-                    currentTime={currentTime}
-                    duration={duration}
-                    handleSeek={handleSeek}
-                  />
-                  <span>
-                    {duration ? formatTime(duration.current) : "00:00:00"}
-                  </span>
+                  <Seekbar formatTime={formatTime} split />
                 </div>
 
                 <div className="play-pause-icon">
