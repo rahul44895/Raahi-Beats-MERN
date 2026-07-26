@@ -4,8 +4,16 @@ import "./AlertBoxStyle.css";
 export default function AlertBox({ message, onClose }) {
   const alertRef = useRef(null);
   useEffect(() => {
-    setTimeout(() => alertRef.current.classList.add("alert-exit-anime"), 4998);
-    setTimeout(() => onClose(), 5998);
+    const exitTimeout = setTimeout(
+      () => alertRef.current?.classList.add("alert-exit-anime"),
+      4998
+    );
+    const closeTimeout = setTimeout(() => onClose(), 5998);
+
+    return () => {
+      clearTimeout(exitTimeout);
+      clearTimeout(closeTimeout);
+    };
     // eslint-disable-next-line
   }, []);
   return (

@@ -12,15 +12,26 @@ export default function Navbar() {
   const navbar = useRef();
   useEffect(() => {
     const ele = document.querySelector("#root").children[1].children[0];
-    if (ele) {
-      ele.addEventListener("scroll", (e) => {
-        if (ele.scrollTop > navbar.current.offsetHeight) {
-          navbar.current.style.backdropFilter = "blur(20px)";
-        } else {
-          navbar.current.style.backdropFilter = "";
-        }
-      });
-    }
+    if (!ele) return;
+
+    let ticking = false;
+    const updateNavbarBlur = () => {
+      if (ele.scrollTop > navbar.current.offsetHeight) {
+        navbar.current.style.backdropFilter = "blur(20px)";
+      } else {
+        navbar.current.style.backdropFilter = "";
+      }
+      ticking = false;
+    };
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateNavbarBlur);
+      }
+    };
+
+    ele.addEventListener("scroll", handleScroll);
+    return () => ele.removeEventListener("scroll", handleScroll);
   }, []);
   let user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
   const [username, setUsername] = useState(user ? user.username : "Guest User");
