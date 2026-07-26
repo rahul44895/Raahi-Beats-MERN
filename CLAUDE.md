@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Raahi Beats is a MERN-stack music streaming site (browse/stream songs, artists, playlists, liked songs, and real-time 1:1 chat). It was built as a college project and is now being refactored toward industry-standard code quality — see the "Known Issues / Refactor Backlog" section below for the active punch list.
+Raahi Beats is a MERN-stack music streaming site (browse/stream songs, artists, playlists, liked songs, and real-time 1:1 chat). It was built as a college project and is now being refactored toward industry-standard code quality — see the "Known Issues / Refactor Backlog" section below for the active punch list, and `docs/frontend-optimization-backlog.md` for the more detailed frontend-specific performance/smoothness backlog (re-render/memoization, effect hygiene, asset loading).
 
 ## Commands
 

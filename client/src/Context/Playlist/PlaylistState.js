@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import Cookie from "js-cookie";
 import { AlertContext } from "../Alert/AlertState";
 import { useNavigate } from "react-router-dom";
@@ -82,16 +88,19 @@ const PlaylistState = (props) => {
     [host, showAlert]
   );
 
-  const handleshowPlaylistDialogue = (song) => {
-    const login = Cookie.get("token");
-    if (!login) {
-      showAlert("You need to login first.");
-      navigate("/login");
-      return;
-    }
-    setshowPlaylistDialogue(true);
-    setTempPlaylistSong(song);
-  };
+  const handleshowPlaylistDialogue = useCallback(
+    (song) => {
+      const login = Cookie.get("token");
+      if (!login) {
+        showAlert("You need to login first.");
+        navigate("/login");
+        return;
+      }
+      setshowPlaylistDialogue(true);
+      setTempPlaylistSong(song);
+    },
+    [showAlert, navigate]
+  );
 
   const addToPlaylistFunc = useCallback(
     async (playlistID) => {
@@ -267,23 +276,38 @@ const PlaylistState = (props) => {
     },
     [host, showAlert]
   );
+  const value = useMemo(
+    () => ({
+      showPlaylistDialogue,
+      handleshowPlaylistDialogue,
+      playlist,
+      setshowPlaylistDialogue,
+      getPublicPlaylist,
+      getPrivatePlaylist,
+      addToPlaylistFunc,
+      updatePlaylistOrderFunc,
+      updatePlaylistDetailsFunc,
+      deletePlaylist,
+      createPlaylist,
+      deleteSongFromPlaylist,
+    }),
+    [
+      showPlaylistDialogue,
+      handleshowPlaylistDialogue,
+      playlist,
+      getPublicPlaylist,
+      getPrivatePlaylist,
+      addToPlaylistFunc,
+      updatePlaylistOrderFunc,
+      updatePlaylistDetailsFunc,
+      deletePlaylist,
+      createPlaylist,
+      deleteSongFromPlaylist,
+    ]
+  );
+
   return (
-    <PlaylistContext.Provider
-      value={{
-        showPlaylistDialogue,
-        handleshowPlaylistDialogue,
-        playlist,
-        setshowPlaylistDialogue,
-        getPublicPlaylist,
-        getPrivatePlaylist,
-        addToPlaylistFunc,
-        updatePlaylistOrderFunc,
-        updatePlaylistDetailsFunc,
-        deletePlaylist,
-        createPlaylist,
-        deleteSongFromPlaylist,
-      }}
-    >
+    <PlaylistContext.Provider value={value}>
       {props.children}
     </PlaylistContext.Provider>
   );

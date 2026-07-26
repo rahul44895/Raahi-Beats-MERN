@@ -67,9 +67,11 @@ const AudioState = (props) => {
   };
 
   const play = (tempSong) => {
-    let song = JSON.parse(JSON.stringify(tempSong));
-    song.filePath = host + "/" + tempSong.filePath.replace(/\\/g, "/");
-    song.coverImage = host + "/" + tempSong.coverImage.replace(/\\/g, "/");
+    const song = {
+      ...tempSong,
+      filePath: host + "/" + tempSong.filePath.replace(/\\/g, "/"),
+      coverImage: host + "/" + tempSong.coverImage.replace(/\\/g, "/"),
+    };
     if (audio && currSong && currSong._id === tempSong._id) {
       return;
     }

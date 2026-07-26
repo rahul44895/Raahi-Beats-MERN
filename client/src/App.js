@@ -62,10 +62,18 @@ function App() {
 
   // HANDLEs DEVICE RESIZE
   useEffect(() => {
-    const handleResize = () => {
+    let ticking = false;
+    const updateDimensions = () => {
       setPortrait(window.innerHeight > window.innerWidth);
       setwindowHeight(window.innerHeight);
       setwindowWidth(window.innerWidth);
+      ticking = false;
+    };
+    const handleResize = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateDimensions);
+      }
     };
     window.addEventListener("resize", handleResize);
     return () => {
