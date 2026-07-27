@@ -22,6 +22,9 @@ import { SongContext } from "../../Context/Songs/SongState";
 import { Link } from "react-router-dom";
 import Seekbar from "./Seekbar";
 import useIsMobile from "../../hooks/useIsMobile";
+import useDominantColor, {
+  getArtworkThemeStyle,
+} from "../../hooks/useDominantColor";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -45,6 +48,12 @@ export default function BottomControls({
     shuffle,
   } = useContext(AudioContext);
   const isMobile = useIsMobile();
+  const dominantColor = useDominantColor(
+    isFullScreenVisible ? currSong?.coverImage : null
+  );
+  const volumeBarThemeStyle = isFullScreenVisible
+    ? getArtworkThemeStyle(dominantColor)
+    : undefined;
 
   const [mute, setMute] = useState(false);
 
@@ -120,15 +129,14 @@ export default function BottomControls({
           <div className="fullscreen-backdrop"></div>
         )}
         <div className="seekbar-container">
-          <Seekbar formatTime={formatTime} />
+          <Seekbar
+            formatTime={formatTime}
+            adaptToArtwork={isFullScreenVisible}
+          />
         </div>
         <div className="controls-container">
           <Link
-            to={
-              !isMobile
-                ? `/song/${currSong?.shortenURL}`
-                : window.location
-            }
+            to={!isMobile ? `/song/${currSong?.shortenURL}` : window.location}
           >
             <div
               className="bottom-song-info-container"
@@ -323,6 +331,7 @@ export default function BottomControls({
                   onChange={(e) => {
                     handleVolumeChange(e);
                   }}
+                  style={volumeBarThemeStyle}
                 />
 
                 <span

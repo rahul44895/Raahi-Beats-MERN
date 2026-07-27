@@ -79,7 +79,10 @@ export default function FullScreen({ setFullScreenVisible }) {
                 wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
               />
             </div>
-            <div className="flex-display" style={{width:'35vh', marginTop:'15px'}}>
+            <div
+              className="flex-display"
+              style={{ width: "35vh", marginTop: "15px" }}
+            >
               <div
                 onClick={() => handleshowPlaylistDialogue(currSong)}
                 className="tooltip"
@@ -151,7 +154,7 @@ export default function FullScreen({ setFullScreenVisible }) {
             {isMobile && (
               <>
                 <div className="seekbar-container">
-                  <Seekbar formatTime={formatTime} split />
+                  <Seekbar formatTime={formatTime} split adaptToArtwork />
                 </div>
 
                 <div className="play-pause-icon">
