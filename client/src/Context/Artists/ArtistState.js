@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
 import { AlertContext } from "../Alert/AlertState";
 
 const ArtistContext = createContext();
@@ -55,8 +61,10 @@ const ArtistState = (props) => {
     [host, showAlert]
   );
 
+  const value = useMemo(() => ({ fetchArtists }), [fetchArtists]);
+
   return (
-    <ArtistContext.Provider value={{ fetchArtists }}>
+    <ArtistContext.Provider value={value}>
       {props.children}
     </ArtistContext.Provider>
   );

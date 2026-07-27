@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "../Alert/AlertState";
 
-const { createContext, useContext } = require("react");
+const { createContext, useCallback, useContext, useMemo } = require("react");
 
 const AuthenticationContext = createContext();
 export { AuthenticationContext };
@@ -13,7 +13,7 @@ const AuthenticationState = (props) => {
   const host = process.env.REACT_APP_HOST;
 
   // SIGNUP
-  const signup = async (credentials) => {
+  const signup = useCallback(async (credentials) => {
     try {
       const formData = new FormData();
       Object.entries(credentials).forEach(([key, value]) => {
@@ -37,10 +37,10 @@ const AuthenticationState = (props) => {
       alert("Some error occured while loading the page.");
       console.log(error);
     }
-  };
+  }, [host, showAlert, navigate]);
 
   // LOGIN
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     const { email, password } = credentials;
     try {
       const response = await fetch(`${host}/users/login`, {
@@ -65,9 +65,9 @@ const AuthenticationState = (props) => {
       console.error("Error:", error);
       alert("An error occurred");
     }
-  };
+  }, [host, showAlert, navigate]);
   // Logout
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       const response = await fetch(`${host}/users/logout`, {
         method: "GET",
@@ -88,10 +88,15 @@ const AuthenticationState = (props) => {
       console.error("Error:", error);
       alert("An error occurred");
     }
-  };
+  }, [host, showAlert, navigate]);
+
+  const value = useMemo(
+    () => ({ signup, login, logout }),
+    [signup, login, logout]
+  );
 
   return (
-    <AuthenticationContext.Provider value={{ signup, login, logout }}>
+    <AuthenticationContext.Provider value={value}>
       {props.children}
     </AuthenticationContext.Provider>
   );

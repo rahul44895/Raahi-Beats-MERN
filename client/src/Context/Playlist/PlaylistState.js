@@ -211,9 +211,7 @@ const PlaylistState = (props) => {
         });
         const data = await response.json();
         if (data.success) {
-          let temp = JSON.parse(JSON.stringify(playlist));
-          temp = temp.filter((curr) => curr._id !== playlistID);
-          setPlaylist(temp);
+          setPlaylist(playlist.filter((curr) => curr._id !== playlistID));
           showAlert(data.message);
         } else {
           showAlert(data.error);
