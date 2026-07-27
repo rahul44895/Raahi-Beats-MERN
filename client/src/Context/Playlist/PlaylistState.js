@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import Cookie from "js-cookie";
@@ -21,10 +22,18 @@ const PlaylistState = (props) => {
 
   const host = process.env.REACT_APP_HOST;
   const navigate = useNavigate();
+  // Opt-in only: PlaylistMain/PlaylistDetails view live playlist data (song
+  // counts can change), so they must keep fetching fresh. Only curated,
+  // rarely-changing home-page carousels (Urban Punjabi Tadka, West Tunes)
+  // pass useCache:true.
+  const publicPlaylistCache = useRef({});
 
   //GET PLAYLIST FUNC
   const getPublicPlaylist = useCallback(
-    async (playlistID) => {
+    async (playlistID, { useCache = false } = {}) => {
+      if (useCache && playlistID && publicPlaylistCache.current[playlistID]) {
+        return publicPlaylistCache.current[playlistID];
+      }
       const userToken = Cookie.get("token");
       try {
         const response = await fetch(`${host}/playlist/get/public`, {
@@ -39,6 +48,9 @@ const PlaylistState = (props) => {
 
         const data = await response.json();
         if (data.success) {
+          if (useCache && playlistID) {
+            publicPlaylistCache.current[playlistID] = data.playlist;
+          }
           return data.playlist;
         } else {
           showAlert("Error fetching the songs");

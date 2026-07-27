@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { AlertContext } from "../Alert/AlertState";
 import Cookie from "js-cookie";
 import Cookies from "js-cookie";
@@ -11,8 +17,17 @@ const SongState = (props) => {
   const host = process.env.REACT_APP_HOST;
   const [songDetails, setSongDetails] = useState();
   const { showAlert } = useContext(AlertContext);
+
+  // Full-catalog/new-release/old-release lists are stable enough across a session
+  // that remounting the Home sections (e.g. navigating away and back) shouldn't
+  // re-hit the network - only cache the no-argument/no-filter case, never search.
+  const allSongsCache = useRef(null);
+  const newReleaseCache = useRef(null);
+  const oldReleaseCache = useRef(null);
+
   const fetchSongs = useCallback(
     async (songShortID) => {
+      if (!songShortID && allSongsCache.current) return allSongsCache.current;
       const userToken = Cookie.get("token");
       try {
         const url = songShortID
@@ -26,6 +41,7 @@ const SongState = (props) => {
 
         const data = await response.json();
         if (data.success) {
+          if (!songShortID) allSongsCache.current = data.songs;
           return data.songs;
         } else {
           showAlert(data.error);
@@ -40,6 +56,7 @@ const SongState = (props) => {
   );
 
   let newReleaseFunc = useCallback(async () => {
+    if (newReleaseCache.current) return newReleaseCache.current;
     const userToken = Cookie.get("token");
     try {
       let url = new URL(`${host}/songs/get/newrelease`);
@@ -53,6 +70,7 @@ const SongState = (props) => {
 
       const data = await response.json();
       if (response.ok) {
+        newReleaseCache.current = data.songs;
         return data.songs;
       } else {
         console.error(data.error);
@@ -66,6 +84,7 @@ const SongState = (props) => {
   }, [host, showAlert]);
 
   let oldReleaseFunc = useCallback(async () => {
+    if (oldReleaseCache.current) return oldReleaseCache.current;
     const userToken = Cookie.get("token");
     try {
       let url = new URL(`${host}/songs/get/oldsongs`);
@@ -79,6 +98,7 @@ const SongState = (props) => {
 
       const data = await response.json();
       if (response.ok) {
+        oldReleaseCache.current = data.songs;
         return data.songs;
       } else {
         console.error(data.error);

@@ -12,7 +12,9 @@ export default function WestTunes() {
   const { addPlaylistToQueue } = useContext(AudioContext);
   const [songList, setSongList] = useState(null);
   const handleSongList = async () => {
-    const result = await getPublicPlaylist("66d8aff152ca27ed86ffa9bf");
+    const result = await getPublicPlaylist("66d8aff152ca27ed86ffa9bf", {
+      useCache: true,
+    });
     if (result && result[0] && result[0].songs) setSongList(result[0].songs);
   };
   useEffect(() => {
