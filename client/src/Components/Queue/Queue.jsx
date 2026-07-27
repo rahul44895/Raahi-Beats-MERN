@@ -4,7 +4,7 @@ import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import { MdOutlineDragHandle } from "react-icons/md";
 import "./QueueStyle.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import useIsMobile from "../../hooks/useIsMobile";

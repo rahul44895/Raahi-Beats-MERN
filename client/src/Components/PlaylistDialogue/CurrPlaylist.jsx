@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { AudioContext } from "../../Context/Audio/AudioState";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { MdOutlineDragHandle, MdDelete } from "react-icons/md";
 import { IoIosPlayCircle } from "react-icons/io";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -20,9 +20,12 @@ export default function CurrPlaylist({
   deletePlaylist,
   deleteSongFromPlaylist,
 }) {
-  const [playlist, setPlaylist] = useState(
-    JSON.parse(JSON.stringify(currPlaylist))
-  );
+  // Shallow clone is enough - nothing here mutates song objects in place,
+  // and `songs` is always replaced wholesale via spread (see handleDragEnd).
+  const [playlist, setPlaylist] = useState({
+    ...currPlaylist,
+    songs: [...currPlaylist.songs],
+  });
   const { play, addPlaylistToQueue } = useContext(AudioContext);
 
   const handleDragEnd = (result) => {

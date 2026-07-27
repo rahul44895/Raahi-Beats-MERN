@@ -4,11 +4,15 @@ import React, {
   useEffect,
   useRef,
   useState,
+  Suspense,
+  lazy,
 } from "react";
 import "./PlaylistDialogueStyle.css";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
-import CurrPlaylist from "./CurrPlaylist";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
+
+// Lazy so the drag-and-drop library it pulls in only loads once a playlist is opened.
+const CurrPlaylist = lazy(() => import("./CurrPlaylist"));
 
 export default function PlaylistDialogue() {
   const {
@@ -224,16 +228,18 @@ export default function PlaylistDialogue() {
             </>
           )}
           {PlaylistSec2 && (
-            <CurrPlaylist
-              currPlaylist={currPlaylist}
-              setCurrPlaylist={setCurrPlaylist}
-              setPlaylistSec1={setPlaylistSec1}
-              setPlaylistSec2={setPlaylistSec2}
-              updatePlaylistOrderFunc={updatePlaylistOrderFunc}
-              updatePlaylistDetailsFunc={updatePlaylistDetailsFunc}
-              deletePlaylist={deletePlaylist}
-              deleteSongFromPlaylist={deleteSongFromPlaylist}
-            />
+            <Suspense fallback={<p>Loading...</p>}>
+              <CurrPlaylist
+                currPlaylist={currPlaylist}
+                setCurrPlaylist={setCurrPlaylist}
+                setPlaylistSec1={setPlaylistSec1}
+                setPlaylistSec2={setPlaylistSec2}
+                updatePlaylistOrderFunc={updatePlaylistOrderFunc}
+                updatePlaylistDetailsFunc={updatePlaylistDetailsFunc}
+                deletePlaylist={deletePlaylist}
+                deleteSongFromPlaylist={deleteSongFromPlaylist}
+              />
+            </Suspense>
           )}
         </div>
       )}

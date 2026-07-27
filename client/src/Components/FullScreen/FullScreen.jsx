@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import "./FullScreenStyle.css";
-import Queue from "../Queue/Queue";
 import { MdLoop, MdPlaylistAdd } from "react-icons/md";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
@@ -22,6 +21,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
+// Lazy so the drag-and-drop library it pulls in only loads once the queue area is shown.
+const Queue = lazy(() => import("../Queue/Queue"));
 
 export default function FullScreen({ setFullScreenVisible }) {
   const isMobile = useIsMobile();
@@ -289,7 +290,9 @@ export default function FullScreen({ setFullScreenVisible }) {
             </h1>
             <hr />
             <div className="queue-content">
-              <Queue />
+              <Suspense fallback={<p>Loading...</p>}>
+                <Queue />
+              </Suspense>
             </div>
           </div>
         </div>
