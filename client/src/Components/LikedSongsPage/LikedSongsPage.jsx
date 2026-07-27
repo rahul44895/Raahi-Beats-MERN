@@ -36,13 +36,17 @@ export default function LikedSongsPage() {
     >
       <div className="fullscreen-container ">
         <video
-          src={!isMobile ? bgVideo : bgVideoPortrait}
           muted
           autoPlay
           loop
           className="fullscreen-video"
           onError={() => alert("Some error occured")}
-        ></video>
+        >
+          {/* Native media-query source selection: the browser only downloads
+              the variant it picks, unlike the previous isMobile-computed src. */}
+          <source src={bgVideo} media="(min-width: 1000px)" />
+          <source src={bgVideoPortrait} />
+        </video>
 
         <div className="video-overlay"></div>
       </div>
