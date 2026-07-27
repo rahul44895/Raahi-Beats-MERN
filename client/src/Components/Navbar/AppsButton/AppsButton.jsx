@@ -21,18 +21,24 @@ export default function AppsButton() {
       <div className="nav-menu-container">
         {[
           { link: "https://www.contacts.raahi.com", name: "Contacts" },
-          { link: "https://www.ecommerce.raahi.com", name: "Ecommerce" },
+          {
+            link: process.env.REACT_APP_SUBSERVICE_ECOMMERCE,
+            name: "Ecommerce",
+          },
           { link: "https://www.beats.raahi.com", name: "Beats" },
           { link: "https://www.videos.raahi.com", name: "Videos" },
         ].map((e) => (
           <Link to={e.link} target="_blank">
-            <div className="nav-menu-dropdown-icon-container" style={{color: "black"}}>
+            <div
+              className="nav-menu-dropdown-icon-container"
+              style={{ color: "black" }}
+            >
               <img
                 className="nav-menu-dropdown-icon"
                 src={raahi_beats_logo}
                 alt="raahi_beats_logo"
               />
-              <div style={{paddingTop:'3px'}}>{e.name}</div>
+              <div style={{ paddingTop: "3px" }}>{e.name}</div>
             </div>
           </Link>
         ))}
