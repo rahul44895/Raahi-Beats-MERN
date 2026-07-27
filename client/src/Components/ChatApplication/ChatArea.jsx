@@ -7,6 +7,10 @@ import React, {
 } from "react";
 import { AlertContext } from "../../Context/Alert/AlertState";
 import { IoIosSend } from "react-icons/io";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function ChatArea({
   currContactDetails,
@@ -89,9 +93,11 @@ export default function ChatArea({
           <div className="chat-header-001">
             <div className="chat-header-info-001">
               <div className="chat-header-info-avatar-001">
-                <img
+                <LazyLoadImage
                   src={`${host}/${currContactDetails.avatar}`}
                   alt={currContactDetails.username}
+                  effect="blur"
+                  wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
                 />
               </div>
               <div className="chat-header-info-username-001">

@@ -7,6 +7,10 @@ import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 import useNavbarHeight from "../../hooks/useNavbarHeight";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function ParticularArtist() {
   const navbarHeight = useNavbarHeight();
@@ -37,7 +41,7 @@ export default function ParticularArtist() {
         <div style={{ padding: "1em", width: "80%", margin: "auto" }}>
           <div className="artistPageHeaderContainer">
             <div className="artistPageImageContainer">
-              <img
+              <LazyLoadImage
                 src={
                   artist.avatar !== "undefined"
                     ? `${host}/${artist.avatar}`
@@ -45,6 +49,8 @@ export default function ParticularArtist() {
                 }
                 className="artistImage"
                 alt="artist avatar"
+                effect="blur"
+                wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
               />
             </div>
             <div>
@@ -89,10 +95,12 @@ export default function ParticularArtist() {
                         <IoIosPlayCircle />
                       </span>
                     )}
-                    <img
+                    <LazyLoadImage
                       src={`${host}/${ele.coverImage}`}
                       className="artistPageSongCoverImage"
                       alt={ele.title}
+                      effect="blur"
+                      wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
                     />
                   </div>
                   <div className="artistPage-infoContainer">

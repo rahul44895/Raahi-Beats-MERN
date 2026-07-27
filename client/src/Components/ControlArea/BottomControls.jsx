@@ -22,6 +22,10 @@ import { SongContext } from "../../Context/Songs/SongState";
 import { Link } from "react-router-dom";
 import Seekbar from "./Seekbar";
 import useIsMobile from "../../hooks/useIsMobile";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function BottomControls({
   isFullScreenVisible,
@@ -139,10 +143,12 @@ export default function BottomControls({
                   : () => {}
               }
             >
-              <img
+              <LazyLoadImage
                 src={currSong ? currSong.coverImage : ""}
                 className="bottom-song-image"
                 alt="song-image"
+                effect="blur"
+                wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
               />
               <div className="bottom-song-title">
                 {currSong?.title ? currSong.title : "Unknown"}

@@ -10,7 +10,11 @@ import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import { ShareContext } from "../../../Context/Share/ShareState";
 import { SongContext } from "../../../Context/Songs/SongState";
 
-export default function SongCardXL({ song }) {
+// Hoisted so it's a stable reference across renders/cards instead of a fresh
+// object per card per render, which would defeat the React.memo below.
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
+
+function SongCardXL({ song }) {
   const { play, addToQueue, playbtnAddToQueue } = useContext(AudioContext);
   const { share } = useContext(ShareContext);
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
@@ -25,9 +29,7 @@ export default function SongCardXL({ song }) {
         alt={song.title || "Unknown Title"}
         className="song-card-xl-image"
         effect="blur"
-        wrapperProps={{
-          style: { transitionDelay: "0.5s" },
-        }}
+        wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
       />
       <div className="song-card-xl-overlay">
         <div className="song-card-xl-overlay-text">
@@ -74,3 +76,5 @@ export default function SongCardXL({ song }) {
     </div>
   );
 }
+
+export default React.memo(SongCardXL);

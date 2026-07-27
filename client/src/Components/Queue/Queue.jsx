@@ -5,7 +5,14 @@ import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import { MdOutlineDragHandle } from "react-icons/md";
 import "./QueueStyle.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import useIsMobile from "../../hooks/useIsMobile";
+
+// Hoisted so it's a stable reference across renders/items instead of a fresh
+// object per queue item per render.
+const ARTIST_TEXT_STYLE = { textWrap: "wrap" };
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function Queue() {
   const { queue, setQueue, play, currSong } = useContext(AudioContext);
@@ -80,15 +87,17 @@ export default function Queue() {
                                   <IoIosPlayCircle />
                                 </span>
                               )}
-                              <img
+                              <LazyLoadImage
                                 src={`${host}/${item.coverImage}`}
                                 className="queue-image"
                                 alt={item.title}
+                                effect="blur"
+                                wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
                               />
                             </div>
                             <div className="queue-text">
                               <p>{item.title}</p>
-                              <p style={{ textWrap: "wrap" }}>
+                              <p style={ARTIST_TEXT_STYLE}>
                                 {/* {item.artists
                                   ? item.artists.map((e, index) => {
                                       return (

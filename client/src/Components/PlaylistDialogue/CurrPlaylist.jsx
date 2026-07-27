@@ -4,7 +4,11 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdOutlineDragHandle, MdDelete } from "react-icons/md";
 import { IoIosPlayCircle } from "react-icons/io";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "./PlaylistDialogueStyle.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function CurrPlaylist({
   currPlaylist,
@@ -252,10 +256,12 @@ export default function CurrPlaylist({
                                 <span className="queue-play-icon">
                                   <IoIosPlayCircle />
                                 </span>
-                                <img
+                                <LazyLoadImage
                                   src={`${host}/${item.coverImage}`}
                                   className="queue-image"
                                   alt={item.title}
+                                  effect="blur"
+                                  wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
                                 />
                               </div>
                               <div className="queue-text">

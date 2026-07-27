@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SongContext } from "../../Context/Songs/SongState";
 import SongCardXL from "../Home/Sections/SongCardXL";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 import useNavbarHeight from "../../hooks/useNavbarHeight";
+import ArtistCard from "../Artists/ArtistCard";
 
 export default function SearchPage() {
   const navbarHeight = useNavbarHeight();
@@ -79,63 +80,17 @@ export default function SearchPage() {
                         gap: "10px",
                       }}
                     >
-                      {Array.isArray(searchResults.artists) ? (
-                        searchResults.artists.map((currArtist) => {
-                          return (
-                            <Link
-                              to={`/artists/${currArtist.shortenURL}`}
-                              key={currArtist._id}
-                            >
-                              <div className="artist-card">
-                                <div className="artist-card-image-container">
-                                  {currArtist.avatar !== "undefined" ? (
-                                    <img
-                                      src={`${host}/${currArtist.avatar}`}
-                                      className="artist-card-image"
-                                      alt="artistavatar"
-                                    />
-                                  ) : (
-                                    <img
-                                      src={noArtistImage}
-                                      className="artist-card-image"
-                                      alt="artistavatar"
-                                    />
-                                  )}
-                                </div>
-                                <div className="artist-card-name">
-                                  {currArtist.name}
-                                </div>
-                              </div>
-                            </Link>
-                          );
-                        })
-                      ) : (
-                        <Link
-                          to={`/artists/${searchResults.artists.shortenURL}`}
-                          key={searchResults.artists._id}
-                        >
-                          <div className="artist-card">
-                            <div className="artist-card-image-container">
-                              {searchResults.artists.avatar !== "undefined" ? (
-                                <img
-                                  src={`${host}/${searchResults.artists.avatar}`}
-                                  className="artist-card-image"
-                                  alt="artistavatar"
-                                />
-                              ) : (
-                                <img
-                                  src={noArtistImage}
-                                  className="artist-card-image"
-                                  alt="artistavatar"
-                                />
-                              )}
-                            </div>
-                            <div className="artist-card-name">
-                              {searchResults.artists.name}
-                            </div>
-                          </div>
-                        </Link>
-                      )}
+                      {(Array.isArray(searchResults.artists)
+                        ? searchResults.artists
+                        : [searchResults.artists]
+                      ).map((currArtist) => (
+                        <ArtistCard
+                          key={currArtist._id}
+                          artist={currArtist}
+                          host={host}
+                          noArtistImage={noArtistImage}
+                        />
+                      ))}
                     </div>
                   </div>
                 )}

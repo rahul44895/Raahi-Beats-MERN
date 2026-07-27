@@ -3,6 +3,10 @@ import "../Navbar/AppsButton/AppsButton.css";
 import raahi_beats_logo from "../../assets/images/Apps/raahi-beats-logo.png";
 import { Link, useLocation } from "react-router-dom";
 import { AuthenticationContext } from "../../Context/Authentication/AuthenticationState";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function UserProfileButton({
   username,
@@ -16,19 +20,23 @@ export default function UserProfileButton({
   return (
     <div className="nav-menu-dropdown">
       <div className="nav-menu-button">
-        <img
+        <LazyLoadImage
           src={userAvatar ? `${host}/${userAvatar}` : raahi_beats_logo}
           className="nav-menu-dropdown-icon"
           alt="user-avatar"
+          effect="blur"
+          wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
         />
       </div>
       <div className="nav-menu-container">
         <div style={{ textAlign: "center" }}>
-          <img
+          <LazyLoadImage
             src={userAvatar ? `${host}/${userAvatar}` : raahi_beats_logo}
             className="nav-menu-dropdown-icon"
             alt="user-avatar"
             style={{ height: "100px", width: "100px", marginBottom: "10px" }}
+            effect="blur"
+            wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
           />
           <p style={{ marginBottom: "10px", color: "black" }}>{username}</p>
           {!userAvatar && (

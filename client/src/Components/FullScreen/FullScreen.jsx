@@ -18,6 +18,10 @@ import { IoIosPlayCircle } from "react-icons/io";
 import { PiShuffleBold } from "react-icons/pi";
 import Seekbar from "../ControlArea/Seekbar";
 import useIsMobile from "../../hooks/useIsMobile";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
+const LAZY_IMAGE_WRAPPER_PROPS = { style: { transitionDelay: "0.5s" } };
 
 export default function FullScreen({ setFullScreenVisible }) {
   const isMobile = useIsMobile();
@@ -66,10 +70,12 @@ export default function FullScreen({ setFullScreenVisible }) {
         >
           <div className="fullscreen-songArea scroll-item">
             <div className="song-image-container">
-              <img
+              <LazyLoadImage
                 src={`${currSong?.coverImage}`}
                 className="song-image"
                 alt={currSong?.title ? currSong.title : "Unknown Title"}
+                effect="blur"
+                wrapperProps={LAZY_IMAGE_WRAPPER_PROPS}
               />
             </div>
             <div className="flex-display" style={{width:'35vh', marginTop:'15px'}}>

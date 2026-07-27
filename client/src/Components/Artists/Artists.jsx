@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import artistVideoBg from "../../assets/video/artistSec1.mp4";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
 import useNavbarHeight from "../../hooks/useNavbarHeight";
+import ArtistCard from "./ArtistCard";
 import "./artistStyle.css";
 
 export default function Artists() {
@@ -72,35 +72,14 @@ export default function Artists() {
             {
               <div className="artist-card-container">
                 {topArtists && topArtists.length > 0 ? (
-                  topArtists.map((currArtist) => {
-                    return (
-                      <Link
-                        to={`/artists/${currArtist.shortenURL}`}
-                        key={currArtist._id}
-                      >
-                        <div className="artist-card">
-                          <div className="artist-card-image-container">
-                            {currArtist.avatar !== "undefined" ? (
-                              <img
-                                src={`${host}/${currArtist.avatar}`}
-                                className="artist-card-image"
-                                alt="artistavatar"
-                              />
-                            ) : (
-                              <img
-                                src={noArtistImage}
-                                className="artist-card-image"
-                                alt="artistavatar"
-                              />
-                            )}
-                          </div>
-                          <div className="artist-card-name">
-                            {currArtist.name}
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })
+                  topArtists.map((currArtist) => (
+                    <ArtistCard
+                      key={currArtist._id}
+                      artist={currArtist}
+                      host={host}
+                      noArtistImage={noArtistImage}
+                    />
+                  ))
                 ) : (
                   <p>Loading...</p>
                 )}
@@ -116,35 +95,14 @@ export default function Artists() {
 
               <div className="artist-card-container">
                 {allArtists && allArtists.length > 0 ? (
-                  allArtists.map((currArtist) => {
-                    return (
-                      <Link
-                        to={`/artists/${currArtist.shortenURL}`}
-                        key={currArtist._id}
-                      >
-                        <div className="artist-card">
-                          <div className="artist-card-image-container">
-                            {currArtist.avatar !== "undefined" ? (
-                              <img
-                                src={`${host}/${currArtist.avatar}`}
-                                className="artist-card-image"
-                                alt="artistavatar"
-                              />
-                            ) : (
-                              <img
-                                src={noArtistImage}
-                                className="artist-card-image"
-                                alt="artistavatar"
-                              />
-                            )}
-                          </div>
-                          <div className="artist-card-name">
-                            {currArtist.name}
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })
+                  allArtists.map((currArtist) => (
+                    <ArtistCard
+                      key={currArtist._id}
+                      artist={currArtist}
+                      host={host}
+                      noArtistImage={noArtistImage}
+                    />
+                  ))
                 ) : (
                   <p>Loading...</p>
                 )}
