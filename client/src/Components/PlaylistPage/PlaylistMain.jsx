@@ -1,16 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 import "./PlaylistMainStyle.css";
 import raahi_beats_logo from "../../assets/images/Apps/raahi-beats-logo.png";
 
 export default function PlaylistMain() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { getPublicPlaylist, getPrivatePlaylist, handleshowPlaylistDialogue } =
     useContext(PlaylistContext);

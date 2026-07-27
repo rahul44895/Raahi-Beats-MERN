@@ -5,19 +5,21 @@ import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import { MdOutlineDragHandle } from "react-icons/md";
 import "./QueueStyle.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function Queue() {
   const { queue, setQueue, play, currSong } = useContext(AudioContext);
+  const isMobile = useIsMobile();
   const activeSongRef = useRef(null);
   const host = process.env.REACT_APP_HOST;
   useEffect(() => {
-    if (activeSongRef.current && window.innerWidth > 1000) {
+    if (activeSongRef.current && !isMobile) {
       activeSongRef.current.scrollIntoView({
         behaviour: "smooth",
         block: "center",
       });
     }
-  }, [activeSongRef]);
+  }, [activeSongRef, isMobile]);
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;

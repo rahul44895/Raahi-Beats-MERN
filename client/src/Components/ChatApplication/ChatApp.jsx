@@ -6,14 +6,13 @@ import ChatArea from "./ChatArea";
 import io from "socket.io-client";
 import Cookies from "js-cookie";
 import { AlertContext } from "../../Context/Alert/AlertState";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
+import useElementHeight from "../../hooks/useElementHeight";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function ChatApp() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
+  const isMobile = useIsMobile();
 
   const { showAlert } = useContext(AlertContext);
   const [currContactDetails, setCurrContactDetails] = useState(null);
@@ -22,6 +21,8 @@ export default function ChatApp() {
   const navigate = useNavigate();
   const location = useLocation();
   const chatAppContainer = useRef(null);
+  // Only re-measure on mount/resize instead of reading offsetHeight inline on every render (once per chat message).
+  const containerHeight = useElementHeight(chatAppContainer);
   const host = process.env.REACT_APP_HOST;
 
   useEffect(() => {
@@ -81,12 +82,10 @@ export default function ChatApp() {
   return (
     <div className="homeContainer" ref={chatAppContainer}>
       <div style={{ height: `${navbarHeight}px` }}></div>
-      {window.innerWidth > 1000 && (
+      {!isMobile && (
         <div
           style={{
-            height: `${
-              chatAppContainer?.current?.offsetHeight - navbarHeight
-            }px`,
+            height: `${containerHeight - navbarHeight}px`,
           }}
           className="chat-app-container-desktop-8XyAQ"
         >
@@ -100,12 +99,10 @@ export default function ChatApp() {
           />
         </div>
       )}
-      {window.innerWidth < 1000 && (
+      {isMobile && (
         <div
           style={{
-            height: `${
-              chatAppContainer?.current?.offsetHeight - navbarHeight
-            }px`,
+            height: `${containerHeight - navbarHeight}px`,
           }}
         >
           {activeView === "contacts" ? (

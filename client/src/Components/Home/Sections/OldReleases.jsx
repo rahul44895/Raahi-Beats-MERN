@@ -3,8 +3,10 @@ import NewReleasesCard from "./SongCardXL";
 import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
+import useNavbarHeight from "../../../hooks/useNavbarHeight";
 
-export default function OldReleases({ navbarHeight }) {
+export default function OldReleases() {
+  const navbarHeight = useNavbarHeight();
   const { oldReleaseFunc } = useContext(SongContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const [newRelease, setNewRelease] = useState(null);

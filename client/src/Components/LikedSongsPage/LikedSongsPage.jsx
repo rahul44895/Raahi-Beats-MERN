@@ -5,14 +5,12 @@ import SongCardXL from "../Home/Sections/SongCardXL";
 import { IoIosPlayCircle } from "react-icons/io";
 import bgVideo from "../../assets/video/likedSec1Landscape.mp4";
 import bgVideoPortrait from "../../assets/video/likedSec1Portrait.mp4";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function LikedSongsPage() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
+  const isMobile = useIsMobile();
 
   const { fetchLikedSongs } = useContext(SongContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
@@ -38,7 +36,7 @@ export default function LikedSongsPage() {
     >
       <div className="fullscreen-container ">
         <video
-          src={window.innerWidth > 1000 ? bgVideo : bgVideoPortrait}
+          src={!isMobile ? bgVideo : bgVideoPortrait}
           muted
           autoPlay
           loop
@@ -54,7 +52,7 @@ export default function LikedSongsPage() {
           {result.userLiked && (
             <div
               style={{
-                padding: `2em ${window.innerWidth > 1000 ? "4em" : "0"}`,
+                padding: `2em ${!isMobile ? "4em" : "0"}`,
               }}
             >
               {result?.userLiked?.length > 0 && (
@@ -80,7 +78,7 @@ export default function LikedSongsPage() {
           {result.songs && (
             <div
               style={{
-                padding: `2em ${window.innerWidth > 1000 ? "4em" : "0"}`,
+                padding: `2em ${!isMobile ? "4em" : "0"}`,
               }}
             >
               <div className="new-releases-header">

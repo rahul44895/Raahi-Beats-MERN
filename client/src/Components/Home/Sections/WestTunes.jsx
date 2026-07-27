@@ -4,8 +4,10 @@ import { AudioContext } from "../../../Context/Audio/AudioState";
 import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
+import useNavbarHeight from "../../../hooks/useNavbarHeight";
 
-export default function WestTunes({ navbarHeight }) {
+export default function WestTunes() {
+  const navbarHeight = useNavbarHeight();
   const { getPublicPlaylist } = useContext(PlaylistContext);
   const { addPlaylistToQueue } = useContext(AudioContext);
   const [songList, setSongList] = useState(null);

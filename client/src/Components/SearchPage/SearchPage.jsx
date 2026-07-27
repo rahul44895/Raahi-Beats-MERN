@@ -4,14 +4,10 @@ import { SongContext } from "../../Context/Songs/SongState";
 import SongCardXL from "../Home/Sections/SongCardXL";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 
 export default function SearchPage() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { fetchSongs } = useContext(SongContext);
   const { fetchArtists } = useContext(ArtistContext);

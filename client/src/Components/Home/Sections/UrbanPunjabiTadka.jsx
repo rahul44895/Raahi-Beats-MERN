@@ -3,8 +3,10 @@ import { AudioContext } from "../../../Context/Audio/AudioState";
 import { PlaylistContext } from "../../../Context/Playlist/PlaylistState";
 import SongCardMedium from "./SongCardMedium";
 import { IoIosPlayCircle } from "react-icons/io";
+import useNavbarHeight from "../../../hooks/useNavbarHeight";
 
-export default function UrbanPunjabiTadka({ navbarHeight }) {
+export default function UrbanPunjabiTadka() {
+  const navbarHeight = useNavbarHeight();
   const { addPlaylistToQueue } = useContext(AudioContext);
   const { getPublicPlaylist } = useContext(PlaylistContext);
 

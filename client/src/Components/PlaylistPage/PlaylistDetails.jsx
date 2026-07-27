@@ -4,14 +4,10 @@ import { PlaylistContext } from "../../Context/Playlist/PlaylistState";
 import { IoIosPlayCircle } from "react-icons/io";
 import SongCardMedium from "../Home/Sections/SongCardMedium";
 import { AudioContext } from "../../Context/Audio/AudioState";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 
 export default function PlaylistDetails() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { getPublicPlaylist } = useContext(PlaylistContext);
   const { addPlaylistToQueue } = useContext(AudioContext);

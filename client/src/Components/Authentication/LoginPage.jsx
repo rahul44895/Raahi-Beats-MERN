@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { AuthenticationContext } from "../../Context/Authentication/AuthenticationState";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 import "./AuthenticationStyle.css";
 
 export default function LoginPage() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { login } = useContext(AuthenticationContext);
 

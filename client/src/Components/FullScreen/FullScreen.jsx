@@ -17,8 +17,10 @@ import {
 import { IoIosPlayCircle } from "react-icons/io";
 import { PiShuffleBold } from "react-icons/pi";
 import Seekbar from "../ControlArea/Seekbar";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function FullScreen({ setFullScreenVisible }) {
+  const isMobile = useIsMobile();
   //useContext
   const { handleshowPlaylistDialogue } = useContext(PlaylistContext);
   const { share } = useContext(ShareContext);
@@ -139,7 +141,7 @@ export default function FullScreen({ setFullScreenVisible }) {
                 {currSong?.duration ? formatTime(currSong.duration) : "Unknown"}
               </p> */}
             </div>
-            {window.innerWidth < 1000 && (
+            {isMobile && (
               <>
                 <div className="seekbar-container">
                   <Seekbar formatTime={formatTime} split />

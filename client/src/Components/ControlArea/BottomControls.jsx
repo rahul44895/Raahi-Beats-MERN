@@ -21,6 +21,7 @@ import Marquee from "react-fast-marquee";
 import { SongContext } from "../../Context/Songs/SongState";
 import { Link } from "react-router-dom";
 import Seekbar from "./Seekbar";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function BottomControls({
   isFullScreenVisible,
@@ -39,7 +40,7 @@ export default function BottomControls({
     setLoop,
     shuffle,
   } = useContext(AudioContext);
-  const minWindowWidth = 1000;
+  const isMobile = useIsMobile();
 
   const [mute, setMute] = useState(false);
 
@@ -99,7 +100,7 @@ export default function BottomControls({
   }, [handleKeys]);
   return (
     audio &&
-    (window.innerWidth < 1000 ? !isFullScreenVisible : true) && (
+    (isMobile ? !isFullScreenVisible : true) && (
       <div
         className="bottom-controls"
         style={
@@ -120,7 +121,7 @@ export default function BottomControls({
         <div className="controls-container">
           <Link
             to={
-              window.innerWidth > minWindowWidth
+              !isMobile
                 ? `/song/${currSong?.shortenURL}`
                 : window.location
             }
@@ -129,7 +130,7 @@ export default function BottomControls({
               className="bottom-song-info-container"
               ref={bottomSongInfoContainer}
               onClick={
-                window.innerWidth < minWindowWidth
+                isMobile
                   ? () => {
                       setSongDetails(currSong);
                       handleFullScreenButton();
@@ -178,7 +179,7 @@ export default function BottomControls({
             </div>
           </Link>
           <div className="play-pause-icon">
-            {window.innerWidth > minWindowWidth && (
+            {!isMobile && (
               <>
                 {loop === 0 && (
                   <span
@@ -282,7 +283,7 @@ export default function BottomControls({
                 <MdPauseCircle size={50} onClick={() => playnpause()} />
               )}
             </>
-            {window.innerWidth > minWindowWidth && (
+            {!isMobile && (
               <>
                 <BiSolidSkipNextCircle size={30} onClick={() => next()} />
 
@@ -290,7 +291,7 @@ export default function BottomControls({
               </>
             )}
           </div>
-          {window.innerWidth > minWindowWidth && (
+          {!isMobile && (
             <div className="volume-controls">
               <div className="volume-container">
                 <span

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import bgVideo from "../../assets/video/bg-video.54d189c7(2323).mp4";
 import "./HomePage.css";
 import NewReleases from "./Sections/NewReleases";
@@ -7,13 +7,6 @@ import UrbanPunjabiTadka from "./Sections/UrbanPunjabiTadka";
 import WestTunes from "./Sections/WestTunes";
 
 export default function HomePage() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
-
   return (
     <div className="homeContainer scroll-container">
       <div className="fullscreen-container scroll-item">
@@ -38,10 +31,10 @@ export default function HomePage() {
         <div className="video-overlay"></div>
       </div>
       <>
-        <NewReleases navbarHeight={navbarHeight} />
-        <OldReleases navbarHeight={navbarHeight} />
-        <UrbanPunjabiTadka navbarHeight={navbarHeight} />
-        <WestTunes navbarHeight={navbarHeight} />
+        <NewReleases />
+        <OldReleases />
+        <UrbanPunjabiTadka />
+        <WestTunes />
       </>
       Most Liked Song of this week Most Played Song of this week Most shared
       song

@@ -6,14 +6,10 @@ import { AudioContext } from "../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
 import PlayingBarGif from "../../assets/images/miscellaneous/playingBarGif.gif";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 
 export default function ParticularArtist() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { fetchArtists } = useContext(ArtistContext);
   const { play, playbtnAddToQueue, addPlaylistToQueue, currSong } =

@@ -3,14 +3,10 @@ import NewReleasesCard from "./SongCardXL";
 import { SongContext } from "../../../Context/Songs/SongState";
 import { AudioContext } from "../../../Context/Audio/AudioState";
 import { IoIosPlayCircle } from "react-icons/io";
+import useNavbarHeight from "../../../hooks/useNavbarHeight";
 
 export default function AllSongs() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { fetchSongs } = useContext(SongContext);
   const [songList, setSongList] = useState(null);

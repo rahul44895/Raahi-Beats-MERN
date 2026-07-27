@@ -3,15 +3,11 @@ import { Link } from "react-router-dom";
 import { ArtistContext } from "../../Context/Artists/ArtistState";
 import artistVideoBg from "../../assets/video/artistSec1.mp4";
 import noArtistImage from "../../assets/images/miscellaneous/no-artist-image.jpg";
+import useNavbarHeight from "../../hooks/useNavbarHeight";
 import "./artistStyle.css";
 
 export default function Artists() {
-  const [navbarHeight, setnavbarHeight] = useState(0);
-  useEffect(() => {
-    if (document.querySelector(".navbar")) {
-      setnavbarHeight(document.querySelector(".navbar").offsetHeight);
-    }
-  }, [navbarHeight]);
+  const navbarHeight = useNavbarHeight();
 
   const { fetchArtists } = useContext(ArtistContext);
   const [topArtists, setTopArtists] = useState(null);
