@@ -22,5 +22,9 @@ yarn-error.log*
 Thumbs.db
 
 # Editor
-.vscode/
+# Shared formatter/extension recommendations are committed; everything else
+# (personal launch configs, workspace state) stays ignored.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea/

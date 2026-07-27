@@ -4,12 +4,21 @@
   "main": "index.js",
   "scripts": {
     "sync-client-env": "node scripts/sync-client-env.js",
+    "check-format": "node scripts/check-format.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "client-install": "npm install --prefix client",
     "client-build": "npm run build --prefix client",
+    "prestart": "node scripts/check-format.js",
     "start": "node index.js",
+    "preserver": "node scripts/check-format.js",
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
+    "prepare": "husky || true",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,md}": "prettier --write"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +37,10 @@
     "shortid": "^2.2.16",
     "socket.io": "^4.7.5",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.2.0",
+    "prettier": "^3.9.6"
   }
 }
