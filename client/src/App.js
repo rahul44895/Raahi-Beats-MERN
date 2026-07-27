@@ -1,34 +1,62 @@
 import "./App.css";
 import "./mediaqueries/mediaquery.css";
 import "./fonts.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Components/Home/HomePage";
 import Navbar from "./Components/Navbar/Navbar";
 import SongState from "./Context/Songs/SongState";
 import AudioState from "./Context/Audio/AudioState";
 import AuthenticationState from "./Context/Authentication/AuthenticationState";
-import LoginPage from "./Components/Authentication/LoginPage";
-import SignUp from "./Components/Authentication/SignUp";
 import BottomControls from "./Components/ControlArea/BottomControls";
-import SongDetailsPage from "./Components/SongDetailsPage/SongDetailsPage";
 import PlaylistDialogue from "./Components/PlaylistDialogue/PlaylistDialogue";
 import AlertState from "./Context/Alert/AlertState";
 import SideNav from "./Components/SideNav/SideNav";
-import AllSongs from "./Components/Home/Sections/AllSongs";
 import PlaylistState from "./Context/Playlist/PlaylistState";
 import ArtistState from "./Context/Artists/ArtistState";
 import ShareState from "./Context/Share/ShareState";
-import Artists from "./Components/Artists/Artists";
-import ParticularArtist from "./Components/Artists/ParticularArtist";
 import FullScreen from "./Components/FullScreen/FullScreen";
 import ShareDialogue from "./Components/ShareDialgoue/ShareDialogue";
-import PlaylistMain from "./Components/PlaylistPage/PlaylistMain";
-import PlaylistDetails from "./Components/PlaylistPage/PlaylistDetails";
-import SearchPage from "./Components/SearchPage/SearchPage";
-import ChatApp from "./Components/ChatApplication/ChatApp";
 import ProtectedRoute from "./Components/ProtectedRoute";
-import LikedSongsPage from "./Components/LikedSongsPage/LikedSongsPage";
+
+// Home ("/") is kept eager since almost every visit lands there first - lazy-loading
+// the landing route would add a network round-trip to the very first thing users see.
+// Every other route is lazy so its code only downloads when actually visited.
+const LoginPage = lazy(() => import("./Components/Authentication/LoginPage"));
+const SignUp = lazy(() => import("./Components/Authentication/SignUp"));
+const SongDetailsPage = lazy(() =>
+  import("./Components/SongDetailsPage/SongDetailsPage")
+);
+const AllSongs = lazy(() => import("./Components/Home/Sections/AllSongs"));
+const Artists = lazy(() => import("./Components/Artists/Artists"));
+const ParticularArtist = lazy(() =>
+  import("./Components/Artists/ParticularArtist")
+);
+const PlaylistMain = lazy(() =>
+  import("./Components/PlaylistPage/PlaylistMain")
+);
+const PlaylistDetails = lazy(() =>
+  import("./Components/PlaylistPage/PlaylistDetails")
+);
+const SearchPage = lazy(() => import("./Components/SearchPage/SearchPage"));
+const ChatApp = lazy(() => import("./Components/ChatApplication/ChatApp"));
+const LikedSongsPage = lazy(() =>
+  import("./Components/LikedSongsPage/LikedSongsPage")
+);
+
+const routeLoadingFallback = (
+  <div
+    className="homeContainer"
+    style={{
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <p>Loading...</p>
+  </div>
+);
 
 function App() {
   const [portrait, setPortrait] = useState(
@@ -141,6 +169,7 @@ function App() {
                             width: `${windowWidth - 1}px`,
                           }}
                         >
+                          <Suspense fallback={routeLoadingFallback}>
                           <Routes>
                             <Route exact path="/" element={<Home />} />
                             <Route
@@ -214,6 +243,7 @@ function App() {
                               }
                             />
                           </Routes>
+                          </Suspense>
 
                           <div
                             style={{
