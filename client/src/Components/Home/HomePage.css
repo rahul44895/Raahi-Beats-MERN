@@ -1,24 +1,38 @@
 .homeContainer {
-  animation: home-bg-anime 100s ease-in-out infinite;
-  background: url(../../assets/images/miscellaneous/websiteBg1.png),
-    linear-gradient(45deg, rgb(88 23 49 / 99%), #26035d);
-  background-size: 200%;
-  background-repeat: no-repeat;
+  position: relative;
   color: white;
   overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
 }
 
+/* Background lives on a pseudo-element sized 200% wide and panned via
+   transform, instead of animating background-position on .homeContainer
+   itself - transform is compositor-only, background-position forces a
+   repaint every frame for as long as Home is mounted. */
+.homeContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 200%;
+  background: url(../../assets/images/miscellaneous/websiteBg1.png),
+    linear-gradient(45deg, rgb(88 23 49 / 99%), #26035d);
+  background-size: 100% 200%;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: home-bg-anime 100s ease-in-out infinite;
+}
+
 @keyframes home-bg-anime {
   0% {
-    background-position: 0%, 50%;
+    transform: translateX(0%);
   }
   50% {
-    background-position: 100%, 50%;
+    transform: translateX(-50%);
   }
   100% {
-    background-position: 0%, 50%;
+    transform: translateX(0%);
   }
 }
 /* section 1*/
